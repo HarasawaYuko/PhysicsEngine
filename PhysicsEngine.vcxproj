@@ -140,18 +140,24 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BaseScene.cpp" />
+    <ClCompile Include="Circle.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="Object.cpp" />
+    <ClCompile Include="PhysicsSimulate.cpp" />
     <ClCompile Include="SceneChanger.cpp" />
     <ClCompile Include="Task.cpp" />
     <ClCompile Include="UIMaterial.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseScene.h" />
+    <ClInclude Include="Circle.h" />
     <ClInclude Include="include.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Mouse.h" />
+    <ClInclude Include="Object.h" />
+    <ClInclude Include="PhysicsSimulate.h" />
     <ClInclude Include="SceneChanger.h" />
     <ClInclude Include="SceneMgr.h" />
     <ClInclude Include="Task.h" />
