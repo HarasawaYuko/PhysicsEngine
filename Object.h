@@ -14,6 +14,6 @@ protected:
 	Vec2 velocity;//‘¬“x
 	Object(){}
 public:
-	virtual void Draw() {};
+	virtual void Draw();
 	Type type;
 };

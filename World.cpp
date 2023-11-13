@@ -16,7 +16,7 @@ void World::physicsSimulate() {
 	integrate();
 }
 
-void World::add(Object &obj) {
+void World::add(Object* obj) {
 	objects.push_back(obj);
 }
 

@@ -14,6 +14,7 @@ public:
 	float getY()const;
 	void setX(const float);
 	void setY(const float);
+	void set(const float, const float);
 
 	Vec2 operator+(const Vec2) const;
 	Vec2 operator-(const Vec2) const;

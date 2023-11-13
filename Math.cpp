@@ -24,6 +24,11 @@ void Vec2::setY(const float _y) {
 	y = _y;
 }
 
+void Vec2::set(const float x , const float y) {
+	setX(x);
+	setY(y);
+}
+
 Vec2 Vec2::operator+(const Vec2 vec) const {
 	return Vec2(x + vec.x , y + vec.y);
 }
@@ -44,7 +49,7 @@ float Vec2::cross(const Vec2 vec)const{
 
 //‘å‚«‚³‚ÌŽæ“¾
 float Vec2::norm() const {
-	return sqrt(x * x + y * y);
+	return (float)sqrt(x * x + y * y);
 }
 
 //‚Q“_ŠÔ‚Ì‹——£

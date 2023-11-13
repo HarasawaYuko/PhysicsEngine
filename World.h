@@ -10,7 +10,7 @@ private:
 	void solveConstraints();
 	void integrate();
 public:
-	std::vector<Object> objects;
+	std::vector<Object*> objects;
 	void physicsSimulate();
-	void add(Object&);
+	void add(Object*);
 };

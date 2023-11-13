@@ -5,6 +5,7 @@
 #include "SceneChanger.h"
 #include "World.h"
 #include "UIMaterial.h"
+#include "Circle.h"
 
 //ƒQ[ƒ€‰æ–Ê
 

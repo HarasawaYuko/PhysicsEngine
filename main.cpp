@@ -37,6 +37,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     // while(裏画面を表画面に反映, メッセージ処理, 画面クリア)
     while (ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0) {
+        //終了用　時期削除
+        if (CheckHitKey(KEY_INPUT_ESCAPE) != 0) {
+            break;
+        }
         sceneMgr.Update();
         sceneMgr.Draw();
     }
