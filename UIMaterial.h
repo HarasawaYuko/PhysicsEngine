@@ -70,3 +70,5 @@ public:
 	void draw() const;
 	float getRate()const;
 };
+
+int DrawCircleP(const float , const float , const float, const int , const unsigned int, const int FillFrag = 1, const float LineThickness = 1.0f);

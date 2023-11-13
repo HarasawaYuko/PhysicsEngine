@@ -4,8 +4,8 @@
 //“ñŸŒ³ƒxƒNƒgƒ‹
 struct Vec2 {
 private:
-	float x;
-	float y;
+	float x = 0;
+	float y = 0;
 public:
 	Vec2();
 	Vec2(const float x,const float y);

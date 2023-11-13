@@ -80,7 +80,7 @@ void RadioButton::draw() const{
 		DrawCircle(x + size + on * space, y + size , size, COLOR_LBLUE , false , 5);
 	}
 	//ëIëâ”èäï\é¶
-	DrawCircle(x + size + select * space, y + size, size * 0.6, COLOR_BLUE, true);
+	DrawCircle(x + size + select * space, y + size, (int)(size * 0.6), COLOR_BLUE, true);
 }
 
 int RadioButton::getSelect() const {
@@ -115,4 +115,8 @@ void SlideBar::draw() const{
 
 float SlideBar::getRate()const {
 	return ((float)(selectX - x)/length);
+}
+
+int DrawCircleP(const float x, const float y, const float r, const int posnum, const unsigned int color , const int FillFrag , const float LineThickness) {
+	return DrawCircleAA(x , (float)(WIN_SIZE_Y - y) , r , posnum , color , FillFrag , LineThickness);
 }

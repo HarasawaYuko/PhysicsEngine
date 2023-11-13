@@ -1,5 +1,5 @@
 #include "DxLib.h"
-
+#include "SceneMgr.h"
 
 //定数
 //ウィンドウの初期位置
@@ -32,10 +32,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     SetWaitVSyncFlag(0);
 
     //初期化
+    SceneMgr sceneMgr;
+    sceneMgr.Initialize();
 
     // while(裏画面を表画面に反映, メッセージ処理, 画面クリア)
     while (ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0) {
+        sceneMgr.Update();
+        sceneMgr.Draw();
     }
+    sceneMgr.Finalize();
     DxLib_End();    // DXライブラリ終了処理
     return 0;
 }
