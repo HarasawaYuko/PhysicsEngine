@@ -117,6 +117,7 @@ float SlideBar::getRate()const {
 	return ((float)(selectX - x)/length);
 }
 
-int DrawCircleP(const float x, const float y, const float r, const int posnum, const unsigned int color , const int FillFrag , const float LineThickness) {
-	return DrawCircleAA(x , (float)(WIN_SIZE_Y - y) , r , posnum , color , FillFrag , LineThickness);
+//yé≤ÇîΩì]Ç≥ÇπÇΩâ~ï`âÊä÷êî
+int DrawCircleP(const float x, const float y, const float r , const unsigned int color , const int FillFrag , const float LineThickness) {
+	return DrawCircleAA(x , (float)(WIN_SIZE_Y - y) , r , (int)r, color, FillFrag, LineThickness);
 }

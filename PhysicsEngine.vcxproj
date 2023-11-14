@@ -141,7 +141,9 @@
   <ItemGroup>
     <ClCompile Include="BaseScene.cpp" />
     <ClCompile Include="Circle.cpp" />
+    <ClCompile Include="FpsControl.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Line.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Mouse.cpp" />
@@ -155,8 +157,10 @@
   <ItemGroup>
     <ClInclude Include="BaseScene.h" />
     <ClInclude Include="Circle.h" />
+    <ClInclude Include="FpsControl.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="include.h" />
+    <ClInclude Include="Line.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Object.h" />

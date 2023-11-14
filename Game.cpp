@@ -9,7 +9,7 @@ Game::~Game()
 {}
 
 void Game::Initialize() {
-	Circle* cir1 = new Circle(300 , 300 , 20 );
+	Circle* cir1 = new Circle(300 , 500 , 50 );
 	world.add(cir1);
 }
 

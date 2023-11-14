@@ -8,25 +8,9 @@ Vec2::Vec2(const float x , const float y)
 	:x(x) , y(y)
 {}
 
-float Vec2::getX() const{
-	return x;
-}
-
-float Vec2::getY() const {
-	return y;
-}
-
-void Vec2::setX(const float _x) {
-	x = _x;
-}
-
-void Vec2::setY(const float _y) {
-	y = _y;
-}
-
-void Vec2::set(const float x , const float y) {
-	setX(x);
-	setY(y);
+void Vec2::setV(const float x , const float y) {
+	this->x = x;
+	this->y = y;
 }
 
 Vec2 Vec2::operator+(const Vec2 vec) const {
@@ -37,14 +21,18 @@ Vec2 Vec2::operator-(const Vec2 vec) const {
 	return Vec2(x - vec.x, y - vec.y);
 }
 
+Vec2 Vec2::operator*(const float k) const {
+	return Vec2(x * k, y *k);
+}
+
 //二次元ベクトルの内積
 float Vec2::dot(const Vec2 vec) const{
-	return x * vec.getX() + y * vec.getY();
+	return x * vec.x + y * vec.y;
 }
 
 //二次元ベクトルの外積
 float Vec2::cross(const Vec2 vec)const{
-	return x * vec.getY() - y * vec.getX();
+	return x * vec.y - y * vec.x;
 }
 
 //大きさの取得
