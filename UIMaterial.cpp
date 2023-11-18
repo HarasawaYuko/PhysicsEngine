@@ -121,3 +121,10 @@ float SlideBar::getRate()const {
 int DrawCircleP(const float x, const float y, const float r , const unsigned int color , const int FillFrag , const float LineThickness) {
 	return DrawCircleAA(x , (float)(WIN_SIZE_Y - y) , r , (int)r, color, FillFrag, LineThickness);
 }
+
+//yé≤ÇîΩì]Ç≥ÇπÇΩí∑ï˚å`ï`âÊä÷êî
+int DrawBoxP(const Vec2 cen ,const Vec2 cen_r ,const double angle ,const int graph , const float h , const float w , const int size_x ,const int size_y,const int transFlag , const int turnFlag) {
+	double exRateX = (double)w/(double)size_x;
+	double exRateY = (double)h/(double)size_y;
+	return DrawRotaGraph3((int)cen.x , WIN_SIZE_Y - (int)cen.y , (int)cen_r.x , (int)cen_r.y ,exRateX , exRateY , angle , graph , transFlag , turnFlag);
+}

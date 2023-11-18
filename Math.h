@@ -10,7 +10,7 @@ public:
 	Vec2();
 	Vec2(const float x,const float y);
 
-	void setV(const float, const float);
+	void set(const float, const float);
 
 	Vec2 operator+(const Vec2) const;
 	Vec2 operator-(const Vec2) const;

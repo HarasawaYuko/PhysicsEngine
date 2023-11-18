@@ -141,13 +141,18 @@
   <ItemGroup>
     <ClCompile Include="BaseScene.cpp" />
     <ClCompile Include="Circle.cpp" />
+    <ClCompile Include="detect.cpp" />
     <ClCompile Include="FpsControl.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="KeyBoard.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="Pair.cpp" />
+    <ClCompile Include="Rand.cpp" />
+    <ClCompile Include="Box.cpp" />
     <ClCompile Include="SceneMgr.cpp" />
     <ClCompile Include="World.cpp" />
     <ClCompile Include="SceneChanger.cpp" />
@@ -157,13 +162,18 @@
   <ItemGroup>
     <ClInclude Include="BaseScene.h" />
     <ClInclude Include="Circle.h" />
+    <ClInclude Include="detect.h" />
     <ClInclude Include="FpsControl.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="include.h" />
+    <ClInclude Include="KeyBoard.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="Pair.h" />
+    <ClInclude Include="Rand.h" />
+    <ClInclude Include="Box.h" />
     <ClInclude Include="World.h" />
     <ClInclude Include="SceneChanger.h" />
     <ClInclude Include="SceneMgr.h" />

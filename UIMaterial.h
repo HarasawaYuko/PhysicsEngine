@@ -1,5 +1,6 @@
 #pragma once
 #include "include.h"
+#include "Math.h"
 #include <functional>
 
 bool isIn(const int, const int, const int, const int);
@@ -72,3 +73,4 @@ public:
 };
 
 int DrawCircleP(const float , const float , const float , const unsigned int, const int FillFrag = 1, const float LineThickness = 1.0f);
+int DrawBoxP(const Vec2 cen, const Vec2 cen_r, const double angle, const int graph, const float h, const float w, const int size_x, const int size_y, const int transFlag = 0, const int turnFlag = 0);

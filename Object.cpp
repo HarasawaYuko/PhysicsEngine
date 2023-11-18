@@ -1,5 +1,7 @@
 #include "Object.h"
 
+
+
 float Object::getMass() {
 	return mass;
 }
@@ -26,3 +28,13 @@ void Object::updatePos(const float step) {
 Type Object::getType()const{
 	return type;
 }
+
+Object::Object(Type type , bool act) {
+	type = type;
+	active = act;
+}
+
+bool Object::operator<(const Object& another) const
+{
+	return type > another.getType();
+};

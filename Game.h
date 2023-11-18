@@ -6,6 +6,9 @@
 #include "World.h"
 #include "UIMaterial.h"
 #include "Circle.h"
+#include "Box.h"
+
+#include "Pair.h"
 
 //ƒQ[ƒ€‰æ–Ê
 

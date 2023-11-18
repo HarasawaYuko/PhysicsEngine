@@ -1,9 +1,10 @@
 #include "Circle.h"
 
-Circle::Circle(const float cen_x, const float cen_y, const float r, const float v_x, const float v_y) {
-	center.setV(cen_x, cen_y);
-	velocity.setV(v_x , v_y);
-	this->r = r;
+Circle::Circle(const float cen_x, const float cen_y, const float r, const float v_x, const float v_y) 
+	:r(r) , Object(CIRCLE)
+{
+	center.set(cen_x, cen_y);
+	velocity.set(v_x , v_y);
 }
 
 void Circle::Draw() const{
@@ -16,4 +17,8 @@ bool Circle::isValid()const {
 		return false;
 	}
 	return true;
+}
+
+std::string Circle::toString()const {
+	return "Circle";
 }

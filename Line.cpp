@@ -1,10 +1,9 @@
 #include "Line.h"
 
-Line::Line (const Vec2 s ,const Vec2 e ,const bool active , const float v_x ,const float v_y) {
-	start = s;
-	end = e;
-	this->active = active;
-	velocity.setV(v_x , v_y);
+Line::Line (const Vec2 s ,const Vec2 e ,const bool active , const float v_x ,const float v_y) 
+	:Object(LINE , false) , start(s) , end(e)
+{
+	velocity.set(v_x , v_y);
 }
 
 void Line::Draw() const{
@@ -16,4 +15,8 @@ bool Line::isValid() const {
 		return false;
 	}
 	return true;
+}
+
+std::string Line::toString()const {
+	return "Line";
 }

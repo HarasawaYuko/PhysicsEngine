@@ -8,7 +8,7 @@ Vec2::Vec2(const float x , const float y)
 	:x(x) , y(y)
 {}
 
-void Vec2::setV(const float x , const float y) {
+void Vec2::set(const float x , const float y) {
 	this->x = x;
 	this->y = y;
 }
