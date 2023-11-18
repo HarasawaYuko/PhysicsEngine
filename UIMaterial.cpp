@@ -74,7 +74,7 @@ void RadioButton::draw() const{
 	//numŒJ‚è•Ô‚µ
 	for (int i = 0; i < num; i++) {
 		DrawCircle(x + size + i*space , y + size,size, COLOR_WHITE, true);
-		DrawString(x + size*2 + i*space + 10, y , strs[i].c_str(),COLOR_BlACK );
+		DrawString(x + size*2 + i*space + 10, y , strs[i].c_str(),COLOR_BLACK );
 	}
 	if (on >= 0) {
 		DrawCircle(x + size + on * space, y + size , size, COLOR_LBLUE , false , 5);
@@ -118,8 +118,8 @@ float SlideBar::getRate()const {
 }
 
 //y²‚ğ”½“]‚³‚¹‚½‰~•`‰æŠÖ”
-int DrawCircleP(const float x, const float y, const float r , const unsigned int color , const int FillFrag , const float LineThickness) {
-	return DrawCircleAA(x , (float)(WIN_SIZE_Y - y) , r , (int)r, color, FillFrag, LineThickness);
+int DrawCircleP(const float x, const float y, const float r , const unsigned int Color , const int FillFrag , const float LineThickness) {
+	return DrawCircleAA(x , (float)(WIN_SIZE_Y - y) , r , (int)r, Color, FillFrag, LineThickness);
 }
 
 //y²‚ğ”½“]‚³‚¹‚½’·•ûŒ`•`‰æŠÖ”

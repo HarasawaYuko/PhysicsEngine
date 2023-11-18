@@ -1,5 +1,6 @@
 #pragma once
 #include "Math.h"
+#include "UIMaterial.h"
 
 //Objectクラス　演算対象の図形は必ず継承する
 enum Type : uint16_t {
@@ -8,6 +9,7 @@ enum Type : uint16_t {
 	BOX    = 0b0000'0000'0000'0100,
 };
 
+
 class Object {
 protected:
 	Vec2 center;//重心座標
@@ -15,18 +17,23 @@ protected:
 	Vec2 acceleration;//加速度
 	Vec2 velocity;//速度
 	bool active = true;
+	bool touch = false;
 	float mass = 10;
-	Type type;
-	Object(Type , bool act = true);
+	const Type type;
+	Color color;
+	Object(Type , Color color = COLOR_BLACK ,bool act = true);
 public:
 	virtual void Draw()const = 0;
 	float getMass();
+	Vec2 getC()const;
 	Vec2 getV()const;
 	void setMass(const float);
 	void addV(const Vec2);
+	void setTouch();
+	void unTouch();
 	virtual void updatePos(const float);
 	Type getType()const;
 	virtual bool isValid()const = 0;
 	virtual std::string toString()const = 0;
-	bool operator<(const Object& another) const;
+	virtual void setColor(Color color);
 };

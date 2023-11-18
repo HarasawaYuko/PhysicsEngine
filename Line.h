@@ -8,6 +8,8 @@ private:
 	Vec2 end;//èIì_
 public:
 	Line(const Vec2 ,const Vec2 , const bool active = true ,const float v_x = 0, const float v_y = 0 );
+	Vec2 getS()const;
+	Vec2 getE()const;
 	void Draw()const override;
 	bool isValid()const override;
 	std::string toString()const override;

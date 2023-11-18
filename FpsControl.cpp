@@ -20,7 +20,7 @@ void FpsControl::Update() {
 }
 
 void FpsControl::Draw() {
-	DrawFormatString(0, 0,COLOR_BlACK , "%.1f", fps);
+	DrawFormatString(0, 0,COLOR_BLACK , "%.1f", fps);
 }
 
 void FpsControl::Wait() {

@@ -6,14 +6,15 @@
 bool isIn(const int, const int, const int, const int);
 
 //êF
-const unsigned int COLOR_GREEN = GetColor(0x10, 0xB5, 0x67);
-const unsigned int COLOR_BLUE = GetColor(0, 30, 150);
-const unsigned int COLOR_LBLUE = GetColor(101, 187, 233);
-const unsigned int COLOR_ORANGE = GetColor(0xFF, 0x99, 0x33);
-const unsigned int COLOR_WHITE = GetColor(230 , 230 ,230);
-const unsigned int COLOR_BlACK = GetColor(20, 20, 20);
-const unsigned int COLOR_RED = GetColor(220, 45, 35);
-const unsigned int COLOR_GRAY = GetColor(120, 120, 120);
+typedef unsigned int Color;
+const Color COLOR_GREEN = GetColor(0x10, 0xB5, 0x67);
+const Color COLOR_BLUE = GetColor(0, 30, 150);
+const Color COLOR_LBLUE = GetColor(101, 187, 233);
+const Color COLOR_ORANGE = GetColor(0xFF, 0x99, 0x33);
+const Color COLOR_WHITE = GetColor(230 , 230 ,230);
+const Color COLOR_BLACK = GetColor(20, 20, 20);
+const Color COLOR_RED = GetColor(220, 45, 35);
+const Color COLOR_GRAY = GetColor(120, 120, 120);
 
 class Button {
 private:
@@ -72,5 +73,6 @@ public:
 	float getRate()const;
 };
 
+//Yé≤îΩì]ÇÃï`âÊä÷êî
 int DrawCircleP(const float , const float , const float , const unsigned int, const int FillFrag = 1, const float LineThickness = 1.0f);
 int DrawBoxP(const Vec2 cen, const Vec2 cen_r, const double angle, const int graph, const float h, const float w, const int size_x, const int size_y, const int transFlag = 0, const int turnFlag = 0);

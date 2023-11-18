@@ -1,7 +1,5 @@
 #include "World.h"
 
-//物理シミュレーション
-
 World::World(float timeStep)
 {
 	TIME_STEP = timeStep;
@@ -9,7 +7,7 @@ World::World(float timeStep)
 
 void World::initialize() {
 	//床の作成
-	Line* wall_under = new Line(Vec2(30 ,30), Vec2(770 , 30), false);
+	Line* wall_under = new Line(Vec2(30 ,300), Vec2(770 , 300), false);
 	add(wall_under);
 	//円の配置
 	Circle* cir1 = new Circle(300, 500, 50);
@@ -17,6 +15,10 @@ void World::initialize() {
 	//長方形の配置
 	Box* box1 = new Box(400 , 500 , 60 , 70 );
 	add(box1);
+
+	//Line設置
+	Line* line1 = new Line(Vec2(290, 200), Vec2(500, 500), false);
+	add(line1);
 }
 
 void World::physicsSimulate() {
@@ -36,13 +38,9 @@ void World::physicsSimulate() {
 
 void World::add(Object* obj) {
 	objects.push_back(obj);
-	std::sort(objects.begin(), objects.end());
-
-	//ソート確認出力
-	for (auto obj : objects) {
-		printfDx("%s ", obj->toString().c_str());
-	}
-	printfDx("\n");
+	std::sort(objects.begin(), objects.end() , [](const Object* a, const Object* b) {
+		return (uint16_t)a->getType() < (uint16_t)b->getType();
+		});
 }
 
 /***private***/
@@ -56,6 +54,10 @@ void World::applyForce() {
 }
 
 void World::detectCollision() {
+	//DEBUG
+	for (auto obj : objects) {
+		obj->unTouch();
+	}
 	//各オブジェクトの衝突を検知
 	for (int i = 0; i < objects.size() - 1; i++) {
 		for (int j = i + 1 ; j < objects.size(); j++) {
@@ -64,6 +66,10 @@ void World::detectCollision() {
 			case Pair::CIRCLE_CIRCLE:
 				break;
 			case Pair::CIRCLE_LINE:
+				//i:circle  j:line
+				if (circle_line(objects[i], objects[j])) {
+					objects[i]->setTouch();
+				}
 				break;
 			}
 		}

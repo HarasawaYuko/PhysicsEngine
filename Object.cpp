@@ -1,13 +1,15 @@
 #include "Object.h"
 
-
-
 float Object::getMass() {
 	return mass;
 }
 
 void Object::setMass(const float m) {
 	mass = m;
+}
+
+Vec2 Object::getC()const {
+	return center;
 }
 
 Vec2 Object::getV()const{
@@ -17,6 +19,14 @@ Vec2 Object::getV()const{
 void Object::addV(const Vec2 acc) {
 	if (!active) return;
 	velocity = acc + velocity;
+}
+
+void Object::setTouch() {
+	this->touch = true;
+}
+
+void Object::unTouch() {
+	this->touch = false;
 }
 
 void Object::updatePos(const float step) {
@@ -29,12 +39,13 @@ Type Object::getType()const{
 	return type;
 }
 
-Object::Object(Type type , bool act) {
-	type = type;
+Object::Object(Type type , Color color , bool act) 
+	:type(type),color(color)
+{
 	active = act;
 }
 
-bool Object::operator<(const Object& another) const
-{
-	return type > another.getType();
-};
+void Object::setColor(Color c) {
+	this->color = c;
+}
+

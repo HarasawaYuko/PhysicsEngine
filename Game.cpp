@@ -33,7 +33,7 @@ void Game::Update() {
 	if (!stop) {
 		Rand* rand = Rand::instance();
 		if (Mouse::instance()->getClickNow(LEFT_CLICK)) {
-			world.add(new Circle(rand->get(100, 700), 500, rand->get(10, 30)));
+			world.add(new Circle(rand->get(100, 700), 500, rand->get(10, 80)));
 		}
 		else if (Mouse::instance()->getClickNow(RIGHT_CLICK)) {
 			world.add(new Box(rand->get(100, 700), 500, rand->get(40, 60), rand->get(40, 60)));

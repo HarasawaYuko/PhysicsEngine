@@ -45,3 +45,8 @@ float Vec2::distance(const Vec2 vec) const{
 	Vec2 sub = *this - vec;
 	return sub.norm();
 }
+
+Vec2 Vec2::normalize()const {
+	float length = norm();
+	return Vec2(x / length, y / length);
+}

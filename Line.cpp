@@ -6,8 +6,16 @@ Line::Line (const Vec2 s ,const Vec2 e ,const bool active , const float v_x ,con
 	velocity.set(v_x , v_y);
 }
 
+Vec2 Line::getS()const {
+	return start;
+}
+
+Vec2 Line::getE()const {
+	return end;
+}
+
 void Line::Draw() const{
-	DrawLineAA(start.x ,WIN_SIZE_Y - start.y , end.x, WIN_SIZE_Y - end.y , COLOR_BlACK , 5.0f);
+	DrawLineAA(start.x ,WIN_SIZE_Y - start.y , end.x, WIN_SIZE_Y - end.y , COLOR_BLACK , 5.0f);
 }
 
 bool Line::isValid() const {
