@@ -1,5 +1,6 @@
 #include "DxLib.h"
 #include "SceneMgr.h"
+#include "FpsControl.h"
 
 //定数
 //ウィンドウの初期位置
@@ -12,6 +13,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 {
     // ウィンドウモードに設定
     ChangeWindowMode(TRUE);
+    SetWaitVSyncFlag(FALSE);
     // DXライブラリ初期化処理
     if (DxLib_Init() < 0) {
         //エラーなら終了する
@@ -29,20 +31,25 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     //xボタンで終了しない
     SetWindowUserCloseEnableFlag(false);
-    SetWaitVSyncFlag(0);
+
+    SceneMgr sceneMgr;
+    FpsControl fpsControl;
 
     //初期化
-    SceneMgr sceneMgr;
     sceneMgr.Initialize();
 
     // while(裏画面を表画面に反映, メッセージ処理, 画面クリア)
-    while (ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0) {
+    while ( ProcessMessage() == 0 && ClearDrawScreen() == 0) {
         //終了用　時期削除
         if (CheckHitKey(KEY_INPUT_ESCAPE) != 0) {
             break;
         }
+        fpsControl.Update();
         sceneMgr.Update();
+        fpsControl.Draw();
         sceneMgr.Draw();
+        ScreenFlip();
+        fpsControl.Wait();
     }
     sceneMgr.Finalize();
     DxLib_End();    // DXライブラリ終了処理
