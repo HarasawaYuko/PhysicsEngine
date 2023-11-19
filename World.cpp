@@ -17,8 +17,8 @@ void World::initialize() {
 	add(box1);
 
 	//Line設置
-	Line* line1 = new Line(Vec2(290, 200), Vec2(500, 500), false);
-	add(line1);
+	/*Line* line1 = new Line(Vec2(290, 200), Vec2(500, 500), false);
+	add(line1);*/
 }
 
 void World::physicsSimulate() {
@@ -59,8 +59,15 @@ void World::detectCollision() {
 		obj->unTouch();
 	}
 	//各オブジェクトの衝突を検知
+	bool contact;
+	std::vector<Collision> newColls;
 	for (int i = 0; i < objects.size() - 1; i++) {
 		for (int j = i + 1 ; j < objects.size(); j++) {
+			//動かない物体同士ならスキップ
+			if (!objects[i]->isActive() && !objects[j]->isActive()) {
+				continue;
+			}
+			contact = false;
 			//衝突した物体によって分類
 			switch (objects[i]->getType() | objects[j]->getType()) {
 			case Pair::CIRCLE_CIRCLE:
@@ -69,9 +76,15 @@ void World::detectCollision() {
 				//i:circle  j:line
 				if (circle_line(objects[i], objects[j])) {
 					objects[i]->setTouch();
+					contact = true;
 				}
 				break;
 			}
+			//追加
+			if (contact) {
+				collisions.emplace_back(objects[i], objects[j]);
+			}
+			//printfDx("collisions %d\n" , collisions.size());
 		}
 	}
 }
