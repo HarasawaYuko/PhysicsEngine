@@ -21,12 +21,15 @@ protected:
 	float mass = 10;
 	const Type type;
 	Color color;
+	uint8_t id;
 	Object(Type , Color color = COLOR_BLACK ,bool act = true);
 public:
 	virtual void Draw()const = 0;
 	float getMass();
 	Vec2 getC()const;
 	Vec2 getV()const;
+	bool isActive()const;
+	uint8_t getId()const;
 	void setMass(const float);
 	void addV(const Vec2);
 	void setTouch();

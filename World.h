@@ -1,10 +1,12 @@
 #pragma once
+#include <random>
+
 #include "Line.h"
 #include "Circle.h"
 #include "Box.h"
 #include "Pair.h"
-#include <random>
 #include "detect.h"
+#include "Collision.h"
 
 //物理シミュレーションクラス
 
@@ -12,6 +14,8 @@ class World {
 private:
 	const float gravity = 3.8f;//重力加速度
 	float TIME_STEP;
+	std::vector<Collision> collisions;
+
 	
 	void applyForce();
 	void detectCollision();
