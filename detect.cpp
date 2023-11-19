@@ -1,7 +1,7 @@
 #include "detect.h"
 
 //円と線の衝突判定
-bool circle_line(Object* c , Object* l) {
+bool Detect::circle_line(Object* c , Object* l) {
 	//それぞれの型へダウンキャスト
 	Circle* circle = static_cast<Circle*>(c);
 	Line* line = static_cast<Line*>(l);
@@ -33,4 +33,18 @@ bool circle_line(Object* c , Object* l) {
 	else {
 		return false;
 	}
+}
+
+//円と円の衝突判定
+bool Detect::circle_circle(Object* c1 , Object* c2) {
+	//ダウンキャスト
+	Circle* cir1 = static_cast<Circle*>(c1);
+	Circle* cir2 = static_cast<Circle*>(c2);
+
+	//中心間の距離を取得
+	float distance = cir1->getC().distance(cir2->getC());
+	if (distance < cir1->getR() + cir2->getR()) {
+		return true;
+	}
+	return false;
 }

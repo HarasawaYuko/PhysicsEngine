@@ -16,7 +16,6 @@ private:
 	float TIME_STEP;
 	std::vector<Collision> collisions;
 
-	
 	void applyForce();
 	void detectCollision();
 	void solveConstraints();

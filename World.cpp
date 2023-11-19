@@ -71,26 +71,44 @@ void World::detectCollision() {
 			//衝突した物体によって分類
 			switch (objects[i]->getType() | objects[j]->getType()) {
 			case Pair::CIRCLE_CIRCLE:
+				//i:circle  j:circle
+				if (Detect::circle_circle(objects[i], objects[j])) {
+					objects[i]->setTouch();
+					objects[j]->setTouch();
+					contact = true;
+				}
 				break;
 			case Pair::CIRCLE_LINE:
 				//i:circle  j:line
-				if (circle_line(objects[i], objects[j])) {
+				if (Detect::circle_line(objects[i], objects[j])) {
 					objects[i]->setTouch();
 					contact = true;
 				}
 				break;
 			}
-			//追加
+			//衝突していれば
 			if (contact) {
-				collisions.emplace_back(objects[i], objects[j]);
+				newColls.emplace_back(objects[i], objects[j]);
 			}
-			//printfDx("collisions %d\n" , collisions.size());
+			printfDx("newColls %d\n" , newColls.size());
 		}
 	}
+
+	//衝突リストを更新
+	collisions.clear();
+	collisions = newColls;
+	printfDx("collision %d\n", collisions.size());
 }
 
 void World::solveConstraints() {
+	//各衝突の拘束を計算
+	for (auto col : collisions) {
+		switch (col.getType()) {
+		case CIRCLE_LINE:
 
+			break;
+		}
+	}
 }
 
 void World::integrate() {

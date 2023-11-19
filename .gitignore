@@ -404,3 +404,6 @@ FodyWeavers.xsd
 
 #log.txtは無視
 Log.txt
+
+#powerPoint
+*.pptx

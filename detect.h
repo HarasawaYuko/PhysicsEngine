@@ -3,4 +3,7 @@
 #include "Circle.h"
 #include "Line.h"
 
-bool circle_line(Object* , Object* );
+namespace Detect {
+	bool circle_line(Object*, Object*);
+	bool circle_circle(Object*, Object*);
+}
