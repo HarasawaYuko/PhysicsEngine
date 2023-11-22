@@ -6,6 +6,9 @@ World::World(float timeStep)
 }
 
 void World::initialize() {
+	//‰Šú‰»
+	Constraint::initialize(TIME_STEP);
+
 	//°‚Ìì¬
 	Line* wall_under = new Line(Vec2(30 ,300), Vec2(770 , 300), false);
 	add(wall_under);

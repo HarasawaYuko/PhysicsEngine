@@ -47,11 +47,12 @@ bool Detect::circle_circle(Object* c1 , Object* c2, float* depth, Vec2* n, Vec2*
 		//衝突している場合、衝突情報を計算
 		//貫通深度
 		*depth = cir1->getR() + cir2->getR() - distance;
-		//衝突ベクトル c1->c2
-		n->set(c2->getC().x - c1->getC().x , c2->getC().y - c1->getC().y);
+		//衝突ベクトル c1->c2(正規化)
+		Vec2 nVec = Vec2(c2->getC().x - c1->getC().x, c2->getC().y - c1->getC().y).normalize();
+		*n = nVec;
+		nVec = nVec * cir1->getR();//大きさを半径に合わせる
 		//衝突座標 c1が最もc2にめり込んでいる点 (c1の中心からnの方向にr1進んだ点)
-		Vec2 nTmp = n->normalize() * cir1->getR();
-		coord->set(c1->getC().x + nTmp.x, c1->getC().y + nTmp.y);
+		coord->set(c1->getC().x + nVec.x, c1->getC().y + nVec.y);
 		return true;
 	}
 	return false;

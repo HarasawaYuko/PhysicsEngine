@@ -3,7 +3,7 @@
 static std::vector<uint8_t> usedId;
 static const int ObjMax = 100;
 
-float Object::getMass() {
+float Object::getM() {
 	return mass;
 }
 
