@@ -1,7 +1,7 @@
 #include "detect.h"
 
 //円と線の衝突判定
-bool Detect::circle_line(Object* c , Object* l) {
+bool Detect::circle_line(Object* c , Object* l , float* depth , Vec2* n  , Vec2* coord) {
 	//それぞれの型へダウンキャスト
 	Circle* circle = static_cast<Circle*>(c);
 	Line* line = static_cast<Line*>(l);
@@ -36,7 +36,7 @@ bool Detect::circle_line(Object* c , Object* l) {
 }
 
 //円と円の衝突判定
-bool Detect::circle_circle(Object* c1 , Object* c2) {
+bool Detect::circle_circle(Object* c1 , Object* c2, float* depth, Vec2* n, Vec2* coord) {
 	//ダウンキャスト
 	Circle* cir1 = static_cast<Circle*>(c1);
 	Circle* cir2 = static_cast<Circle*>(c2);
@@ -44,6 +44,15 @@ bool Detect::circle_circle(Object* c1 , Object* c2) {
 	//中心間の距離を取得
 	float distance = cir1->getC().distance(cir2->getC());
 	if (distance < cir1->getR() + cir2->getR()) {
+		//衝突している場合、衝突情報を計算
+		//貫通深度
+		*depth = cir1->getR() + cir2->getR() - distance;
+		//衝突ベクトル c1->c2(正規化)
+		Vec2 nVec = Vec2(c2->getC().x - c1->getC().x, c2->getC().y - c1->getC().y).normalize();
+		*n = nVec;
+		nVec = nVec * cir1->getR();//大きさを半径に合わせる
+		//衝突座標 c1が最もc2にめり込んでいる点 (c1の中心からnの方向にr1進んだ点)
+		coord->set(c1->getC().x + nVec.x, c1->getC().y + nVec.y);
 		return true;
 	}
 	return false;

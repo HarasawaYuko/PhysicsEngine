@@ -6,6 +6,9 @@ World::World(float timeStep)
 }
 
 void World::initialize() {
+	//初期化
+	Constraint::initialize(TIME_STEP);
+
 	//床の作成
 	Line* wall_under = new Line(Vec2(30 ,300), Vec2(770 , 300), false);
 	add(wall_under);
@@ -68,11 +71,16 @@ void World::detectCollision() {
 				continue;
 			}
 			contact = false;
+			//衝突情報
+			float depth;//貫通深度
+			Vec2 nVec;//法線ベクトル
+			Vec2 coord;//衝突座標
+
 			//衝突した物体によって分類
 			switch (objects[i]->getType() | objects[j]->getType()) {
 			case Pair::CIRCLE_CIRCLE:
 				//i:circle  j:circle
-				if (Detect::circle_circle(objects[i], objects[j])) {
+				if (Detect::circle_circle(objects[i], objects[j] ,&depth , &nVec , &coord)) {
 					objects[i]->setTouch();
 					objects[j]->setTouch();
 					contact = true;
@@ -80,7 +88,7 @@ void World::detectCollision() {
 				break;
 			case Pair::CIRCLE_LINE:
 				//i:circle  j:line
-				if (Detect::circle_line(objects[i], objects[j])) {
+				if (Detect::circle_line(objects[i], objects[j], &depth, &nVec, &coord)) {
 					objects[i]->setTouch();
 					contact = true;
 				}
@@ -88,7 +96,7 @@ void World::detectCollision() {
 			}
 			//衝突していれば
 			if (contact) {
-				newColls.emplace_back(objects[i], objects[j]);
+				newColls.emplace_back(objects[i], objects[j] , depth , nVec , coord);
 			}
 			printfDx("newColls %d\n" , newColls.size());
 		}
@@ -105,7 +113,9 @@ void World::solveConstraints() {
 	for (auto col : collisions) {
 		switch (col.getType()) {
 		case CIRCLE_LINE:
-
+			break;
+		case CIRCLE_CIRCLE:
+			Constraint::circle_circle(col);
 			break;
 		}
 	}

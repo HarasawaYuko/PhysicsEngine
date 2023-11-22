@@ -25,7 +25,7 @@ protected:
 	Object(Type , Color color = COLOR_BLACK ,bool act = true);
 public:
 	virtual void Draw()const = 0;
-	float getMass();
+	float getM();
 	Vec2 getC()const;
 	Vec2 getV()const;
 	bool isActive()const;
