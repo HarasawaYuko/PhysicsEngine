@@ -68,6 +68,11 @@ void World::detectCollision() {
 				continue;
 			}
 			contact = false;
+			//衝突情報
+			float depth;//貫通深度
+			Vec2 nVec;//法線ベクトル
+			Vec2 coord;//衝突座標
+
 			//衝突した物体によって分類
 			switch (objects[i]->getType() | objects[j]->getType()) {
 			case Pair::CIRCLE_CIRCLE:
@@ -88,7 +93,7 @@ void World::detectCollision() {
 			}
 			//衝突していれば
 			if (contact) {
-				newColls.emplace_back(objects[i], objects[j]);
+				newColls.emplace_back(objects[i], objects[j] , depth , nVec , coord);
 			}
 			printfDx("newColls %d\n" , newColls.size());
 		}

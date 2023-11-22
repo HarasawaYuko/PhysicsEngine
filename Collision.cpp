@@ -1,7 +1,7 @@
 #include "Collision.h"
 
-Collision::Collision(Object* obj1, Object* obj2) 
-	:pair(std::make_pair(obj1 , obj2)),
+Collision::Collision(Object* obj1, Object* obj2 , const float d , const Vec2 n , const Vec2 c) 
+	:pair(std::make_pair(obj1 , obj2)),depth(d), nVec(n) , coord(c),
 	type(obj1->getType() | obj2 -> getType())
 {
 	uint16_t id1 = (uint16_t)obj1->getId();

@@ -4,6 +4,6 @@
 #include "Line.h"
 
 namespace Detect {
-	bool circle_line(Object*, Object*);
-	bool circle_circle(Object*, Object*);
+	bool circle_line(Object*, Object* ,float* , Vec2* , Vec2*);
+	bool circle_circle(Object*, Object*, float*, Vec2*, Vec2*);
 }
