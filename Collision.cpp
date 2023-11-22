@@ -16,3 +16,23 @@ uint16_t Collision::getKey() const{
 uint16_t Collision::getType() const {
 	return type;
 }
+
+Object* Collision::getObj1()const {
+	return pair.first;
+}
+
+Object* Collision::getObj2()const {
+	return pair.second;
+}
+
+float Collision::getD()const {
+	return depth;
+}
+
+Vec2 Collision::getN()const {
+	return nVec;
+}
+
+Vec2 Collision::getC()const {
+	return coord;
+}

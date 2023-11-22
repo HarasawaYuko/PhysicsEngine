@@ -7,8 +7,8 @@ bool Constraint::circle_line(Object* c, Object* l) {
 	return true;
 }
 
-bool Constraint::circle_circle(Object* c1, Object* c2) {
-	Circle* cir1 = static_cast<Circle*>(c1);
-	Circle* cir2 = static_cast<Circle*>(c2);
+bool Constraint::circle_circle(Collision &col) {
+	Circle* cir1 = static_cast<Circle*>(col.getObj1());
+	Circle* cir2 = static_cast<Circle*>(col.getObj2());
 	return true;
 }

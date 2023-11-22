@@ -77,7 +77,7 @@ void World::detectCollision() {
 			switch (objects[i]->getType() | objects[j]->getType()) {
 			case Pair::CIRCLE_CIRCLE:
 				//i:circle  j:circle
-				if (Detect::circle_circle(objects[i], objects[j])) {
+				if (Detect::circle_circle(objects[i], objects[j] ,&depth , &nVec , &coord)) {
 					objects[i]->setTouch();
 					objects[j]->setTouch();
 					contact = true;
@@ -85,7 +85,7 @@ void World::detectCollision() {
 				break;
 			case Pair::CIRCLE_LINE:
 				//i:circle  j:line
-				if (Detect::circle_line(objects[i], objects[j])) {
+				if (Detect::circle_line(objects[i], objects[j], &depth, &nVec, &coord)) {
 					objects[i]->setTouch();
 					contact = true;
 				}
@@ -110,7 +110,9 @@ void World::solveConstraints() {
 	for (auto col : collisions) {
 		switch (col.getType()) {
 		case CIRCLE_LINE:
-
+			break;
+		case CIRCLE_CIRCLE:
+			Constraint::circle_circle(col);
 			break;
 		}
 	}

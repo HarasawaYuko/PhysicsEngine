@@ -15,4 +15,9 @@ public:
 	Collision(Object* , Object* ,const float ,const Vec2 ,const Vec2);
 	uint16_t getKey()const;
 	uint16_t getType()const;
+	Object* getObj1()const;
+	Object* getObj2()const;
+	float getD()const;
+	Vec2 getN()const;
+	Vec2 getC()const;
 };
