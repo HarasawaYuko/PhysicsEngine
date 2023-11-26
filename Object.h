@@ -18,11 +18,11 @@ protected:
 	Vec2 velocity;//‘¬“x
 	bool active = true;
 	bool touch = false;
-	float mass = 10;
+	float mass;
 	const Type type;
 	Color color;
 	uint8_t id;
-	Object(Type , Color color = COLOR_BLACK ,bool act = true);
+	Object(Type ,float mass = 10 ,Color color = COLOR_BLACK ,bool act = true);
 public:
 	virtual void Draw()const = 0;
 	float getM();

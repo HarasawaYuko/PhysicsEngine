@@ -36,3 +36,7 @@ Vec2 Collision::getN()const {
 Vec2 Collision::getC()const {
 	return coord;
 }
+
+float Collision::getE()const {
+	return e;
+}

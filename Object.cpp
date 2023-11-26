@@ -51,8 +51,8 @@ Type Object::getType()const{
 }
 
 //コンストラクタ
-Object::Object(Type type , Color color , bool act) 
-	:type(type),color(color)
+Object::Object(Type type ,float mass, Color color , bool act) 
+	:type(type),color(color) ,mass(mass)
 {
 	active = act;
 	//idの設定

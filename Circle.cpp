@@ -1,7 +1,7 @@
 #include "Circle.h"
 
 Circle::Circle(const float cen_x, const float cen_y, const float r, const float v_x, const float v_y) 
-	:r(r) , Object(CIRCLE , COLOR_RED)
+	:r(r) , Object(CIRCLE , (10 * r * r * 3.14) / 1600,COLOR_RED)
 {
 	center.set(cen_x, cen_y);
 	velocity.set(v_x , v_y);
