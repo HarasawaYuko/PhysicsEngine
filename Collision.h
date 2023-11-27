@@ -11,7 +11,7 @@ private:
 	float depth;
 	Vec2 nVec;
 	Vec2 coord;
-	float e = 0.9;
+	float e = 0.8;
 public:
 	Collision(Object* , Object* ,const float ,const Vec2 ,const Vec2);
 	uint16_t getKey()const;

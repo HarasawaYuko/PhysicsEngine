@@ -28,7 +28,9 @@ uint8_t Object::getId()const {
 }
 
 void Object::addV(const Vec2 acc) {
-	if (!active) return;
+	if (!active) {
+		return;
+	}
 	velocity = acc + velocity;
 }
 

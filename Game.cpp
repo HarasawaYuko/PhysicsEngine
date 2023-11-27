@@ -43,8 +43,12 @@ void Game::Update() {
 }
 
 void Game::Draw() {
+	//printfDx("DrawSize:%d\n" , world.objects.size());
 	for (Object* obj : world.objects) {
 		obj->Draw();
+		if (obj->getType() == CIRCLE) {
+			//printfDx("%f , %f \n", obj->getC().x, obj->getC().y);
+		}
 	}
 }
 

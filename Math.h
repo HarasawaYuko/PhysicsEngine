@@ -21,4 +21,5 @@ public:
 	float norm()const;//‘å‚«‚³
 	float distance(const Vec2)const;//‚Q“_ŠÔ‚Ì‹——£
 	Vec2 normalize()const;//³‹K‰»
+	std::string toString()const;
 };

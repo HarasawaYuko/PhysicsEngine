@@ -50,3 +50,8 @@ Vec2 Vec2::normalize()const {
 	float length = norm();
 	return Vec2(x / length, y / length);
 }
+
+std::string Vec2::toString() const
+{
+	return std::to_string(x) + "," + std::to_string(y);
+}
