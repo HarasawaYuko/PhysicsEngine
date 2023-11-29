@@ -15,6 +15,8 @@ void World::initialize() {
 	//円の配置
 	Circle* cir1 = new Circle(300, 500, 50);
 	add(cir1);
+	cir1 = new Circle(400 , 300 , 70 ,0,0 ,false);
+	add(cir1);
 	//長方形の配置
 	Box* box1 = new Box(400 , 500 , 60 , 70 );
 	add(box1);

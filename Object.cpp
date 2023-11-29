@@ -54,9 +54,8 @@ Type Object::getType()const{
 
 //コンストラクタ
 Object::Object(Type type ,float mass, Color color , bool act) 
-	:type(type),color(color) ,mass(mass)
+	:type(type),color(color) ,mass(mass),active(act)
 {
-	active = act;
 	//idの設定
 	for (int id = 0; id < ObjMax; id++) {
 		//使われていないidを検索

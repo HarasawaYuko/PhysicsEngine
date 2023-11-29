@@ -13,7 +13,7 @@
 
 class World {
 private:
-	const float gravity = 3.8f;//重力加速度
+	const float gravity = 10.8f;//重力加速度
 	float TIME_STEP;
 	std::vector<Collision> collisions;
 

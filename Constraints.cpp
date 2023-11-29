@@ -38,7 +38,14 @@ bool Constraint::circle_circle(Collision &col ) {
 	//相対速度の法線成分
 	float V12_n = V12.dot(col.getN());
 	//撃力の係数を求める
-	float c = ((cir1->getM() * cir2->getM()) / (cir1->getM() + cir2->getM()))*((1+col.getE())*V12_n + k_CC * col.getD());
+	//float c = ((cir1->getM() * cir2->getM()) / (cir1->getM() + cir2->getM()))*((1+col.getE())*V12_n + k_CC * col.getD());
+	float c;
+	if (V12.dot(col.getN()) > 0) {
+		c = ((cir1->getM() * cir2->getM()) / (cir1->getM() + cir2->getM()))*(-k_CC * col.getD());
+	}
+	else {
+		c = ((cir1->getM() * cir2->getM()) / (cir1->getM() + cir2->getM()))*((1+col.getE())*V12_n - k_CC * col.getD());
+	}
 	printfDx("e:%f \n", col.getE());
 	//速度の変更
 	cir1->addV(col.getN()*(c/cir1->getM()));
