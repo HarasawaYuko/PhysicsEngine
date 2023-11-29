@@ -9,11 +9,14 @@ bool Detect::circle_line(Object* c , Object* l , float* depth , Vec2* n  , Vec2*
 	Vec2 lineSeg = line->getE() - line->getS();
 	Vec2 StoC = circle->getC() - line->getS();
 	Vec2 EtoC = circle->getC() - line->getE();
+	float r = circle->getR();
+	Vec2 center = circle->getC();
 
 	//円の中心と直線の最短距離を求める
 	Vec2 NormalSeg = lineSeg.normalize();
+	float dis = std::abs(NormalSeg.cross(StoC));
 	//半径より離れていれば接触していない
-	if (std::abs(NormalSeg.cross(StoC)) > circle->getR()) {
+	if (dis > circle->getR()) {
 		return false;
 	}
 
@@ -21,13 +24,43 @@ bool Detect::circle_line(Object* c , Object* l , float* depth , Vec2* n  , Vec2*
 	float dotS = lineSeg.dot(StoC);//始点からのベクトルとの内積
 	float dotE = lineSeg.dot(EtoC);//終点からのベクトルとの内積
 	if (dotS * dotE < 0) {
+		//通常の接触
+		//貫通深度
+		*depth = circle->getR() - dis;
+		//法線ベクトルを求める
+		n->set(-NormalSeg.y , NormalSeg.x);
+		//向きを確認
+		if (NormalSeg.cross(*n) * NormalSeg.cross(StoC) > 0) {
+			n->set(NormalSeg.y , -NormalSeg.x);
+		}
+		//printfDx("法線%s \n", n->toString().c_str());
+		//衝突座標を求める
+		*coord = center + *n * r;
 		return true;
 	}
 
 	//線分の端点が円の内部にあるか
-	float r = circle->getR();
-	Vec2 center = circle->getC();
-	if (r > line->getS().distance(center) || r > line->getE().distance(center)) {
+	float disS = line->getS().distance(center);
+	float disE = line->getE().distance(center);
+	if (r >  disS|| r > disE) {
+		//端点で接触している
+		//円の中心に近い端点を求める
+		Vec2 point;
+		float disC;
+		if (disS < disE) {
+			point = line->getS();
+			disC = disS;
+		}
+		else {
+			point = line->getE();
+			disC = disE;
+		}
+		//貫通深度
+		*depth = r - disC;
+		//法線ベクトル
+		*n = (point - center).normalize();
+		//接触点
+		*coord = center + (*n * r);
 		return true;
 	}
 	else {

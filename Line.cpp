@@ -1,7 +1,7 @@
 #include "Line.h"
 
-Line::Line (const Vec2 s ,const Vec2 e ,const bool active , const float v_x ,const float v_y) 
-	:Object(LINE , false) , start(s) , end(e)
+Line::Line (const Vec2 s ,const Vec2 e ,bool active , const float v_x ,const float v_y) 
+	:Object(LINE ,10 , COLOR_BLACK ,false) , start(s) , end(e)
 {
 	velocity.set(v_x , v_y);
 }

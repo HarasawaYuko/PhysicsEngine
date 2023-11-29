@@ -7,7 +7,7 @@ private:
 	Vec2 start;//始点
 	Vec2 end;//終点
 public:
-	Line(const Vec2 ,const Vec2 , const bool active = true ,const float v_x = 0, const float v_y = 0 );
+	Line(const Vec2 ,const Vec2 , bool active = true ,const float v_x = 0, const float v_y = 0 );
 	Vec2 getS()const;
 	Vec2 getE()const;
 	void Draw()const override;

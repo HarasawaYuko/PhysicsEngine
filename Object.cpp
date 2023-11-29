@@ -28,7 +28,9 @@ uint8_t Object::getId()const {
 }
 
 void Object::addV(const Vec2 acc) {
-	if (!active) return;
+	if (!active) {
+		return;
+	}
 	velocity = acc + velocity;
 }
 
@@ -51,10 +53,9 @@ Type Object::getType()const{
 }
 
 //コンストラクタ
-Object::Object(Type type , Color color , bool act) 
-	:type(type),color(color)
+Object::Object(Type type ,float mass, Color color , bool act) 
+	:type(type),color(color) ,mass(mass),active(act)
 {
-	active = act;
 	//idの設定
 	for (int id = 0; id < ObjMax; id++) {
 		//使われていないidを検索

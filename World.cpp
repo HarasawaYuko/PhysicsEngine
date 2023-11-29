@@ -10,10 +10,12 @@ void World::initialize() {
 	Constraint::initialize(TIME_STEP);
 
 	//床の作成
-	Line* wall_under = new Line(Vec2(30 ,300), Vec2(770 , 300), false);
+	Line* wall_under = new Line(Vec2(30 ,50), Vec2(770 , 50), false);
 	add(wall_under);
 	//円の配置
 	Circle* cir1 = new Circle(300, 500, 50);
+	add(cir1);
+	cir1 = new Circle(400 , 300 , 70 ,0,0 ,false);
 	add(cir1);
 	//長方形の配置
 	Box* box1 = new Box(400 , 500 , 60 , 70 );
@@ -56,6 +58,7 @@ void World::applyForce() {
 	}
 }
 
+//衝突検知
 void World::detectCollision() {
 	//DEBUG
 	for (auto obj : objects) {
@@ -98,21 +101,24 @@ void World::detectCollision() {
 			if (contact) {
 				newColls.emplace_back(objects[i], objects[j] , depth , nVec , coord);
 			}
-			printfDx("newColls %d\n" , newColls.size());
+			//printfDx("newColls %d\n" , newColls.size());
 		}
 	}
 
 	//衝突リストを更新
 	collisions.clear();
 	collisions = newColls;
-	printfDx("collision %d\n", collisions.size());
+	//printfDx("collision %d\n", collisions.size());
 }
 
+
+//拘束の解消
 void World::solveConstraints() {
 	//各衝突の拘束を計算
 	for (auto col : collisions) {
 		switch (col.getType()) {
 		case CIRCLE_LINE:
+			//Constraint::circle_line(col);
 			break;
 		case CIRCLE_CIRCLE:
 			Constraint::circle_circle(col);
@@ -121,6 +127,7 @@ void World::solveConstraints() {
 	}
 }
 
+//位置の更新
 void World::integrate() {
 	auto itr = objects.begin();
 	while (itr != objects.end())
@@ -128,6 +135,7 @@ void World::integrate() {
 		(*itr)->updatePos(TIME_STEP);
 		if (!(*itr)->isValid())
 		{
+			printfDx("削除\n");
 			itr = objects.erase(itr);
 		}
 		else

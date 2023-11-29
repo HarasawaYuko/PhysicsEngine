@@ -7,5 +7,5 @@
 namespace Constraint {
 	void initialize(const float);
 	bool circle_circle(Collision &);
-	bool circle_line(Object* , Object*);
+	bool circle_line(Collision &);
 }
