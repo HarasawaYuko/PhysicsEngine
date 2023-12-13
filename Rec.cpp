@@ -1,16 +1,16 @@
-#include "Game.h"
+#include "Rec.h"
 #include "KeyBoard.h"
 #include "Mouse.h"
 #include "Rand.h"
 
-Game::Game(SceneChanger *changer) 
+Rec::Rec(SceneChanger* changer)
 	:BaseScene(changer)
 {}
 
-Game::~Game() 
+Rec::~Rec()
 {}
 
-void Game::Initialize() {
+void Rec::Initialize() {
 	//画像の読み込み
 	Box::loadGraph();
 	//初期化
@@ -18,18 +18,13 @@ void Game::Initialize() {
 	//床の作成
 	Line* wall_under = new Line(Vec2(30, 50), Vec2(770, 50), false);
 	world.add(wall_under);
-	//円の配置
-	Circle* cir1 = new Circle(300, 500, 50);
-	world.add(cir1);
-	cir1 = new Circle(400, 300, 70, 0, 0, false);
-	world.add(cir1);
 	//長方形の配置
 	Box* box1 = new Box(400, 500, 60, 70);
 	world.add(box1);
 }
 
 //円の並進運動
-void Game::Update() {
+void Rec::Update() {
 	//入力状態の取得
 	KeyBoard::instance()->update();
 	Mouse::instance()->update();
@@ -40,14 +35,14 @@ void Game::Update() {
 		stop = !stop;
 	}
 	if (KeyBoard::instance()->hitNow(KEY_INPUT_C)) {
-		m_sceneChanger->ChangeScene(Scene_TEST_REC);
+		m_sceneChanger->ChangeScene(Scene_Game);
 	}
 
 	//シミュレーション
 	if (!stop) {
 		Rand* rand = Rand::instance();
 		if (Mouse::instance()->getClickNow(LEFT_CLICK)) {
-			world.add(new Circle(rand->get(100, 700), 500, rand->get(10, 80) , rand->get(-20, 20) , rand->get(-20, 20)));
+			world.add(new Circle(rand->get(100, 700), 500, rand->get(10, 80), rand->get(-20, 20), rand->get(-20, 20)));
 		}
 		else if (Mouse::instance()->getClickNow(RIGHT_CLICK)) {
 			world.add(new Box(rand->get(100, 700), 500, rand->get(40, 60), rand->get(40, 60)));
@@ -56,7 +51,9 @@ void Game::Update() {
 	}
 }
 
-void Game::Draw() {
+void Rec::Draw() {
+	SetFontSize(20);
+	DrawString(640, 0, "Scene Rec", COLOR_BLACK);
 	//printfDx("DrawSize:%d\n" , world.objects.size());
 	for (Object* obj : world.objects) {
 		obj->Draw();
@@ -66,12 +63,12 @@ void Game::Draw() {
 	}
 }
 
-void Game::Finalize() {
+void Rec::Finalize() {
 	for (Object* obj : world.objects) {
 		delete obj;
 	}
 }
 
 //画像、音声のメモリ解放
-void Game::deleteMem() {
+void Rec::deleteMem() {
 }

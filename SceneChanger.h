@@ -4,6 +4,7 @@
 enum Scene{
 	Scene_Menu,
 	Scene_Game,
+	Scene_TEST_REC,//éläpå`
 	Scene_Result,
 	Scene_Fin,
 	Scene_None

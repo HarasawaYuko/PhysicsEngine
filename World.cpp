@@ -9,17 +9,6 @@ void World::initialize() {
 	//初期化
 	Constraint::initialize(TIME_STEP);
 
-	//床の作成
-	Line* wall_under = new Line(Vec2(30 ,50), Vec2(770 , 50), false);
-	add(wall_under);
-	//円の配置
-	Circle* cir1 = new Circle(300, 500, 50);
-	add(cir1);
-	cir1 = new Circle(400 , 300 , 70 ,0,0 ,false);
-	add(cir1);
-	//長方形の配置
-	Box* box1 = new Box(400 , 500 , 60 , 70 );
-	add(box1);
 
 	//Line設置
 	/*Line* line1 = new Line(Vec2(290, 200), Vec2(500, 500), false);
@@ -118,7 +107,7 @@ void World::solveConstraints() {
 	for (auto col : collisions) {
 		switch (col.getType()) {
 		case CIRCLE_LINE:
-			//Constraint::circle_line(col);
+			Constraint::circle_line(col);
 			break;
 		case CIRCLE_CIRCLE:
 			Constraint::circle_circle(col);

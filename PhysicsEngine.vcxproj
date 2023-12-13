@@ -155,6 +155,7 @@
     <ClCompile Include="Pair.cpp" />
     <ClCompile Include="Rand.cpp" />
     <ClCompile Include="Box.cpp" />
+    <ClCompile Include="Rec.cpp" />
     <ClCompile Include="SceneMgr.cpp" />
     <ClCompile Include="World.cpp" />
     <ClCompile Include="SceneChanger.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="Pair.h" />
     <ClInclude Include="Rand.h" />
     <ClInclude Include="Box.h" />
+    <ClInclude Include="Rec.h" />
     <ClInclude Include="World.h" />
     <ClInclude Include="SceneChanger.h" />
     <ClInclude Include="SceneMgr.h" />
