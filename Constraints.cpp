@@ -4,7 +4,7 @@ static const float e_CC = 0.8f; //‰~‚Æ‰~‚Ì”½”­ŒW”
 static float k_CC;//ƒoƒlŒW”
 
 void Constraint::initialize(const float timeStep) {
-	k_CC = (float)(1 / (timeStep*5));
+	k_CC = (float)(1 / (timeStep));
 }
 
 bool Constraint::circle_line(Collision &col) {
@@ -21,9 +21,15 @@ bool Constraint::circle_line(Collision &col) {
 	//Œ‚—Í‚ÌŒW”‚ğ‹‚ß‚é
 	//float c = ((cir->getM() * line->getM()) / (cir->getM() + line->getM())) * ((1 + col.getE()) * V12_n - k_CC * col.getD());
 	//float c = -(1 + col.getE()) * cir->getM() * (cir->getV().dot(col.getN()));
-	float c = -cir->getM() * ((col.getE() + 1) * (cir->getV().dot(col.getN()) + k_CC * col.getD()));
+	float c;
+	if (V12.dot(col.getN()) > 0) {
+		c = -cir->getM()/2 * ((col.getE() + 1) * (k_CC * col.getD()));
+	}
+	else {
+		c = cir->getM()/2 * ((col.getE() + 1) * (V12.dot(col.getN()) - k_CC * col.getD()));
+	}
 	//printfDx("“àÏ:%f\n", (cir->getV().dot(col.getN())));
-	printfDx("d:%f \n", col.getD());
+	printfDx("e:%f \n", col.getE());
 	//‘¬“x‚Ì•ÏX
 	cir->addV(col.getN() * (c / cir->getM()));
 	line->addV(col.getN() * (-c / line->getM()));
