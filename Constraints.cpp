@@ -28,8 +28,6 @@ bool Constraint::circle_line(Collision &col) {
 	else {
 		c = cir->getM()/2 * ((col.getE() + 1) * (V12.dot(col.getN()) - k_CC * col.getD()));
 	}
-	//printfDx("内積:%f\n", (cir->getV().dot(col.getN())));
-	printfDx("e:%f \n", col.getE());
 	//速度の変更
 	cir->addV(col.getN() * (c / cir->getM()));
 	line->addV(col.getN() * (-c / line->getM()));
@@ -52,7 +50,6 @@ bool Constraint::circle_circle(Collision &col ) {
 	else {
 		c = ((cir1->getM() * cir2->getM()) / (cir1->getM() + cir2->getM()))*((1+col.getE())*V12_n - k_CC * col.getD());
 	}
-	printfDx("e:%f \n", col.getE());
 	//速度の変更
 	cir1->addV(col.getN()*(c/cir1->getM()));
 	cir2->addV(col.getN() * (-c / cir2->getM()));

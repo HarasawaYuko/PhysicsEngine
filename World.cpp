@@ -124,7 +124,6 @@ void World::integrate() {
 		(*itr)->updatePos(TIME_STEP);
 		if (!(*itr)->isValid())
 		{
-			printfDx("íœ\n");
 			itr = objects.erase(itr);
 		}
 		else

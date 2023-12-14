@@ -5,8 +5,8 @@ int Box::fig;
 int Box::figX;
 int Box::figY;
 
-Box::Box(const float cen_x, const float cen_y, const float h = 40.0f, const float w = 40.0f, const float v_x , const float v_y , const float ang )
-	:height(h) , width(w) ,angle(ang) , Object(BOX)
+Box::Box(const float cen_x, const float cen_y, const float h = 40.0f, const float w = 40.0f, const float v_x , const float v_y , const float ang  , const float ang_v)
+	:height(h) , width(w) ,angle(ang) ,angle_v(ang_v), Object(BOX)
 {
 	center.set(cen_x, cen_y);
 	velocity.set(v_x, v_y);
@@ -20,8 +20,6 @@ Box::Box(const float cen_x, const float cen_y, const float h = 40.0f, const floa
 	pointsW[1].set(center.x - width / 2, center.y + height / 2);
 	pointsW[2].set(center.x + width / 2, center.y - height / 2);
 	pointsW[3].set(center.x + width / 2, center.y + height / 2);
-
-	angle_v = 0.5f;
 }
 
 void Box::loadGraph(){
@@ -31,14 +29,21 @@ void Box::loadGraph(){
 }
 
 void Box::updatePos(const float step) {
+	printfDx("Box UpdatePos()\n");
 	//動かない物体の場合何もしない
-	if (!active) return;
+	if (!active) {
+		return;
+	}
 	center = center + (velocity * step);
+	printfDx("angle_v:%f\n", angle_v);
 	angle = angle + (angle_v * step);
 	for (int i = 0; i < 4; i++) {
-		pointsW[i] = pointsW[i] + (velocity * step);
-		//angleの分回転
-
+		//回転後のローカル座標を求める
+		float rad = getRad(angle);
+		float x = pointsL[i].x * cos(rad) - pointsL[i].y * sin(rad);
+		float y = pointsL[i].x * sin(rad) + pointsL[i].y * cos(rad);
+		//ワールド座標に反映
+		pointsW[i].set(x ,y);
 	}
 }
 

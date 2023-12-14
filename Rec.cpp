@@ -21,6 +21,7 @@ void Rec::Initialize() {
 	//’·•ûŒ`‚Ì”z’u
 	Box* box1 = new Box(400, 500, 60, 70);
 	world.add(box1);
+	box1 = new Box(300 ,300 ,200 , 100 );
 }
 
 //‰~‚Ì•Ài‰^“®
@@ -45,7 +46,7 @@ void Rec::Update() {
 			world.add(new Circle(rand->get(100, 700), 500, rand->get(10, 80), rand->get(-20, 20), rand->get(-20, 20)));
 		}
 		else if (Mouse::instance()->getClickNow(RIGHT_CLICK)) {
-			world.add(new Box(rand->get(100, 700), 500, rand->get(40, 60), rand->get(40, 60)));
+			world.add(new Box(rand->get(100, 700), 500, rand->get(40, 200), rand->get(40, 200) , rand->get(-20 , 20), 0, 0 , rand->get(-5 , 5)/10));
 		}
 		world.physicsSimulate();
 	}

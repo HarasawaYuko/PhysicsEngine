@@ -18,7 +18,7 @@ private:
 	float inertiaTensor;//Šµ«ƒeƒ“ƒ\ƒ‹
 
 public:
-	Box(const float cen_x, const float cen_y, const float h  , const float w , const float v_x = 0, const float v_y = 0,const float ang = 0);
+	Box(const float cen_x, const float cen_y, const float h  , const float w , const float v_x = 0, const float v_y = 0,const float ang = 0 , const float ang_v = 0);
 	static void loadGraph();
 	void updatePos(const float step)override;
 	void Draw()const override;
