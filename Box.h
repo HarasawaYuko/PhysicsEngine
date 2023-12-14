@@ -13,16 +13,18 @@ private:
 	static int fig;
 	static int figX;
 	static int figY;
+	static int fig2;
 	float angle_v;
 	float angle;
 	float inertiaTensor;//Šµ«ƒeƒ“ƒ\ƒ‹
 
 public:
-	Box(const float cen_x, const float cen_y, const float h  , const float w , const float v_x = 0, const float v_y = 0,const float ang = 0 , const float ang_v = 0);
+	Box(const float cen_x, const float cen_y, const float h  , const float w , const float v_x = 0, const float v_y = 0,const float ang = 0 , const float ang_v = 0 , const bool act = true);
 	static void loadGraph();
 	void updatePos(const float step)override;
 	void Draw()const override;
 	bool isValid()const override;
 	std::string toString()const override;
 	Vec2 getPointW(const int);
+	int pointNum();
 };

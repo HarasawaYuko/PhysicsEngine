@@ -16,7 +16,7 @@ void World::initialize() {
 }
 
 void World::physicsSimulate() {
-	//printfDx("size: %d \n" , objects.size());
+	printfDx("size: %d \n" , objects.size());
 	//ŠO—Í‚ğ‰Á‚¦‚é
 	applyForce();
 
@@ -87,9 +87,13 @@ void World::detectCollision() {
 				break;
 			case Pair::BOX_BOX:
 				//i:box j:box
+				
 				if (Detect::box_box(objects[i], objects[j], &depth, &nVec, &coord)) {
-
+					//printfDx("return true\n");
+					objects[i]->setTouch();
+					objects[j]->setTouch();
 				}
+				break;
 			}
 			//Õ“Ë‚µ‚Ä‚¢‚ê‚Î
 			if (contact) {

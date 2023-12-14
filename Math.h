@@ -2,6 +2,7 @@
 #include "include.h"
 
 const float Pi = 3.141592;
+const float INF = 10000000000.0f;
 
 //“ñŽŸŒ³ƒxƒNƒgƒ‹
 struct Vec2 {
