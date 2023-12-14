@@ -123,8 +123,9 @@ int DrawCircleP(const float x, const float y, const float r , const unsigned int
 }
 
 //y²‚ğ”½“]‚³‚¹‚½’·•ûŒ`•`‰æŠÖ”
-int DrawBoxP(const Vec2 cen ,const Vec2 cen_r ,const double angle ,const int graph , const float h , const float w , const int size_x ,const int size_y,const int transFlag , const int turnFlag) {
+int DrawBoxP(const Vec2 cen ,const int cen_r_x , const int cen_r_y ,const double angle ,const int graph , const float h , const float w , const int size_x ,const int size_y,const int transFlag , const int turnFlag) {
+	//‰æ‘œ‚Ì’†SÀ•W‚ğæ“¾
 	double exRateX = (double)w/(double)size_x;
 	double exRateY = (double)h/(double)size_y;
-	return DrawRotaGraph3((int)cen.x , WIN_SIZE_Y - (int)cen.y , (int)cen_r.x , (int)cen_r.y ,exRateX , exRateY , angle , graph , transFlag , turnFlag);
+	return DrawRotaGraph3((int)cen.x , WIN_SIZE_Y - (int)cen.y , cen_r_x , cen_r_y ,exRateX , exRateY , angle , graph , transFlag , turnFlag);
 }

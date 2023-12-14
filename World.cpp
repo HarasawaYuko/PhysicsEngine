@@ -16,7 +16,7 @@ void World::initialize() {
 }
 
 void World::physicsSimulate() {
-	//printfDx("size: %d \n" , objects.size());
+	printfDx("size: %d \n" , objects.size());
 	//ŠO—Í‚ğ‰Á‚¦‚é
 	applyForce();
 
@@ -85,6 +85,15 @@ void World::detectCollision() {
 					contact = true;
 				}
 				break;
+			case Pair::BOX_BOX:
+				//i:box j:box
+				
+				if (Detect::box_box(objects[i], objects[j], &depth, &nVec, &coord)) {
+					//printfDx("return true\n");
+					objects[i]->setTouch();
+					objects[j]->setTouch();
+				}
+				break;
 			}
 			//Õ“Ë‚µ‚Ä‚¢‚ê‚Î
 			if (contact) {
@@ -124,7 +133,6 @@ void World::integrate() {
 		(*itr)->updatePos(TIME_STEP);
 		if (!(*itr)->isValid())
 		{
-			printfDx("íœ\n");
 			itr = objects.erase(itr);
 		}
 		else

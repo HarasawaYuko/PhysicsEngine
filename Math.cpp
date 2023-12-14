@@ -55,3 +55,7 @@ std::string Vec2::toString() const
 {
 	return std::to_string(x) + "," + std::to_string(y);
 }
+
+float getRad(const float ang) {
+	return (ang * Pi) / 180;
+}

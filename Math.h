@@ -1,6 +1,9 @@
 #pragma once
 #include "include.h"
 
+const float Pi = 3.141592;
+const float INF = 10000000000.0f;
+
 //二次元ベクトル
 struct Vec2 {
 private:
@@ -23,3 +26,6 @@ public:
 	Vec2 normalize()const;//正規化
 	std::string toString()const;
 };
+
+//ラジアンに変換する
+float getRad(const float);

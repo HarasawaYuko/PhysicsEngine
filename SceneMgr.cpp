@@ -3,7 +3,7 @@
 #include "Rec.h"
 
 SceneMgr::SceneMgr() {
-	m_scene = (BaseScene*)new Game(this);
+	m_scene = (BaseScene*)new Rec(this);
 }
 
 void SceneMgr::Initialize() {

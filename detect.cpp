@@ -1,5 +1,9 @@
 #include "detect.h"
 
+//プロトタイプ宣言
+void projection(Vec2 , Box* , float* , float*);
+float getDepth(const float, const float, const float, const float);
+
 //円と線の衝突判定
 bool Detect::circle_line(Object* c , Object* l , float* depth , Vec2* n  , Vec2* coord) {
 	//それぞれの型へダウンキャスト
@@ -33,7 +37,6 @@ bool Detect::circle_line(Object* c , Object* l , float* depth , Vec2* n  , Vec2*
 		if (NormalSeg.cross(*n) * NormalSeg.cross(StoC) > 0) {
 			n->set(NormalSeg.y , -NormalSeg.x);
 		}
-		//printfDx("法線%s \n", n->toString().c_str());
 		//衝突座標を求める
 		*coord = center + *n * r;
 		return true;
@@ -89,4 +92,54 @@ bool Detect::circle_circle(Object* c1 , Object* c2, float* depth, Vec2* n, Vec2*
 		return true;
 	}
 	return false;
+}
+
+//四角形と四角形の衝突判定（凸包に変更予定）
+bool Detect::box_box(Object* b1, Object* b2, float* depth, Vec2* n, Vec2* coord) {
+	//ダウンキャスト
+	Box* box1 = static_cast<Box*>(b1);
+	Box* box2 = static_cast<Box*>(b2);
+
+	//分離軸判定
+	Vec2 axis;//分離軸候補
+	float max1, min1;//box1の投影座標の最大最小
+	float max2, min2;//box2の投影座標の最大最小
+	bool result;//判定結果 接触してればtrue
+	//頂点→頂点のベクトルの分離軸判定
+	for (int i = 0; i < 4; i++) {
+		for (int j = i; j < 4; j++) {
+			axis = box1->getPointW(i) - box2->getPointW(j);
+			projection(axis , box1 , &min1 , &max1);
+			projection(axis , box2 , &min2 , &max2);
+			float depth = getDepth(min1 , max1 , min2 , max2);
+			if (depth > 0) {
+				//貫通深度が-の場合　分離軸が存在する
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+//axisにbox(convex)を投影して最大と最小を返す
+void projection(Vec2 axis , Box* box, float* min , float* max) {
+	float min_ = INF;
+	float max_ = -INF;
+	//全ての頂点を投影
+	for (int i = 0; i < box->pointNum(); i++) {
+		float dot;
+		dot = axis.dot(box->getPointW(i));
+		min_ = min(min_ , dot);
+		max_ = max(max_, dot);
+	}
+	*min = min_;
+	*max = max_;
+}
+
+//軸投影の結果、分離軸があるか判定する　交差してればtrue
+float getDepth(const float min1 , const float max1 ,const float min2 , const float max2) {
+	//貫通深度を求めて、正負で判定する
+	float d1 = min1 - max2;
+	float d2 = min2 - max1;
+	return max(d1, d2);
 }
