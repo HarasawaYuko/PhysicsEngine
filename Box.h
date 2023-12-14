@@ -6,8 +6,8 @@
 //長方形クラス
 class Box :public Object {
 private:
-	Vec2 pointsL[4];//ローカル座標での位置(左上から時計周り)
-	Vec2 pointsW[4];//ワールド座標での位置
+	std::vector<Vec2> pointsL;//ローカル座標での位置(左上から時計周り)
+	std::vector<Vec2> pointsW;//ワールド座標での位置
 	float height;//高さ
 	float width;//幅
 	static int fig;
@@ -24,4 +24,5 @@ public:
 	void Draw()const override;
 	bool isValid()const override;
 	std::string toString()const override;
+	Vec2 getPointW(const int);
 };

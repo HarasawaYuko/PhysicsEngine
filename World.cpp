@@ -85,6 +85,11 @@ void World::detectCollision() {
 					contact = true;
 				}
 				break;
+			case Pair::BOX_BOX:
+				//i:box j:box
+				if (Detect::box_box(objects[i], objects[j], &depth, &nVec, &coord)) {
+
+				}
 			}
 			//è’ìÀÇµÇƒÇ¢ÇÍÇŒ
 			if (contact) {

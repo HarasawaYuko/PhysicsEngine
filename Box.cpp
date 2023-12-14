@@ -11,15 +11,15 @@ Box::Box(const float cen_x, const float cen_y, const float h = 40.0f, const floa
 	center.set(cen_x, cen_y);
 	velocity.set(v_x, v_y);
 	//ローカル座標の追加
-	pointsL[0].set(-width/2 , -height/2);
-	pointsL[1].set(width / 2, -height / 2);
-	pointsL[2].set(width / 2, height / 2);
-	pointsL[3].set(-width / 2, height / 2);
+	pointsL.emplace_back( - width / 2, -height / 2);
+	pointsL.emplace_back(width / 2, -height / 2);
+	pointsL.emplace_back(width / 2, height / 2);
+	pointsL.emplace_back(-width / 2, height / 2);
 	//点の追加
-	pointsW[0].set(center.x - width/2 , center.y - height/2);
-	pointsW[1].set(center.x - width / 2, center.y + height / 2);
-	pointsW[2].set(center.x + width / 2, center.y - height / 2);
-	pointsW[3].set(center.x + width / 2, center.y + height / 2);
+	pointsW.emplace_back(center.x - width/2 , center.y - height/2);
+	pointsW.emplace_back(center.x - width / 2, center.y + height / 2);
+	pointsW.emplace_back(center.x + width / 2, center.y - height / 2);
+	pointsW.emplace_back(center.x + width / 2, center.y + height / 2);
 }
 
 void Box::loadGraph(){
@@ -74,4 +74,11 @@ bool Box::isValid() const {
 
 std::string Box::toString()const {
 	return "Box";
+}
+
+Vec2 Box::getPointW(const int i) {
+	if (i < 0 || 3 < i) {
+		return Vec2();
+	}
+	return pointsW[i];
 }
