@@ -14,6 +14,7 @@ private:
 	static int figX;
 	static int figY;
 	static int fig2;
+	int pointNum;
 	float angle_v;
 	float angle;
 	float inertiaTensor;//Šµ«ƒeƒ“ƒ\ƒ‹
@@ -26,5 +27,5 @@ public:
 	bool isValid()const override;
 	std::string toString()const override;
 	Vec2 getPointW(const int);
-	int pointNum();
+	int getPointNum();
 };

@@ -108,7 +108,7 @@ bool Detect::box_box(Object* b1, Object* b2, float* depth, Vec2* n, Vec2* coord)
 	//頂点→頂点のベクトルの分離軸判定
 	for (int i = 0; i < 4; i++) {
 		for (int j = i; j < 4; j++) {
-			axis = box1->getPointW(i) - box2->getPointW(j);
+			axis = (box1->getPointW(i) - box2->getPointW(j)).normalize();
 			projection(axis , box1 , &min1 , &max1);
 			projection(axis , box2 , &min2 , &max2);
 			float depth = getDepth(min1 , max1 , min2 , max2);
@@ -116,6 +116,29 @@ bool Detect::box_box(Object* b1, Object* b2, float* depth, Vec2* n, Vec2* coord)
 				//貫通深度が-の場合　分離軸が存在する
 				return false;
 			}
+		}
+	}
+	//辺の法線ベクトルの分離軸判定
+	//convex1
+	for (int i = 0 ; i < box1->getPointNum(); i++) {
+		axis = (box1->getPointW(i) - box1->getPointW((i+1)%4)).normalize();
+		projection(axis, box1, &min1, &max1);
+		projection(axis, box2, &min2, &max2);
+		float depth = getDepth(min1, max1, min2, max2);
+		if (depth > 0) {
+			//貫通深度が-の場合　分離軸が存在する
+			return false;
+		}
+	}
+	//convex2
+	for (int i = 0 ; i < box2->getPointNum(); i++) {
+		axis = (box2->getPointW(i) - box2->getPointW((i + 1) % 4)).normalize();
+		projection(axis, box1, &min1, &max1);
+		projection(axis, box2, &min2, &max2);
+		float depth = getDepth(min1, max1, min2, max2);
+		if (depth > 0) {
+			//貫通深度が-の場合　分離軸が存在する
+			return false;
 		}
 	}
 	return true;
@@ -126,7 +149,7 @@ void projection(Vec2 axis , Box* box, float* min , float* max) {
 	float min_ = INF;
 	float max_ = -INF;
 	//全ての頂点を投影
-	for (int i = 0; i < box->pointNum(); i++) {
+	for (int i = 0; i < box->getPointNum(); i++) {
 		float dot;
 		dot = axis.dot(box->getPointW(i));
 		min_ = min(min_ , dot);
