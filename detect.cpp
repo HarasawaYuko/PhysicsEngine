@@ -2,7 +2,7 @@
 
 //プロトタイプ宣言
 void projection(Vec2 , Box* , float* , float*);
-float getDepth(const float, const float, const float, const float);
+bool getDepth(const float, const float, const float, const float  , float* , float*);
 
 //円と線の衝突判定
 bool Detect::circle_line(Object* c , Object* l , float* depth , Vec2* n  , Vec2* coord) {
@@ -101,46 +101,78 @@ bool Detect::box_box(Object* b1, Object* b2, float* depth, Vec2* n, Vec2* coord)
 	Box* box2 = static_cast<Box*>(b2);
 
 	//分離軸判定
-	Vec2 axis;//分離軸候補
 	float max1, min1;//box1の投影座標の最大最小
 	float max2, min2;//box2の投影座標の最大最小
 	bool result;//判定結果 接触してればtrue
+	float max_depth = -INF;
+	Vec2 axisMax;//分離軸候補
 	//頂点→頂点のベクトルの分離軸判定
 	for (int i = 0; i < 4; i++) {
 		for (int j = i; j < 4; j++) {
-			axis = (box1->getPointW(i) - box2->getPointW(j)).normalize();
+			Vec2 axis = (box1->getPointW(i) - box2->getPointW(j)).normalize();
 			projection(axis , box1 , &min1 , &max1);
 			projection(axis , box2 , &min2 , &max2);
-			float depth = getDepth(min1 , max1 , min2 , max2);
-			if (depth > 0) {
-				//貫通深度が-の場合　分離軸が存在する
+			float d1, d2;
+			if (getDepth(min1, max1, min2, max2, &d1, &d2)) {
 				return false;
+			}
+			//衝突している場合、貫通深度と法線ベクトルを設定
+			assert(d1 <= 0 && d2 <= 0);
+			if (max_depth < d1) {
+				max_depth = d1;
+				axisMax = axis;
+			}
+			if (max_depth < d2) {
+				max_depth = d2;
+				axisMax = axis * -1;
 			}
 		}
 	}
 	//辺の法線ベクトルの分離軸判定
 	//convex1
 	for (int i = 0 ; i < box1->getPointNum(); i++) {
-		axis = (box1->getPointW(i) - box1->getPointW((i+1)%4)).normalize();
+		Vec2 axis = (box1->getPointW(i) - box1->getPointW((i+1)%4)).normalize();
 		projection(axis, box1, &min1, &max1);
 		projection(axis, box2, &min2, &max2);
-		float depth = getDepth(min1, max1, min2, max2);
-		if (depth > 0) {
-			//貫通深度が-の場合　分離軸が存在する
+		float d1, d2;
+		if (getDepth(min1, max1, min2, max2, &d1, &d2)) {
 			return false;
+		}
+		//衝突している場合、貫通深度と法線ベクトルを設定
+		assert(d1 <= 0 && d2 <= 0);
+		if (max_depth < d1) {
+			max_depth = d1;
+			axisMax = axis;
+		}
+		if (max_depth < d2) {
+			max_depth = d2;
+			axisMax = axis * -1;
 		}
 	}
 	//convex2
 	for (int i = 0 ; i < box2->getPointNum(); i++) {
-		axis = (box2->getPointW(i) - box2->getPointW((i + 1) % 4)).normalize();
+		Vec2 axis = (box2->getPointW(i) - box2->getPointW((i + 1) % 4)).normalize();
 		projection(axis, box1, &min1, &max1);
 		projection(axis, box2, &min2, &max2);
-		float depth = getDepth(min1, max1, min2, max2);
-		if (depth > 0) {
-			//貫通深度が-の場合　分離軸が存在する
+		float d1, d2;
+		if (getDepth(min1, max1, min2, max2, &d1, &d2)) {
 			return false;
 		}
+		//衝突している場合、貫通深度と法線ベクトルを設定
+		assert(d1 <= 0 && d2 <= 0);
+		if (max_depth < d1) {
+			max_depth = d1;
+			axisMax = axis;
+		}
+		if (max_depth < d2) {
+			max_depth = d2;
+			axisMax = axis * -1;
+		}
 	}
+	//貫通深度等の設定
+	*depth = max_depth;
+	*n = axisMax;
+
 	return true;
 }
 
@@ -159,10 +191,13 @@ void projection(Vec2 axis , Box* box, float* min , float* max) {
 	*max = max_;
 }
 
-//軸投影の結果、分離軸があるか判定する　交差してればtrue
-float getDepth(const float min1 , const float max1 ,const float min2 , const float max2) {
+//軸投影の結果、分離軸があるか判定する　交差していない(d>0)の時はtrue
+bool getDepth(const float min1 , const float max1 ,const float min2 , const float max2  , float* d1 , float* d2) {
 	//貫通深度を求めて、正負で判定する
-	float d1 = min1 - max2;
-	float d2 = min2 - max1;
-	return max(d1, d2);
+	*d1 = min1 - max2;
+	*d2 = min2 - max1;
+	if (*d1  > 0 || *d2 > 0) {
+		return true;
+	}
+	return false;
 }
