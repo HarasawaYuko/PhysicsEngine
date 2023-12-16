@@ -3,6 +3,8 @@
 //プロトタイプ宣言
 void projection(Vec2 , Box* , float* , float*);
 bool getDepth(const float, const float, const float, const float  , float* , float*);
+Vec2 getContactPoint(const Vec2& , const Segment&);
+
 
 //円と線の衝突判定
 bool Detect::circle_line(Object* c , Object* l , float* depth , Vec2* n  , Vec2* coord) {
@@ -212,8 +214,41 @@ bool Detect::box_box(Object* b1, Object* b2, float* depth, Vec2* n, Vec2* coord)
 			}
 		}
 	}
-	//最短距離だった組み合わせの衝突点をローカル座標に設定
-	
+	//最短距離だった組み合わせの衝突点のローカル座標を設定
+	if (minA) {//Aが頂点Bが辺だった場合
+		coord[0] = WtoL(minPoint , box1->getC() , box1->getAngle());
+		switch (minPattern) {
+		case 0:
+			coord[1] = WtoL(minEdge.start , box2->getC() , box2->getAngle());
+			break;
+		case 1:
+			coord[1] = WtoL(minEdge.end , box2->getC(), box2->getAngle());
+			break;
+		case 2:
+			coord[1] = WtoL(getContactPoint(minPoint  , minEdge) , box2->getC(), box2->getAngle());
+			break;
+		default:
+			assert(false);
+			break;
+		}
+	}
+	else {
+		coord[1] = WtoL(minPoint, box2->getC(), box2->getAngle());
+		switch (minPattern) {
+		case 0:
+			coord[0] = WtoL(minEdge.start, box1->getC(), box1->getAngle());
+			break;
+		case 1:
+			coord[0] = WtoL(minEdge.end, box1->getC(), box1->getAngle());
+			break;
+		case 2:
+			coord[0] = WtoL(getContactPoint(minPoint, minEdge), box1->getC(), box1->getAngle());
+			break;
+		default:
+			assert(false);
+			break;
+		}
+	}
 
 	//ずらした分戻す
 	box1->move(disV * -1);
@@ -245,4 +280,13 @@ bool getDepth(const float min1 , const float max1 ,const float min2 , const floa
 		return true;
 	}
 	return false;
+}
+
+Vec2 getContactPoint(const Vec2& point , const Segment& edge) {
+	//辺ベクトルの正規化
+	Vec2 edgeVec =(edge.end - edge.start).normalize();
+	Vec2 StoP = point - edge.start;
+	//始点からの距離を求める
+	float dis = StoP.dot(edgeVec);
+	return edge.start + (edgeVec * dis);
 }

@@ -86,6 +86,10 @@ std::string Box::toString()const {
 	return "Box";
 }
 
+float Box::getAngle()const {
+	return angle;
+}
+
 Vec2 Box::getPointW(const int i) const{
 	if (i < 0 || pointsW.size() <= i) {
 		return Vec2();

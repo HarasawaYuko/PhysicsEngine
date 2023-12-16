@@ -10,16 +10,16 @@ private:
 	uint16_t type;
 	float depth;
 	Vec2 nVec;
-	Vec2 coord;
+	Vec2 *coord;
 	float e = 0.8;
 public:
-	Collision(Object* , Object* ,const float ,const Vec2 ,const Vec2);
+	Collision(Object* , Object* ,const float ,const Vec2 ,Vec2*);
 	uint16_t getKey()const;
 	uint16_t getType()const;
 	Object* getObj1()const;
 	Object* getObj2()const;
 	float getD()const;
 	Vec2 getN()const;
-	Vec2 getC()const;
+	Vec2* getC()const;
 	float getE()const;
 };

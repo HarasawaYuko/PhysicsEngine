@@ -1,6 +1,6 @@
 #include "Collision.h"
 
-Collision::Collision(Object* obj1, Object* obj2 , const float d , const Vec2 n , const Vec2 c) 
+Collision::Collision(Object* obj1, Object* obj2 , const float d , const Vec2 n , Vec2* c) 
 	:pair(std::make_pair(obj1 , obj2)),depth(d), nVec(n) , coord(c),
 	type(obj1->getType() | obj2 -> getType())
 {
@@ -33,7 +33,7 @@ Vec2 Collision::getN()const {
 	return nVec;
 }
 
-Vec2 Collision::getC()const {
+Vec2* Collision::getC()const {
 	return coord;
 }
 
