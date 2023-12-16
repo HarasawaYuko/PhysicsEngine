@@ -41,11 +41,9 @@ void Box::updatePos(const float step) {
 	angle = angle + (angle_v * step);
 	for (int i = 0; i < 4; i++) {
 		//回転後のローカル座標を求める
-		float rad = getRad(angle);
-		float x = pointsL[i].x * cos(rad) - pointsL[i].y * sin(rad);
-		float y = pointsL[i].x * sin(rad) + pointsL[i].y * cos(rad);
+		pointsL[i] = pointsL[i].rotation(angle);
 		//ワールド座標に反映
-		pointsW[i].set(x + center.x ,y + center.y);
+		pointsW[i]= center + pointsL[i];
 	}
 	printfDx("L %s \n", pointsL[0].toString().c_str());
 	printfDx("W %s \n" ,pointsW[0].toString().c_str());
@@ -88,13 +86,26 @@ std::string Box::toString()const {
 	return "Box";
 }
 
-Vec2 Box::getPointW(const int i) {
+Vec2 Box::getPointW(const int i) const{
 	if (i < 0 || pointsW.size() <= i) {
 		return Vec2();
 	}
 	return pointsW[i];
 }
 
-int Box::getPointNum() {
-	return pointsW.size();
+int Box::getPointNum() const{
+	return pointNum;
+}
+
+//Vec2方向にローカル座標とワールド座標を移動する
+void Box::move(Vec2 vec){
+	for (int i = 0; i < pointNum; i++) {
+		pointsL[i] = vec + pointsL[i];
+		pointsW[i] = vec + pointsW[i];
+	}
+}
+
+//ワールド座標の辺を返す
+Segment Box::getEdgeW(const int &i) const{
+	return Segment(pointsW[i] , pointsW[(i+1) % pointNum]);
 }

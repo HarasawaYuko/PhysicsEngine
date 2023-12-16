@@ -24,8 +24,24 @@ public:
 	float norm()const;//‘å‚«‚³
 	float distance(const Vec2)const;//‚Q“_ŠÔ‚Ì‹——£
 	Vec2 normalize()const;//³‹K‰»
+	Vec2 rotation(const float &)const;//‰ñ“]
 	std::string toString()const;
+};
+
+//ü•ª
+struct Segment {
+public:
+	Segment(){}
+	Segment(const Vec2 , const Vec2);
+	Vec2 start;
+	Vec2 end;
 };
 
 //ƒ‰ƒWƒAƒ“‚É•ÏŠ·‚·‚é
 float getRad(const float);
+//“_‚Æ’¼ü‚Ì‹——£‚ğ‹‚ß‚é
+float getDistance(const Vec2& , const Segment &);
+float getDistance(const Vec2&, const Segment & , int*);
+
+Vec2 LtoW(const Vec2& ,const Vec2& ,const float);
+Vec2 WtoL(const Vec2&, const Vec2& ,const float);

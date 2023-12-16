@@ -51,11 +51,59 @@ Vec2 Vec2::normalize()const {
 	return Vec2(x / length, y / length);
 }
 
+Vec2 Vec2::rotation(const float & ang)const {
+	float rad = getRad(ang);
+	float x_ = x*cos(rad) - y*sin(rad);
+	float y_ = x*sin(rad) + y*cos(rad);
+	return Vec2(x_ , y_);
+}
+
 std::string Vec2::toString() const
 {
 	return std::to_string(x) + "," + std::to_string(y);
 }
 
+Segment::Segment(const Vec2 s , const Vec2 e) 
+	:start(s) , end(e)
+{}
+
 float getRad(const float ang) {
-	return (ang * Pi) / 180;
+	return (ang * Pi) / 180.f;
+}
+
+//点と直線の距離
+float getDistance(const Vec2& point , const Segment& seg) {
+	return abs((point - seg.start).cross(seg.end - seg.start)) / (seg.end - seg.start).norm();
+}
+
+/*
+点と線分の距離
+patternに線分と点の位置関係を記録
+0...startが最短 1...endが最短　2...線分上の点が最短
+*/
+float getDistance(const Vec2& point, const Segment &seg , int* pattern) {
+	//位置関係で場合分け
+	Vec2 StoE = seg.end - seg.start;
+	Vec2 StoP = point - seg.start;
+	Vec2 EtoP = point - seg.end;
+	if (StoE.dot(StoP) < 0) {
+		*pattern = 0;
+		return point.distance(seg.start);
+	}
+	if ((StoE * -1).dot(EtoP) ) {
+		*pattern = 1;
+		return point.distance(seg.end);
+	}
+	*pattern = 2;
+	return getDistance(point , seg);
+}
+
+//ローカル座標をワールド座標に変換
+Vec2 LtoW(const Vec2& local, const Vec2& worldCen , float ang) {
+	return local.rotation(ang) + worldCen;
+}
+
+//ワールド座標をローカル座標に変換
+Vec2 WtoL(const Vec2 &world , const Vec2& worldCen , float ang) {
+	return (world - worldCen).rotation(-ang);
 }
