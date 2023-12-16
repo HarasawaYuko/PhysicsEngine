@@ -26,6 +26,7 @@ public:
 	void Draw()const override;
 	bool isValid()const override;
 	std::string toString()const override;
+	float getAngle()const;
 	Vec2 getPointW(const int)const;
 	int getPointNum()const;
 	void move(Vec2);

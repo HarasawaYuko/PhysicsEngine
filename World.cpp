@@ -66,13 +66,13 @@ void World::detectCollision() {
 			//衝突情報
 			float depth;//貫通深度
 			Vec2 nVec;//法線ベクトル
-			Vec2 coord;//衝突座標
+			Vec2 coord[2];//衝突座標
 
 			//衝突した物体によって分類
 			switch (objects[i]->getType() | objects[j]->getType()) {
 			case Pair::CIRCLE_CIRCLE:
 				//i:circle  j:circle
-				if (Detect::circle_circle(objects[i], objects[j] ,&depth , &nVec , &coord)) {
+				if (Detect::circle_circle(objects[i], objects[j] ,&depth , &nVec , coord)) {
 					objects[i]->setTouch();
 					objects[j]->setTouch();
 					contact = true;
@@ -80,7 +80,7 @@ void World::detectCollision() {
 				break;
 			case Pair::CIRCLE_LINE:
 				//i:circle  j:line
-				if (Detect::circle_line(objects[i], objects[j], &depth, &nVec, &coord)) {
+				if (Detect::circle_line(objects[i], objects[j], &depth, &nVec, coord)) {
 					objects[i]->setTouch();
 					contact = true;
 				}
@@ -88,7 +88,7 @@ void World::detectCollision() {
 			case Pair::BOX_BOX:
 				//i:box j:box
 				
-				if (Detect::box_box(objects[i], objects[j], &depth, &nVec, &coord)) {
+				if (Detect::box_box(objects[i], objects[j], &depth, &nVec, coord)) {
 					//printfDx("return true\n");
 					objects[i]->setTouch();
 					objects[j]->setTouch();
