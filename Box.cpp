@@ -21,6 +21,8 @@ Box::Box(const float cen_x, const float cen_y, const float h = 40.0f, const floa
 	pointsW.emplace_back(center.x - width / 2, center.y + height / 2);
 	pointsW.emplace_back(center.x + width / 2, center.y - height / 2);
 	pointsW.emplace_back(center.x + width / 2, center.y + height / 2);
+
+	pointNum = pointsW.size();
 }
 
 void Box::loadGraph(){
@@ -93,6 +95,6 @@ Vec2 Box::getPointW(const int i) {
 	return pointsW[i];
 }
 
-int Box::pointNum() {
+int Box::getPointNum() {
 	return pointsW.size();
 }
