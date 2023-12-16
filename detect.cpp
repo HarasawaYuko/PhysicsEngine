@@ -173,6 +173,51 @@ bool Detect::box_box(Object* b1, Object* b2, float* depth, Vec2* n, Vec2* coord)
 	*depth = max_depth;
 	*n = axisMax;
 
+	//衝突点を取得
+	float minDistance = INF;//最短距離
+	int minPattern = 0;
+	bool  minA = false;
+	Vec2 minPoint;
+	Segment minEdge;
+	//物体1を貫通深度より若干ずらす
+	Vec2 disV = *n * (abs(*depth) * 1.1f);//ずらすベクトル
+	box1->move(disV);
+	//物体1の頂点から見た最短距離
+	for (int i = 0; i < box1->getPointNum();i++) {
+		for (int j = 0; j < box2->getPointNum(); j++) {
+			int pattern;
+			Segment edge = box2->getEdgeW(j);
+			float dis = getDistance(box1->getPointW(i), edge , &pattern);
+			if (minDistance > dis) {
+				//記録
+				minPattern = pattern;
+				minA = true;
+				minPoint = box1->getPointW(i);
+				minEdge = edge;
+			}
+		}
+	}
+	//物体2の頂点から見た最短距離
+	for (int i = 0; i < box2->getPointNum(); i++) {
+		for (int j = 0; j < box1->getPointNum(); j++) {
+			int pattern;
+			Segment edge = box1->getEdgeW(j);
+			float dis = getDistance(box2->getPointW(i), edge, &pattern);
+			if (minDistance > dis) {
+				//記録
+				minPattern = pattern;
+				minA = false;
+				minPoint = box2->getPointW(i);
+				minEdge = edge;
+			}
+		}
+	}
+	//最短距離だった組み合わせの衝突点をローカル座標に設定
+	
+
+	//ずらした分戻す
+	box1->move(disV * -1);
+
 	return true;
 }
 
