@@ -5,6 +5,7 @@
 
 static Segment line;
 static Vec2 point;
+static Vec2 contactPoint;
 static bool start = true;
 
 MathTest::MathTest(SceneChanger* changer)
@@ -58,8 +59,14 @@ void MathTest::Update() {
 		else if (Mouse::instance()->getClickNow(RIGHT_CLICK)) {
 			point.set(Mouse::instance()->getX(), Mouse::instance()->getY());
 		}
-		world.physicsSimulate();
 	}
+	int pattern;
+	float dis = getDistance(point, line, &pattern);
+	Vec2 edgeVec = (line.end - line.start).normalize();
+	Vec2 StoP = point - line.start;
+	//n“_‚©‚ç‚Ì‹——£‚ğ‹‚ß‚é
+	float dis_ = StoP.dot(edgeVec);
+	contactPoint = line.start + (edgeVec * dis_);
 }
 
 void MathTest::Draw() {
@@ -68,6 +75,7 @@ void MathTest::Draw() {
 	
 	DrawSegment(line , COLOR_BLUE);
 	DrawPoint(point , COLOR_RED);
+	DrawPoint(contactPoint, COLOR_GREEN);
 }
 
 void MathTest::Finalize() {

@@ -15,6 +15,7 @@ const Color COLOR_WHITE = GetColor(230 , 230 ,230);
 const Color COLOR_BLACK = GetColor(20, 20, 20);
 const Color COLOR_RED = GetColor(220, 45, 35);
 const Color COLOR_GRAY = GetColor(120, 120, 120);
+const Color COLOR_YELLOW = GetColor(255 , 217 ,0);
 
 class Button {
 private:
