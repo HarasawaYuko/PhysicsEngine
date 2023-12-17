@@ -40,3 +40,18 @@ void Collision::addContactPoint(const ContactPoint cp) {
 void Collision::addContactPoint(const float d, const Vec2 pA, const Vec2 pB, const Vec2 n) {
 	contactPoints.emplace_back(d , pA , pB , n);
 }
+
+void Collision::Draw() const{
+	for (auto cp : contactPoints) {
+		//ローカル座標→ワールド座標に戻す
+		Vec2 pA = LtoW(cp.pointA , pair.first->getC() ,pair.first->getAngle() );
+		Vec2 pB = LtoW(cp.pointB, pair.second->getC(), pair.second->getAngle());
+		//Vec2 pB = LtoW();
+		//衝突点の描画
+		DrawCircle(pA.x , WIN_SIZE_Y - pA.y, 3 , COLOR_RED);
+		DrawCircle(pB.x, WIN_SIZE_Y - pB.y,3, COLOR_RED);
+		//法線ベクトルの描画
+		Vec2 nVec = pA + (cp.normal * 100);
+		DrawLine(pA.x, WIN_SIZE_Y - pA.y,nVec.x , WIN_SIZE_Y - nVec.y  , COLOR_RED , 3.f);
+	}
+}

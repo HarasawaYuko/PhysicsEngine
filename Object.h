@@ -22,12 +22,16 @@ protected:
 	const Type type;
 	Color color;
 	uint8_t id;
-	Object(Type ,float mass = 10 ,Color color = COLOR_BLACK ,bool act = true);
+	float angle_v;
+	float angle;
+	float inertiaTensor;//Šµ«ƒeƒ“ƒ\ƒ‹
+	Object(Type ,float mass = 10 ,Color color = COLOR_BLACK ,bool act = true , float ang = 0.f , float ang_v = 0.f);
 public:
 	virtual void Draw()const = 0;
 	float getM();
 	Vec2 getC()const;
 	Vec2 getV()const;
+	float getAngle()const;
 	bool isActive()const;
 	uint8_t getId()const;
 	void setMass(const float);

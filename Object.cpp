@@ -19,6 +19,10 @@ Vec2 Object::getV()const{
 	return velocity;
 }
 
+float Object::getAngle()const {
+	return angle;
+}
+
 bool Object::isActive()const {
 	return active;
 }
@@ -53,8 +57,8 @@ Type Object::getType()const{
 }
 
 //コンストラクタ
-Object::Object(Type type ,float mass, Color color , bool act) 
-	:type(type),color(color) ,mass(mass),active(act)
+Object::Object(Type type ,float mass, Color color , bool act , float ang , float ang_v ) 
+	:type(type),color(color) ,mass(mass),active(act) , angle(ang), angle_v(ang_v)
 {
 	//idの設定
 	for (int id = 0; id < ObjMax; id++) {

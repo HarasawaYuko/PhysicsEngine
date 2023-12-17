@@ -22,4 +22,5 @@ public:
 	int getContactNum()const;
 	void addContactPoint(const ContactPoint);
 	void addContactPoint(const float , const Vec2 ,const Vec2 , const Vec2);
+	void Draw()const;
 };
