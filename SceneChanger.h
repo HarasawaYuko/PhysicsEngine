@@ -6,6 +6,7 @@ enum Scene{
 	Scene_Game,
 	Scene_TEST_REC,//éläpå`
 	Scene_TEST_Detect,
+	Scene_TEST_Math,
 	Scene_Result,
 	Scene_Fin,
 	Scene_None

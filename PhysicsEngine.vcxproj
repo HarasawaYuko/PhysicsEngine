@@ -152,6 +152,7 @@
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Math.cpp" />
+    <ClCompile Include="MathTest.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Pair.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="KeyBoard.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="Math.h" />
+    <ClInclude Include="MathTest.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Pair.h" />
