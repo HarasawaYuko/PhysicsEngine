@@ -1,8 +1,8 @@
 #include "Collision.h"
 
-Collision::Collision(Object* obj1, Object* obj2 , const float d , const Vec2 n , Vec2* c) 
-	:pair(std::make_pair(obj1 , obj2)),depth(d), nVec(n) , coord(c),
-	type(obj1->getType() | obj2 -> getType())
+Collision::Collision(Object* obj1, Object* obj2) 
+	:pair(std::make_pair(obj1 , obj2))
+	,type(obj1->getType() | obj2 -> getType())
 {
 	uint16_t id1 = (uint16_t)obj1->getId();
 	uint16_t id2 = (uint16_t)obj2->getId();
@@ -25,18 +25,18 @@ Object* Collision::getObj2()const {
 	return pair.second;
 }
 
-float Collision::getD()const {
-	return depth;
-}
-
-Vec2 Collision::getN()const {
-	return nVec;
-}
-
-Vec2* Collision::getC()const {
-	return coord;
-}
-
 float Collision::getE()const {
 	return e;
+}
+
+int Collision::getContactNum()const {
+	return contactNum;
+}
+
+void Collision::addContactPoint(const ContactPoint cp) {
+	contactPoints.push_back(cp);
+}
+
+void Collision::addContactPoint(const float d, const Vec2 pA, const Vec2 pB, const Vec2 n) {
+	contactPoints.emplace_back(d , pA , pB , n);
 }

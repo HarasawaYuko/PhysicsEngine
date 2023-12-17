@@ -16,7 +16,7 @@ void Rec::Initialize() {
 	//‰Šú‰»
 	world.initialize();
 	//°‚Ìì¬
-	Line* wall_under = new Line(Vec2(30, 50), Vec2(770, 50), false);
+	Box* wall_under = new Box( 400 ,25 ,50 , 800 , 0,0,0,0,false);
 	world.add(wall_under);
 	//’·•ûŒ`‚Ì”z’u
 	Box* box1 = new Box(400, 500, 60, 70);

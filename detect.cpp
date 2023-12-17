@@ -40,7 +40,7 @@ bool Detect::circle_line(Object* c , Object* l , float* depth , Vec2* n  , Vec2*
 			n->set(NormalSeg.y , -NormalSeg.x);
 		}
 		//衝突座標を求める
-		*coord = center + *n * r;
+		coord[0] = center + *n * r;
 		return true;
 	}
 
@@ -65,7 +65,7 @@ bool Detect::circle_line(Object* c , Object* l , float* depth , Vec2* n  , Vec2*
 		//法線ベクトル
 		*n = (point - center).normalize();
 		//接触点
-		*coord = center + (*n * r);
+		coord[0] = center + (*n * r);
 		return true;
 	}
 	else {
@@ -90,7 +90,8 @@ bool Detect::circle_circle(Object* c1 , Object* c2, float* depth, Vec2* n, Vec2*
 		*n = nVec;
 		nVec = nVec * cir1->getR();//大きさを半径に合わせる
 		//衝突座標 c1が最もc2にめり込んでいる点 (c1の中心からnの方向にr1進んだ点)
-		coord->set(c1->getC().x + nVec.x, c1->getC().y + nVec.y);
+		coord[0] = Vec2(c1->getC().x + nVec.x, c1->getC().y + nVec.y);
+		coord[1] = Vec2(c2->getC().x - nVec.x, c2->getC().y - nVec.y);
 		return true;
 	}
 	return false;
@@ -133,7 +134,7 @@ bool Detect::box_box(Object* b1, Object* b2, float* depth, Vec2* n, Vec2* coord)
 	//辺の法線ベクトルの分離軸判定
 	//convex1
 	for (int i = 0 ; i < box1->getPointNum(); i++) {
-		Vec2 axis = (box1->getPointW(i) - box1->getPointW((i+1)%4)).normalize();
+		Vec2 axis = (box1->getPointW(i) - box1->getPointW((i+1)%4)).normalize().normal();
 		projection(axis, box1, &min1, &max1);
 		projection(axis, box2, &min2, &max2);
 		float d1, d2;
@@ -153,7 +154,7 @@ bool Detect::box_box(Object* b1, Object* b2, float* depth, Vec2* n, Vec2* coord)
 	}
 	//convex2
 	for (int i = 0 ; i < box2->getPointNum(); i++) {
-		Vec2 axis = (box2->getPointW(i) - box2->getPointW((i + 1) % 4)).normalize();
+		Vec2 axis = (box2->getPointW(i) - box2->getPointW((i + 1) % 4)).normalize().normal();
 		projection(axis, box1, &min1, &max1);
 		projection(axis, box2, &min2, &max2);
 		float d1, d2;

@@ -143,6 +143,7 @@
     <ClCompile Include="Circle.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Constraints.cpp" />
+    <ClCompile Include="ContactPoint.cpp" />
     <ClCompile Include="detect.cpp" />
     <ClCompile Include="FpsControl.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -167,6 +168,7 @@
     <ClInclude Include="Circle.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Constraints.h" />
+    <ClInclude Include="ContactPoint.h" />
     <ClInclude Include="detect.h" />
     <ClInclude Include="FpsControl.h" />
     <ClInclude Include="Game.h" />

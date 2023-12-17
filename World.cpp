@@ -97,7 +97,8 @@ void World::detectCollision() {
 			}
 			//è’ìÀÇµÇƒÇ¢ÇÍÇŒ
 			if (contact) {
-				newColls.emplace_back(objects[i], objects[j] , depth , nVec , coord);
+				newColls.emplace_back(objects[i], objects[j]);
+				newColls.back().addContactPoint(depth , coord[0] , coord[1] , nVec);
 			}
 			//printfDx("newColls %d\n" , newColls.size());
 		}
