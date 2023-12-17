@@ -1,9 +1,11 @@
 #include "SceneMgr.h"
 #include "Game.h"
 #include "Rec.h"
+#include "DetectTest.h"
+#include "MathTest.h"
 
 SceneMgr::SceneMgr() {
-	m_scene = (BaseScene*)new Rec(this);
+	m_scene = (BaseScene*)new MathTest(this);
 }
 
 void SceneMgr::Initialize() {
@@ -28,6 +30,13 @@ void SceneMgr::Update() {
 			break;
 		case Scene_TEST_REC:
 			m_scene = (BaseScene*) new Rec(this);
+			break;
+		case Scene_TEST_Detect:
+			m_scene = (BaseScene*) new DetectTest(this);
+			break;
+		case Scene_TEST_Math:
+			m_scene = (BaseScene*) new MathTest(this);
+			break;
 		}
 		m_next_scene = Scene_None;
 		m_scene->Initialize();

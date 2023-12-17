@@ -8,43 +8,43 @@ void Constraint::initialize(const float timeStep) {
 }
 
 bool Constraint::circle_line(Collision &col) {
-	Circle* cir = static_cast<Circle*>(col.getObj1());
-	Line* line = static_cast<Line*>(col.getObj2());
-	//相対速度を取得
-	Vec2 V12 = Vec2(line->getV().x - cir->getV().x, line->getV().y - cir->getV().y);
-	//相対速度の法線成分
-	float V12_n = V12.dot(col.getN());
-	//撃力の係数を求める
-	float c;
-	if (V12.dot(col.getN()) > 0) {
-		c = -cir->getM()/2 * ((col.getE() + 1) * (k_CC * col.getD()));
-	}
-	else {
-		c = cir->getM()/2 * ((col.getE() + 1) * (V12.dot(col.getN()) - k_CC * col.getD()));
-	}
-	//速度の変更
-	cir->addV(col.getN() * (c / cir->getM()));
-	line->addV(col.getN() * (-c / line->getM()));
+	//Circle* cir = static_cast<Circle*>(col.getObj1());
+	//Line* line = static_cast<Line*>(col.getObj2());
+	////相対速度を取得
+	//Vec2 V12 = Vec2(line->getV().x - cir->getV().x, line->getV().y - cir->getV().y);
+	////相対速度の法線成分
+	//float V12_n = V12.dot(col.getN());
+	////撃力の係数を求める
+	//float c;
+	//if (V12.dot(col.getN()) > 0) {
+	//	c = -cir->getM()/2 * ((col.getE() + 1) * (k_CC * col.getD()));
+	//}
+	//else {
+	//	c = cir->getM()/2 * ((col.getE() + 1) * (V12.dot(col.getN()) - k_CC * col.getD()));
+	//}
+	////速度の変更
+	//cir->addV(col.getN() * (c / cir->getM()));
+	//line->addV(col.getN() * (-c / line->getM()));
 	return true;
 }
 
 bool Constraint::circle_circle(Collision &col ) {
-	Circle* cir1 = static_cast<Circle*>(col.getObj1());
-	Circle* cir2 = static_cast<Circle*>(col.getObj2());
-	//相対速度を取得
-	Vec2 V12 = Vec2(cir2->getV().x - cir1->getV().x , cir2->getV().y - cir1->getV().y);
-	//相対速度の法線成分
-	float V12_n = V12.dot(col.getN());
-	//撃力の係数を求める
-	float c;
-	if (V12.dot(col.getN()) > 0) {
-		c = ((cir1->getM() * cir2->getM()) / (cir1->getM() + cir2->getM()))*(-k_CC * col.getD());
-	}
-	else {
-		c = ((cir1->getM() * cir2->getM()) / (cir1->getM() + cir2->getM()))*((1+col.getE())*V12_n - k_CC * col.getD());
-	}
-	//速度の変更
-	cir1->addV(col.getN()*(c/cir1->getM()));
-	cir2->addV(col.getN() * (-c / cir2->getM()));
+	//Circle* cir1 = static_cast<Circle*>(col.getObj1());
+	//Circle* cir2 = static_cast<Circle*>(col.getObj2());
+	////相対速度を取得
+	//Vec2 V12 = Vec2(cir2->getV().x - cir1->getV().x , cir2->getV().y - cir1->getV().y);
+	////相対速度の法線成分
+	//float V12_n = V12.dot(col.getN());
+	////撃力の係数を求める
+	//float c;
+	//if (V12.dot(col.getN()) > 0) {
+	//	c = ((cir1->getM() * cir2->getM()) / (cir1->getM() + cir2->getM()))*(-k_CC * col.getD());
+	//}
+	//else {
+	//	c = ((cir1->getM() * cir2->getM()) / (cir1->getM() + cir2->getM()))*((1+col.getE())*V12_n - k_CC * col.getD());
+	//}
+	////速度の変更
+	//cir1->addV(col.getN()*(c/cir1->getM()));
+	//cir2->addV(col.getN() * (-c / cir2->getM()));
 	return true;
 }

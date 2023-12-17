@@ -15,9 +15,7 @@ private:
 	static int figY;
 	static int fig2;
 	int pointNum;
-	float angle_v;
-	float angle;
-	float inertiaTensor;//Šµ«ƒeƒ“ƒ\ƒ‹
+
 
 public:
 	Box(const float cen_x, const float cen_y, const float h  , const float w , const float v_x = 0, const float v_y = 0,const float ang = 0 , const float ang_v = 0 , const bool act = true);
@@ -26,7 +24,6 @@ public:
 	void Draw()const override;
 	bool isValid()const override;
 	std::string toString()const override;
-	float getAngle()const;
 	Vec2 getPointW(const int)const;
 	int getPointNum()const;
 	void move(Vec2);

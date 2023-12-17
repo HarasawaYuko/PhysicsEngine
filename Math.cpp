@@ -58,6 +58,10 @@ Vec2 Vec2::rotation(const float & ang)const {
 	return Vec2(x_ , y_);
 }
 
+Vec2 Vec2::normal()const {
+	return Vec2(-y ,x);
+}
+
 std::string Vec2::toString() const
 {
 	return std::to_string(x) + "," + std::to_string(y);

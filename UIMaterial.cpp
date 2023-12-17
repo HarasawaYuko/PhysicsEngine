@@ -129,3 +129,11 @@ int DrawBoxP(const Vec2 cen ,const int cen_r_x , const int cen_r_y ,const double
 	double exRateY = (double)h/(double)size_y;
 	return DrawRotaGraph3((int)cen.x , WIN_SIZE_Y - (int)cen.y , cen_r_x , cen_r_y ,exRateX , exRateY , angle , graph , transFlag , turnFlag);
 }
+
+int DrawSegment(const Segment& line, const unsigned int color) {
+	return DrawLine(line.start.x , WIN_SIZE_Y - line.start.y , line.end.x , WIN_SIZE_Y - line.end.y , color);
+}
+
+int DrawPoint(const Vec2& v, const unsigned int color) {
+	return DrawCircle(v.x , WIN_SIZE_Y - v.y , 3 , color);
+}

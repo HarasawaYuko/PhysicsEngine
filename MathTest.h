@@ -12,15 +12,15 @@
 
 //ƒQ[ƒ€‰æ–Ê
 
-class Rec :public BaseScene {
+class MathTest :public BaseScene {
 private:
 	World world;
 public:
 	//ŠÖ”
 	void deleteMem();
 
-	Rec(SceneChanger*);
-	~Rec();
+	MathTest(SceneChanger*);
+	~MathTest();
 	void Initialize() override;
 	void Finalize() override;
 	void Update() override;

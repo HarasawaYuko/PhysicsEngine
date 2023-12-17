@@ -16,7 +16,6 @@ void World::initialize() {
 }
 
 void World::physicsSimulate() {
-	printfDx("size: %d \n" , objects.size());
 	//外力を加える
 	applyForce();
 
@@ -92,19 +91,21 @@ void World::detectCollision() {
 					//printfDx("return true\n");
 					objects[i]->setTouch();
 					objects[j]->setTouch();
+					contact = true;
 				}
 				break;
 			}
 			//衝突していれば
 			if (contact) {
-				newColls.emplace_back(objects[i], objects[j] , depth , nVec , coord);
+				newColls.emplace_back(objects[i], objects[j]);
+				newColls.back().addContactPoint(depth , coord[0] , coord[1] , nVec);
 			}
-			//printfDx("newColls %d\n" , newColls.size());
 		}
 	}
 
 	//衝突リストを更新
 	collisions.clear();
+	//printfDx("newColls %d\n", newColls.size());
 	collisions = newColls;
 	//printfDx("collision %d\n", collisions.size());
 }

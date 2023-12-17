@@ -13,9 +13,8 @@
 
 class World {
 private:
-	const float gravity = 10.8f;//重力加速度
+	const float gravity = 1.8f;//重力加速度
 	float TIME_STEP;
-	std::vector<Collision> collisions;
 
 	void applyForce();
 	void detectCollision();
@@ -23,6 +22,7 @@ private:
 	void integrate();
 public:
 	World(float timeStep = float(0.1));
+	std::vector<Collision> collisions;
 	std::vector<Object*> objects;
 	void initialize();
 	void physicsSimulate();

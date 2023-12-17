@@ -25,6 +25,7 @@ public:
 	float distance(const Vec2)const;//‚Q“_ŠÔ‚Ì‹——£
 	Vec2 normalize()const;//³‹K‰»
 	Vec2 rotation(const float &)const;//‰ñ“]
+	Vec2 normal()const;
 	std::string toString()const;
 };
 

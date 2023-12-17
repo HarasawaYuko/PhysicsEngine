@@ -10,6 +10,7 @@ Mouse* Mouse::instance() {
 void Mouse::update() {
 	//マウス位置の取得
 	GetMousePoint(&posX , &posY);
+	posY = WIN_SIZE_Y - posY;
 	int nowInput = GetMouseInput();
 	for (int i = 0; i < INPUT_NUM; i++) {
 		if ((nowInput >> i) & 1) {
