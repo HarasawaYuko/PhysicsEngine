@@ -10,9 +10,9 @@ private:
 	uint16_t key;
 	uint16_t type;
 	int contactNum;
-	std::vector<ContactPoint> contactPoints;
 	float e = 0.8;
 public:
+	std::vector<ContactPoint> contactPoints;
 	Collision(Object* , Object*);
 	uint16_t getKey()const;
 	uint16_t getType()const;

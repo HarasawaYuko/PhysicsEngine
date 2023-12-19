@@ -1,7 +1,12 @@
 #include "detect.h"
-
+#include "Circle.h"
+#include "Line.h"
+#include "Box.h"
+#include "Convex.h"
+#include "DEBUG.h"
 //プロトタイプ宣言
 void projection(Vec2 , Box* , float* , float*);
+void projection(Vec2, Convex*, float*, float*);
 bool getDepth(const float, const float, const float, const float  , float* , float*);
 Vec2 getContactPoint(const Vec2& , const Segment&);
 
@@ -258,6 +263,172 @@ bool Detect::box_box(Object* b1, Object* b2, float* depth, Vec2* n, Vec2* coord)
 	return true;
 }
 
+bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* coord) {
+	//ダウンキャスト
+	Convex* con1 = static_cast<Convex*>(c1);
+	Convex* con2 = static_cast<Convex*>(c2);
+
+	//分離軸判定
+	float max1, min1;//box1の投影座標の最大最小
+	float max2, min2;//box2の投影座標の最大最小
+	bool result;//判定結果 接触してればtrue
+	float max_depth = -INF;
+	Vec2 axisMax;//分離軸候補
+	//頂点→頂点のベクトルの分離軸判定
+	for (int i = 0; i < con1->getPointNum(); i++) {
+		for (int j = i; j < con2->getPointNum(); j++) {
+			Vec2 axis = (con1->getPointW(i) - con2->getPointW(j)).normalize();
+			projection(axis, con1, &min1, &max1);
+			projection(axis, con2, &min2, &max2);
+			float d1, d2;
+			if (getDepth(min1, max1, min2, max2, &d1, &d2)) {
+				return false;
+			}
+			//衝突している場合、貫通深度と法線ベクトルを設定
+			assert(d1 <= 0 && d2 <= 0);
+			if (max_depth < d1) {
+				max_depth = d1;
+				axisMax = axis;
+			}
+			if (max_depth < d2) {
+				max_depth = d2;
+				axisMax = axis * -1;
+			}
+		}
+	}
+	//辺の法線ベクトルの分離軸判定
+	//convex1
+	for (int i = 0; i < con1->getPointNum(); i++) {
+		Vec2 axis = (con1->getPointW(i) - con1->getPointW((i + 1) % 4)).normalize().normal();
+		projection(axis, con1, &min1, &max1);
+		projection(axis, con2, &min2, &max2);
+		float d1, d2;
+		if (getDepth(min1, max1, min2, max2, &d1, &d2)) {
+			return false;
+		}
+		//衝突している場合、貫通深度と法線ベクトルを設定
+		assert(d1 <= 0 && d2 <= 0);
+		if (max_depth < d1) {
+			max_depth = d1;
+			axisMax = axis;
+		}
+		if (max_depth < d2) {
+			max_depth = d2;
+			axisMax = axis * -1;
+		}
+	}
+	//convex2
+	for (int i = 0; i < con2->getPointNum(); i++) {
+		Vec2 axis = (con2->getPointW(i) - con2->getPointW((i + 1) % 4)).normalize().normal();
+		projection(axis, con1, &min1, &max1);
+		projection(axis, con2, &min2, &max2);
+		float d1, d2;
+		if (getDepth(min1, max1, min2, max2, &d1, &d2)) {
+			return false;
+		}
+		//衝突している場合、貫通深度と法線ベクトルを設定
+		assert(d1 <= 0 && d2 <= 0);
+		if (max_depth < d1) {
+			max_depth = d1;
+			axisMax = axis;
+		}
+		if (max_depth < d2) {
+			max_depth = d2;
+			axisMax = axis * -1;
+		}
+	}
+	//貫通深度等の設定
+	*depth = max_depth;
+	*n = axisMax;
+
+
+	//衝突点を取得
+	float minDistance = INF;//最短距離
+	int minPattern = 0;
+	bool  minA = false;
+	Vec2 minPoint;
+	Segment minEdge;
+	//物体1を貫通深度より若干ずらす
+	Vec2 disV = axisMax * (abs(*depth) * 2.f);//ずらすベクトル
+	con1->move(disV);
+	//物体1の頂点から見た最短距離
+	for (int i = 0; i < con1->getPointNum(); i++) {
+		for (int j = 0; j < con2->getPointNum(); j++) {
+			int pattern;
+			Segment edge = con2->getEdgeW(j);
+			float dis = getDistance(con1->getPointW(i), edge, &pattern);
+			if (minDistance > dis) {
+				//記録
+				minPattern = pattern;
+				minA = true;
+				minPoint = con1->getPointW(i);
+				minEdge = edge;
+				minDistance = dis;
+			}
+		}
+	}
+	//DEBUG
+	Debug* debug = Debug::instance();
+	debug->minPointA = minPoint;
+	debug->minEdgeB = minEdge;
+	//物体2の頂点から見た最短距離
+	for (int i = 0; i < con2->getPointNum(); i++) {
+		for (int j = 0; j < con1->getPointNum(); j++) {
+			int pattern;
+			Segment edge = con1->getEdgeW(j);
+			float dis = getDistance(con2->getPointW(i), edge, &pattern);
+			if (minDistance > dis) {
+				//記録
+				minPattern = pattern;
+				minA = false;
+				minPoint = con2->getPointW(i);
+				minEdge = edge;
+				minDistance = dis;
+			}
+		}
+	}
+	//最短距離だった組み合わせの衝突点のローカル座標を設定
+	if (minA) {//Aが頂点Bが辺だった場合
+		coord[0] = WtoL(minPoint, con1->getC(), con1->getAngle());
+		switch (minPattern) {
+		case 0:
+			coord[1] = WtoL(minEdge.start, con2->getC(), con2->getAngle());
+			break;
+		case 1:
+			coord[1] = WtoL(minEdge.end, con2->getC(), con2->getAngle());
+			break;
+		case 2:
+			coord[1] = WtoL(getContactPoint(minPoint, minEdge), con2->getC(), con2->getAngle());
+			break;
+		default:
+			assert(false);
+			break;
+		}
+	}
+	else {
+		coord[1] = WtoL(minPoint, con2->getC(), con2->getAngle());
+		switch (minPattern) {
+		case 0:
+			coord[0] = WtoL(minEdge.start, con1->getC(), con1->getAngle());
+			break;
+		case 1:
+			coord[0] = WtoL(minEdge.end, con1->getC(), con1->getAngle());
+			break;
+		case 2:
+			coord[0] = WtoL(getContactPoint(minPoint, minEdge), con1->getC(), con1->getAngle());
+			break;
+		default:
+			assert(false);
+			break;
+		}
+	}
+
+	//ずらした分戻す
+	con1->move(disV * -1);
+
+	return true;
+}
+
 //axisにbox(convex)を投影して最大と最小を返す
 void projection(Vec2 axis , Box* box, float* min , float* max) {
 	float min_ = INF;
@@ -267,6 +438,21 @@ void projection(Vec2 axis , Box* box, float* min , float* max) {
 		float dot;
 		dot = axis.dot(box->getPointW(i));
 		min_ = min(min_ , dot);
+		max_ = max(max_, dot);
+	}
+	*min = min_;
+	*max = max_;
+}
+
+//axisにbox(convex)を投影して最大と最小を返す
+void projection(Vec2 axis, Convex* con, float* min, float* max) {
+	float min_ = INF;
+	float max_ = -INF;
+	//全ての頂点を投影
+	for (int i = 0; i < con->getPointNum(); i++) {
+		float dot;
+		dot = axis.dot(con->getPointW(i));
+		min_ = min(min_, dot);
 		max_ = max(max_, dot);
 	}
 	*min = min_;

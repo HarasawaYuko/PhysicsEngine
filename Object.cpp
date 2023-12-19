@@ -73,3 +73,6 @@ void Object::setColor(Color c) {
 	this->color = c;
 }
 
+unsigned int Object::getColor() const{
+	return color;
+}

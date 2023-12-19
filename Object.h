@@ -44,4 +44,5 @@ public:
 	virtual bool isValid()const = 0;
 	virtual std::string toString()const = 0;
 	virtual void setColor(Color color);
+	unsigned int getColor() const;
 };

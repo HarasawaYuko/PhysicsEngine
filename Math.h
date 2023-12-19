@@ -50,5 +50,5 @@ float getDistance(const Vec2&, const Segment & , int*);
 //‚È‚·Šp‚ðŽæ“¾
 float getTheta(const Vec2 & , const Vec2 & , const Vec2 &);
 
-Vec2 LtoW(const Vec2& ,const Vec2& ,const float);
+Vec2 LtoW(const Vec2& local,const Vec2& worldCen,const float ang);
 Vec2 WtoL(const Vec2&, const Vec2& ,const float);

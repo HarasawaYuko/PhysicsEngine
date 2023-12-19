@@ -17,6 +17,7 @@ public:
 	static void loadGraph();
 	void updatePos(const float step)override;
 	void Draw()const override;
+	void Draw(const unsigned int)const;
 	bool isValid()const override;
 	std::string toString()const override;
 	Vec2 getPointW(const int)const;

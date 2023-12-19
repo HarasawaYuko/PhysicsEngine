@@ -51,6 +51,17 @@ void Convex::updatePos(const float step) {
 }
 
 void Convex::Draw() const {
+	for (int i = 0; i < pointNum;i++) {
+		DrawTriP(center , pointsW[i] , pointsW[(i+1)%pointNum] , COLOR_YELLOW , 0 ,3);
+	}
+}
+
+//テスト用描画関数
+void Convex::Draw(const unsigned int color) const{
+	for (int i = 0; i < pointNum; i++) {
+		Segment edge = getEdgeW(i);
+		DrawSegment(edge , color);
+	}
 }
 
 bool Convex::isValid() const {
@@ -91,7 +102,7 @@ int Convex::getPointNum() const {
 	return pointNum;
 }
 
-//Vec2方向にローカル座標とワールド座標を移動する
+//Vec2方向にローカル座標とワールド座標を平行移動する
 void Convex::move(Vec2 vec) {
 	for (int i = 0; i < pointNum; i++) {
 		pointsL[i] = vec + pointsL[i];
