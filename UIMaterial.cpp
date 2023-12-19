@@ -130,6 +130,11 @@ int DrawBoxP(const Vec2 cen ,const int cen_r_x , const int cen_r_y ,const double
 	return DrawRotaGraph3((int)cen.x , WIN_SIZE_Y - (int)cen.y , cen_r_x , cen_r_y ,exRateX , exRateY , angle , graph , transFlag , turnFlag);
 }
 
+//yé≤ÇîΩì]Ç≥ÇπÇΩéOäpå`ÇÃï`âÊä÷êî
+int DrawTriP(const Vec2& p0, const Vec2& p1, const Vec2& p2,const unsigned int color , const int fill ,const float thick) {
+	return DrawTriangleAA(p0.x , WIN_SIZE_Y -  p0.y , p1.x , WIN_SIZE_Y - p1.y ,p2.x ,  WIN_SIZE_Y - p2.y , color , fill ,thick);
+}
+
 int DrawSegment(const Segment& line, const unsigned int color) {
 	return DrawLineAA(line.start.x , WIN_SIZE_Y - line.start.y , line.end.x , WIN_SIZE_Y - line.end.y , color , 3.f);
 }

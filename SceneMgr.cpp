@@ -5,7 +5,7 @@
 #include "MathTest.h"
 
 SceneMgr::SceneMgr() {
-	m_scene = (BaseScene*)new MathTest(this);
+	m_scene = (BaseScene*)new DetectTest(this);
 }
 
 void SceneMgr::Initialize() {

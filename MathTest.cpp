@@ -4,6 +4,7 @@
 #include "Rand.h"
 #include "Convex.h"
 
+//数値計算等テスト用
 static int mode = 0;
 
 //点と直線の距離
@@ -41,7 +42,6 @@ void MathTest::Update() {
 	KeyBoard::instance()->update();
 	Mouse::instance()->update();
 
-	//停止用
 	if (KeyBoard::instance()->hitNow(KEY_INPUT_S)) {
 		line.start = Vec2();
 		line.end = Vec2();
@@ -135,6 +135,7 @@ void MathTest::Draw() {
 			DrawPoint(points[i] , COLOR_RED);
 		}
 		if (make) {
+			convex->Draw();
 			DrawPoint(convex->getC() , COLOR_ORANGE);
 			for (int i = 0; i < convex->getPointNum(); i++) {
 				Vec2 p = convex->getPointW(i);

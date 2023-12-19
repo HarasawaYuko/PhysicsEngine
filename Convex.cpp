@@ -51,6 +51,17 @@ void Convex::updatePos(const float step) {
 }
 
 void Convex::Draw() const {
+	for (int i = 0; i < pointNum;i++) {
+		DrawTriP(center , pointsW[i] , pointsW[(i+1)%pointNum] , COLOR_YELLOW , 0 ,3);
+	}
+}
+
+//テスト用描画関数
+void Convex::Draw(const unsigned int color) const{
+	for (int i = 0; i < pointNum; i++) {
+		Segment edge = getEdgeW(i);
+		DrawSegment(edge , color);
+	}
 }
 
 bool Convex::isValid() const {
