@@ -57,8 +57,8 @@ Type Object::getType()const{
 }
 
 //コンストラクタ
-Object::Object(Type type ,float mass, Color color , bool act , float ang , float ang_v ) 
-	:type(type),color(color) ,mass(mass),active(act) , angle(ang), angle_v(ang_v)
+Object::Object(Vec2 v ,Type type ,float mass, Color color , bool act , float ang , float ang_v ) 
+	:velocity(v) ,  type(type),color(color) ,mass(mass),active(act) , angle(ang), angle_v(ang_v)
 {
 	//idの設定
 	for (int id = 0; id < ObjMax; id++) {
