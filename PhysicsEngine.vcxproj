@@ -144,6 +144,7 @@
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Constraints.cpp" />
     <ClCompile Include="ContactPoint.cpp" />
+    <ClCompile Include="Convex.cpp" />
     <ClCompile Include="detect.cpp" />
     <ClCompile Include="DetectTest.cpp" />
     <ClCompile Include="FpsControl.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Constraints.h" />
     <ClInclude Include="ContactPoint.h" />
+    <ClInclude Include="Convex.h" />
     <ClInclude Include="detect.h" />
     <ClInclude Include="DetectTest.h" />
     <ClInclude Include="FpsControl.h" />

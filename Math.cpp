@@ -25,6 +25,10 @@ Vec2 Vec2::operator*(const float k) const {
 	return Vec2(x * k, y *k);
 }
 
+Vec2 Vec2::operator/(const float k) const {
+	return Vec2(x / k, y / k);
+}
+
 //二次元ベクトルの内積
 float Vec2::dot(const Vec2 vec) const{
 	return x * vec.x + y * vec.y;
@@ -71,8 +75,14 @@ Segment::Segment(const Vec2 s , const Vec2 e)
 	:start(s) , end(e)
 {}
 
+//度数法をラジアンに変換する
 float getRad(const float ang) {
 	return (ang * Pi) / 180.f;
+}
+
+//ラジアンを度数法に変換する
+float getDegree(const float rad) {
+	return rad * (180.f / Pi);
 }
 
 //点と直線の距離
@@ -100,6 +110,19 @@ float getDistance(const Vec2& point, const Segment &seg , int* pattern) {
 	}
 	*pattern = 2;
 	return getDistance(point , seg);
+}
+
+//cen->p0 と cen->p1 のなす角を求める(反時計回り)
+float getTheta(const Vec2& cen , const Vec2& p0 , const Vec2&p1) {
+	Vec2 v1 = (p0 - cen).normalize();
+	Vec2 v2 = (p1 - cen).normalize();
+	//時計回り
+	if (v1.cross(v2) < 0) {//180 < x < 360の時
+		return 2*Pi - acos(v1.dot(v2));
+	}
+	else {//0 < x < 180の時
+		return acos(v1.dot(v2));
+	}
 }
 
 //ローカル座標をワールド座標に変換

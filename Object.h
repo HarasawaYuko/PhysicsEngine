@@ -7,6 +7,7 @@ enum Type : uint16_t {
 	CIRCLE = 0b0000'0000'0000'0001,
 	LINE   = 0b0000'0000'0000'0010,
 	BOX    = 0b0000'0000'0000'0100,
+	CONVEX = 0b0000'0000'0000'1000
 };
 
 
@@ -25,7 +26,7 @@ protected:
 	float angle_v;
 	float angle;
 	float inertiaTensor;//äµê´ÉeÉìÉ\Éã
-	Object(Type ,float mass = 10 ,Color color = COLOR_BLACK ,bool act = true , float ang = 0.f , float ang_v = 0.f);
+	Object(Vec2 v , Type ,float mass = 10 ,Color color = COLOR_BLACK ,bool act = true , float ang = 0.f , float ang_v = 0.f);
 public:
 	virtual void Draw()const = 0;
 	float getM();

@@ -15,9 +15,10 @@ public:
 
 	void set(const float, const float);
 
-	Vec2 operator+(const Vec2) const;
-	Vec2 operator-(const Vec2) const;
-	Vec2 operator*(const float) const;
+	Vec2 operator+(const Vec2)const;
+	Vec2 operator-(const Vec2)const;
+	Vec2 operator*(const float)const;
+	Vec2 operator/(const float)const;
 	
 	float dot(const Vec2)const;//内積
 	float cross(const Vec2)const;//外積
@@ -38,11 +39,16 @@ public:
 	Vec2 end;
 };
 
-//ラジアンに変換する
+//ラジアンと度数法の変換
 float getRad(const float);
+float getDegree(const float);
+
 //点と直線の距離を求める
 float getDistance(const Vec2& , const Segment &);
 float getDistance(const Vec2&, const Segment & , int*);
+
+//なす角を取得
+float getTheta(const Vec2 & , const Vec2 & , const Vec2 &);
 
 Vec2 LtoW(const Vec2& ,const Vec2& ,const float);
 Vec2 WtoL(const Vec2&, const Vec2& ,const float);

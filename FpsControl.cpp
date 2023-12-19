@@ -20,6 +20,7 @@ void FpsControl::Update() {
 }
 
 void FpsControl::Draw() {
+	SetFontSize(20);
 	DrawFormatString(0, 0,COLOR_BLACK , "%.1f", fps);
 }
 

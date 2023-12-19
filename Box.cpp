@@ -7,10 +7,9 @@ int Box::figX;
 int Box::figY;
 
 Box::Box(const float cen_x, const float cen_y, const float h = 40.0f, const float w = 40.0f, const float v_x , const float v_y , const float ang  , const float ang_v , const bool act)
-	:height(h) , width(w) , Object(BOX ,10.f ,COLOR_BLACK , act , ang , ang_v)
+	:height(h) , width(w) , Object(Vec2(v_x , v_y) ,BOX ,10.f ,COLOR_BLACK , act , ang , ang_v)
 {
 	center.set(cen_x, cen_y);
-	velocity.set(v_x, v_y);
 	//ÉçÅ[ÉJÉãç¿ïWÇÃí«â¡
 	pointsL.emplace_back( - width / 2, -height / 2);
 	pointsL.emplace_back(width / 2, -height / 2);
