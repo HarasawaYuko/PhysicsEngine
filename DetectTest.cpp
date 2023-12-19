@@ -4,6 +4,7 @@
 #include "Rand.h"
 #include "detect.h"
 #include "Convex.h"
+#include "DEBUG.h"
 
 //Õ“ËŒŸ’mƒeƒXƒg
 static int mode = 0;
@@ -77,13 +78,18 @@ void DetectTest::Update() {
 void DetectTest::Draw() {
 	SetFontSize(20);
 	DrawString(640, 0, "DetectTest", COLOR_BLACK);
+	DrawSegment(Segment(Vec2(0 , 300 ),Vec2(800 , 300)),COLOR_BLACK);
+	DrawSegment(Segment(Vec2(400, 0), Vec2(400, 600)), COLOR_BLACK);
 	switch (mode) {
 	case 0:
 		Rand * rand = Rand::instance();
 		DrawString(0 , 25 , "“Ê•ï‚Æ“Ê•ï‚ÌÕ“Ë\nLeftClick->point’Ç‰Á L->pointClear A->all clear enter->make \nConvex D->detect\n" , COLOR_BLACK);
 		//“Ê•ï‚Ì•`‰æ
+		int i = 0;
 		for (auto con : convexes) {
 			con.Draw(con.getColor());
+			DrawStrP(con.getC() , std::to_string(i), COLOR_BLUE);
+			i++;
 		}
 		//point‚Ì•`‰æ
 		for (auto p : points) {
@@ -99,13 +105,19 @@ void DetectTest::Draw() {
 			Vec2 pA = LtoW(cp.pointA , col.getObj1()->getC() , 0);
 			Vec2 pB = LtoW(cp.pointB , col.getObj2()->getC() , 0);
 			DrawPoint(pA, COLOR_YELLOW);
+			SetFontSize(18);
+			DrawStrP(pA,"A" , COLOR_YELLOW);
 			DrawPoint(pB, COLOR_YELLOW);
+			DrawStrP(pB, "B" , COLOR_YELLOW);
+			SetFontSize(20);
 			Vec2 n = cp.normal * cp.depth;
-			printfDx("%f\n", n.norm());
 			n = n + pA;
 			DrawSegment(Segment(pA  , n)  , COLOR_RED);
 			DrawSegment(Segment(Vec2(), cp.normal * cp.depth), COLOR_BLACK);
 		}
+		//‚»‚Ì‘¼•`‰æ
+		Debug* debug = Debug::instance();
+		DrawSegment(debug->minEdgeB , COLOR_GREEN);
 		break;
 	}
 }

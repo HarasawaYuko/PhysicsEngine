@@ -142,3 +142,7 @@ int DrawSegment(const Segment& line, const unsigned int color) {
 int DrawPoint(const Vec2& v, const unsigned int color) {
 	return DrawCircle(v.x , WIN_SIZE_Y - v.y , 5 , color);
 }
+
+int DrawStrP(const Vec2& p , const std::string str , const unsigned int color) {
+	return DrawString(p.x ,WIN_SIZE_Y - p.y , str.c_str(), color);
+}

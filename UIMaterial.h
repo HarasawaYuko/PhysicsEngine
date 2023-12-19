@@ -80,3 +80,4 @@ int DrawBoxP(const Vec2 cen, const int , const int , const double angle, const i
 int DrawSegment(const Segment& , const unsigned int);
 int DrawPoint(const Vec2& , const unsigned int);
 int DrawTriP(const Vec2& ,const Vec2& , const Vec2& ,const unsigned int color = COLOR_BLACK , const int fill = 1 , const float thick = 1.f);
+int DrawStrP(const Vec2& , const std::string , const unsigned int color = COLOR_BLACK);

@@ -3,6 +3,7 @@
 #include "Line.h"
 #include "Box.h"
 #include "Convex.h"
+#include "DEBUG.h"
 //プロトタイプ宣言
 void projection(Vec2 , Box* , float* , float*);
 void projection(Vec2, Convex*, float*, float*);
@@ -362,9 +363,14 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 				minA = true;
 				minPoint = con1->getPointW(i);
 				minEdge = edge;
+				minDistance = dis;
 			}
 		}
 	}
+	//DEBUG
+	Debug* debug = Debug::instance();
+	debug->minPointA = minPoint;
+	debug->minEdgeB = minEdge;
 	//物体2の頂点から見た最短距離
 	for (int i = 0; i < con2->getPointNum(); i++) {
 		for (int j = 0; j < con1->getPointNum(); j++) {
@@ -377,6 +383,7 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 				minA = false;
 				minPoint = con2->getPointW(i);
 				minEdge = edge;
+				minDistance = dis;
 			}
 		}
 	}

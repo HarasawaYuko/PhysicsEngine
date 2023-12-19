@@ -102,7 +102,7 @@ int Convex::getPointNum() const {
 	return pointNum;
 }
 
-//Vec2方向にローカル座標とワールド座標を移動する
+//Vec2方向にローカル座標とワールド座標を平行移動する
 void Convex::move(Vec2 vec) {
 	for (int i = 0; i < pointNum; i++) {
 		pointsL[i] = vec + pointsL[i];
