@@ -2,6 +2,7 @@
 #include "KeyBoard.h"
 #include "Mouse.h"
 #include "Rand.h"
+#include "detect.h"
 #include "Convex.h"
 
 //è’ìÀåüímÉeÉXÉg
@@ -10,6 +11,7 @@ static int mode = 0;
 //Convex vs Convex mode =  0
 static std::vector<Convex> convexes;
 static std::vector<Vec2> points;
+static std::vector<Collision> collisions;
 
 DetectTest::DetectTest(SceneChanger* changer)
 	:BaseScene(changer)
@@ -46,11 +48,27 @@ void DetectTest::Update() {
 		if (KeyBoard::instance()->hitNow(KEY_INPUT_A)) {
 			points.clear();
 			convexes.clear();
+			collisions.clear();
 		}
 		if (KeyBoard::instance()->hitNow(KEY_INPUT_RETURN) && points.size() >= 3) {
 			convexes.emplace_back(points);
 			convexes.back().setColor(GetColor(rand->get(0,255), rand->get(0, 255), rand->get(0, 255)));
 			points.clear();
+		}
+		if (KeyBoard::instance()->hitNow(KEY_INPUT_D)) {
+			for (int i = 0; i < convexes.size(); i++) {
+				for (int j = i + 1; j < convexes.size(); j++) {
+					float d;
+					Vec2 n;
+					Vec2 coord[2];
+					if (Detect::convex_convex(&convexes[i], &convexes[j], &d, &n, coord)) {
+						ContactPoint cp = ContactPoint(d, coord[0], coord[1], n);
+						Collision col = Collision(&convexes[i], &convexes[j]);
+						col.addContactPoint(cp);
+						collisions.push_back(col);
+					}
+				}
+			}
 		}
 		break;
 	}
@@ -62,12 +80,31 @@ void DetectTest::Draw() {
 	switch (mode) {
 	case 0:
 		Rand * rand = Rand::instance();
-		DrawString(0 , 25 , "ì ïÔÇ∆ì ïÔÇÃè’ìÀ\nLeftClick->pointí«â¡ L->pointClear A->all clear enter->make Convex\n" , COLOR_BLACK);
+		DrawString(0 , 25 , "ì ïÔÇ∆ì ïÔÇÃè’ìÀ\nLeftClick->pointí«â¡ L->pointClear A->all clear enter->make \nConvex D->detect\n" , COLOR_BLACK);
+		//ì ïÔÇÃï`âÊ
 		for (auto con : convexes) {
 			con.Draw(con.getColor());
 		}
+		//pointÇÃï`âÊ
 		for (auto p : points) {
 			DrawPoint(p, COLOR_RED);
+		}
+		//è’ìÀÇÃï`âÊ
+		if (collisions.size() > 0) {
+			DrawString(0 , 100 , "Detect!" ,COLOR_RED);
+		}
+		for (auto col : collisions) {
+			ContactPoint cp = col.contactPoints[0];
+			DrawFormatString(300, 150, COLOR_BLACK, "ä—í ê[ìx:%f", cp.depth);
+			Vec2 pA = LtoW(cp.pointA , col.getObj1()->getC() , 0);
+			Vec2 pB = LtoW(cp.pointB , col.getObj2()->getC() , 0);
+			DrawPoint(pA, COLOR_YELLOW);
+			DrawPoint(pB, COLOR_YELLOW);
+			Vec2 n = cp.normal * cp.depth;
+			printfDx("%f\n", n.norm());
+			n = n + pA;
+			DrawSegment(Segment(pA  , n)  , COLOR_RED);
+			DrawSegment(Segment(Vec2(), cp.normal * cp.depth), COLOR_BLACK);
 		}
 		break;
 	}
