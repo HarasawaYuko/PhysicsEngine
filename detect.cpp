@@ -299,7 +299,7 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 	//辺の法線ベクトルの分離軸判定
 	//convex1
 	for (int i = 0; i < con1->getPointNum(); i++) {
-		Vec2 axis = (con1->getPointW(i) - con1->getPointW((i + 1) % 4)).normalize().normal();
+		Vec2 axis = (con1->getPointW(i) - con1->getPointW((i + 1) % con1->getPointNum())).normalize().normal();
 		projection(axis, con1, &min1, &max1);
 		projection(axis, con2, &min2, &max2);
 		float d1, d2;
@@ -319,7 +319,7 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 	}
 	//convex2
 	for (int i = 0; i < con2->getPointNum(); i++) {
-		Vec2 axis = (con2->getPointW(i) - con2->getPointW((i + 1) % 4)).normalize().normal();
+		Vec2 axis = (con2->getPointW(i) - con2->getPointW((i + 1) % con2->getPointNum())).normalize().normal();
 		projection(axis, con1, &min1, &max1);
 		projection(axis, con2, &min2, &max2);
 		float d1, d2;
@@ -346,8 +346,6 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 	float minDistance = INF;//最短距離
 	int minPattern = 0;
 	bool  minA = false;
-	Vec2 minPoint;
-	Segment minEdge;
 	int minPointIndex = -1;
 	int minEdgeIndex = -1;
 	//物体1を貫通深度より若干ずらす
@@ -363,8 +361,6 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 				//記録
 				minPattern = pattern;
 				minA = true;
-				minPoint = con1->getPointW(i);
-				minEdge = edge;
 				minDistance = dis;
 				minPointIndex = i;
 				minEdgeIndex = j;
@@ -381,8 +377,6 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 				//記録
 				minPattern = pattern;
 				minA = false;
-				minPoint = con2->getPointW(i);
-				minEdge = edge;
 				minDistance = dis;
 				minPointIndex = i;
 				minEdgeIndex = j;
@@ -394,6 +388,8 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 	con1->move(disV * -1);
 
 	//最短距離だった組み合わせの衝突点のローカル座標を設定
+	Vec2 minPoint;
+	Segment minEdge;
 	if (minA) {//Aが頂点Bが辺だった場合
 		printfDx("Aが頂点");
 		minPoint = con1->getPointW(minPointIndex);
