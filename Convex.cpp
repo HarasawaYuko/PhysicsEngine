@@ -29,6 +29,19 @@ Convex::Convex(const std::vector<Vec2> &points ,const float v_x, const float v_y
 		pointsL.push_back(pointAng[i].first - cen);
 		pointsW.push_back(pointAng[i].first);
 	}
+
+	//Šµ«ƒeƒ“ƒ\ƒ‹‚Æ¿—Ê‚ÌŒvZ
+	float I = 0.f;
+	float area = 0.f;
+	for (int i = 0; i < pointNum; i++) {
+		Vec2 e0 = pointsL[i];
+		Vec2 e1 = pointsL[(i + 1) % pointNum];
+		float cross = abs(e0.cross(e1));
+		I += (1.f / 12.f) * cross * (e0.squared() + e0.dot(e1) + e1.squared());
+		area += 0.5f * cross;
+	}
+	inertiaTensor = I/MASS_RATE;
+	mass = area/MASS_RATE;
 }
 
 void Convex::loadGraph() {

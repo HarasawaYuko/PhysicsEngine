@@ -10,7 +10,6 @@ enum Type : uint16_t {
 	CONVEX = 0b0000'0000'0000'1000
 };
 
-
 class Object {
 protected:
 	Vec2 center;//重心座標
@@ -26,6 +25,7 @@ protected:
 	float angle_v;
 	float angle;
 	float inertiaTensor;//慣性テンソル
+	static const float MASS_RATE;
 	Object(Vec2 v , Type ,float mass = 10 ,Color color = COLOR_BLACK ,bool act = true , float ang = 0.f , float ang_v = 0.f);
 public:
 	virtual void Draw()const = 0;
@@ -45,4 +45,5 @@ public:
 	virtual std::string toString()const = 0;
 	virtual void setColor(Color color);
 	unsigned int getColor() const;
+	float getI()const;
 };

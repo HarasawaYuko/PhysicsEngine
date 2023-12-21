@@ -21,7 +21,7 @@ Box::Box(const float cen_x, const float cen_y, const float h = 40.0f, const floa
 	pointsW.emplace_back(center.x + width / 2, center.y - height / 2);
 	pointsW.emplace_back(center.x + width / 2, center.y + height / 2);
 
-	pointNum = pointsW.size();
+	pointNum = (int)pointsW.size();
 }
 
 void Box::loadGraph(){
