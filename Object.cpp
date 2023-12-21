@@ -3,6 +3,8 @@
 static std::vector<uint8_t> usedId;
 static const int ObjMax = 100;
 
+const float Object::MASS_RATE = 1600.f;
+
 float Object::getM() {
 	return mass;
 }
@@ -75,4 +77,9 @@ void Object::setColor(Color c) {
 
 unsigned int Object::getColor() const{
 	return color;
+}
+
+//Šµ«ƒeƒ“ƒ\ƒ‹‚Ìæ“¾
+float Object::getI()const {
+	return inertiaTensor;
 }

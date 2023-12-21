@@ -157,6 +157,7 @@
     <ClCompile Include="MathTest.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="ObjectTest.cpp" />
     <ClCompile Include="Pair.cpp" />
     <ClCompile Include="Rand.cpp" />
     <ClCompile Include="Box.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="MathTest.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="ObjectTest.h" />
     <ClInclude Include="Pair.h" />
     <ClInclude Include="Rand.h" />
     <ClInclude Include="Box.h" />

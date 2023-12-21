@@ -3,9 +3,10 @@
 #include "Rec.h"
 #include "DetectTest.h"
 #include "MathTest.h"
+#include "ObjectTest.h"
 
 SceneMgr::SceneMgr() {
-	m_scene = (BaseScene*)new DetectTest(this);
+	m_scene = (BaseScene*)new ObjectTest(this);
 }
 
 void SceneMgr::Initialize() {

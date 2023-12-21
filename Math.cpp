@@ -44,6 +44,11 @@ float Vec2::norm() const {
 	return (float)sqrt(x * x + y * y);
 }
 
+//“ñæ‚Ìæ“¾
+float Vec2::squared()const {
+	return (float)(x * x + y * y);
+}
+
 //‚Q“_ŠÔ‚Ì‹——£
 float Vec2::distance(const Vec2 vec) const{
 	Vec2 sub = *this - vec;

@@ -48,7 +48,7 @@ void Collision::Draw() const{
 		Vec2 pB = LtoW(cp.pointB, pair.second->getC(), pair.second->getAngle());
 		//Vec2 pB = LtoW();
 		//衝突点の描画
-		DrawCircle(pA.x , WIN_SIZE_Y - pA.y, 3 , COLOR_RED);
+		DrawCircle((int)pA.x , (int)(WIN_SIZE_Y - pA.y), 3 , COLOR_RED);
 		DrawCircle(pB.x, WIN_SIZE_Y - pB.y,3, COLOR_RED);
 		//法線ベクトルの描画
 		Vec2 nVec = pA + (cp.normal * 100);
