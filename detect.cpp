@@ -395,6 +395,7 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 
 	//最短距離だった組み合わせの衝突点のローカル座標を設定
 	if (minA) {//Aが頂点Bが辺だった場合
+		printfDx("Aが頂点");
 		minPoint = con1->getPointW(minPointIndex);
 		minEdge = con2->getEdgeW(minEdgeIndex);
 		coord[0] = WtoL(minPoint, con1->getC(), con1->getAngle());
@@ -414,6 +415,7 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 		}
 	}
 	else {
+		printfDx("Bが頂点");
 		minPoint = con2->getPointW(minPointIndex);
 		minEdge = con1->getEdgeW(minEdgeIndex);
 		coord[1] = WtoL(minPoint, con2->getC(), con2->getAngle());

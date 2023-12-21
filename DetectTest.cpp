@@ -35,6 +35,9 @@ void DetectTest::Update() {
 	if (KeyBoard::instance()->hitNow(KEY_INPUT_M)) {
 		mode--;
 	}
+	if (KeyBoard::instance()->hitNow(KEY_INPUT_C)) {
+		m_sceneChanger->ChangeScene(Scene_TEST_Math);
+	}
 
 	switch (mode) {
 	case 0:
@@ -88,6 +91,9 @@ void DetectTest::Draw() {
 		int i = 0;
 		for (auto con : convexes) {
 			con.Draw(con.getColor());
+			for (int j = 0; j < con.getPointNum(); j++) {
+				DrawPoint(con.getPointW(j) , COLOR_ORANGE);
+			}
 			DrawStrP(con.getC() , std::to_string(i), COLOR_BLUE);
 			i++;
 		}
@@ -111,13 +117,10 @@ void DetectTest::Draw() {
 			DrawStrP(pB, "B" , COLOR_YELLOW);
 			SetFontSize(20);
 			Vec2 n = cp.normal * cp.depth;
-			n = n + pA;
-			DrawSegment(Segment(pA  , n)  , COLOR_RED);
-			DrawSegment(Segment(Vec2(), cp.normal * cp.depth), COLOR_BLACK);
+			n = n + pB;
+			DrawSegment(Segment(n  , pB)  , COLOR_RED);
 		}
 		//‚»‚Ì‘¼•`‰æ
-		Debug* debug = Debug::instance();
-		DrawSegment(debug->minEdgeB , COLOR_GREEN);
 		break;
 	}
 }
