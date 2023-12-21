@@ -104,7 +104,7 @@ float getDistance(const Vec2& point, const Segment &seg , int* pattern) {
 		*pattern = 0;
 		return point.distance(seg.start);
 	}
-	if ((StoE * -1).dot(EtoP) ) {
+	if ((StoE * -1).dot(EtoP) < 0 ) {
 		*pattern = 1;
 		return point.distance(seg.end);
 	}

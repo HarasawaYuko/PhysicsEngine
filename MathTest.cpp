@@ -12,6 +12,8 @@ static Segment line;
 static Vec2 point;
 static Vec2 contactPoint;
 static bool start = true;
+static float dis;
+static int  pattern;
 
 //なす角
 static bool p0set = true;
@@ -47,7 +49,7 @@ void MathTest::Update() {
 		line.end = Vec2();
 	}
 	if (KeyBoard::instance()->hitNow(KEY_INPUT_C)) {
-		m_sceneChanger->ChangeScene(Scene_Game);
+		m_sceneChanger->ChangeScene(Scene_TEST_Detect);
 	}
 	if (KeyBoard::instance()->hitNow(KEY_INPUT_P)) {
 		mode++;
@@ -71,13 +73,14 @@ void MathTest::Update() {
 			point.set(Mouse::instance()->getX(), Mouse::instance()->getY());
 		}
 		{
-			int pattern;
-			float dis = getDistance(point, line, &pattern);
-			Vec2 edgeVec = (line.end - line.start).normalize();
-			Vec2 StoP = point - line.start;
-			//始点からの距離を求める
-			float dis_ = StoP.dot(edgeVec);
-			contactPoint = line.start + (edgeVec * dis_);
+			if (KeyBoard::instance()->hitNow(KEY_INPUT_D)) {
+				dis = getDistance(point, line, &pattern);
+				Vec2 edgeVec = (line.end - line.start).normalize();
+				Vec2 StoP = point - line.start;
+				//始点からの距離を求める
+				float dis_ = StoP.dot(edgeVec);
+				contactPoint = line.start + (edgeVec * dis_);
+			}
 		}
 		break;
 		//なす角
@@ -118,6 +121,10 @@ void MathTest::Draw() {
 		DrawSegment(line, COLOR_BLUE);
 		DrawPoint(point, COLOR_RED);
 		DrawPoint(contactPoint, COLOR_GREEN);
+		SetFontSize(30);
+		DrawFormatString(0, 300 , COLOR_RED , "距離:%f" , dis);
+		DrawFormatString(0, 330, COLOR_RED, "パターン:%d", pattern);
+		SetFontSize(20);
 		break;
 	case 1:
 		DrawString(0 , 23 , "rightClick->緑 leftClick->青", COLOR_BLACK);

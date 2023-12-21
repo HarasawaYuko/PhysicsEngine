@@ -348,6 +348,8 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 	bool  minA = false;
 	Vec2 minPoint;
 	Segment minEdge;
+	int minPointIndex = -1;
+	int minEdgeIndex = -1;
 	//物体1を貫通深度より若干ずらす
 	Vec2 disV = axisMax * (abs(*depth) * 2.f);//ずらすベクトル
 	con1->move(disV);
@@ -364,13 +366,11 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 				minPoint = con1->getPointW(i);
 				minEdge = edge;
 				minDistance = dis;
+				minPointIndex = i;
+				minEdgeIndex = j;
 			}
 		}
 	}
-	//DEBUG
-	Debug* debug = Debug::instance();
-	debug->minPointA = minPoint;
-	debug->minEdgeB = minEdge;
 	//物体2の頂点から見た最短距離
 	for (int i = 0; i < con2->getPointNum(); i++) {
 		for (int j = 0; j < con1->getPointNum(); j++) {
@@ -384,11 +384,20 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 				minPoint = con2->getPointW(i);
 				minEdge = edge;
 				minDistance = dis;
+				minPointIndex = i;
+				minEdgeIndex = j;
 			}
 		}
 	}
+	
+	//ずらした分戻す
+	con1->move(disV * -1);
+
 	//最短距離だった組み合わせの衝突点のローカル座標を設定
 	if (minA) {//Aが頂点Bが辺だった場合
+		printfDx("Aが頂点");
+		minPoint = con1->getPointW(minPointIndex);
+		minEdge = con2->getEdgeW(minEdgeIndex);
 		coord[0] = WtoL(minPoint, con1->getC(), con1->getAngle());
 		switch (minPattern) {
 		case 0:
@@ -406,6 +415,9 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 		}
 	}
 	else {
+		printfDx("Bが頂点");
+		minPoint = con2->getPointW(minPointIndex);
+		minEdge = con1->getEdgeW(minEdgeIndex);
 		coord[1] = WtoL(minPoint, con2->getC(), con2->getAngle());
 		switch (minPattern) {
 		case 0:
@@ -423,8 +435,12 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 		}
 	}
 
-	//ずらした分戻す
-	con1->move(disV * -1);
+
+	//DEBUG
+	Debug* debug = Debug::instance();
+	debug->minPointA = minPoint;
+	debug->minEdgeB = minEdge;
+
 
 	return true;
 }
