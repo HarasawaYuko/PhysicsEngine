@@ -45,7 +45,8 @@ float getRad(const float);
 float getDegree(const float);
 
 //“_‚Æ’¼ü‚Ì‹——£‚ğ‹‚ß‚é
-float getDistance(const Vec2& , const Segment &);
+float getDistanceLine(const Vec2& , const Segment &);
+float getDistance(const Vec2&, const Segment&);
 float getDistance(const Vec2&, const Segment & , int*);
 
 //‚È‚·Šp‚ğæ“¾

@@ -6,7 +6,7 @@
 #include "ObjectTest.h"
 
 SceneMgr::SceneMgr() {
-	m_scene = (BaseScene*)new ObjectTest(this);
+	m_scene = (BaseScene*)new DetectTest(this);
 }
 
 void SceneMgr::Initialize() {

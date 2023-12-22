@@ -91,7 +91,7 @@ float getDegree(const float rad) {
 }
 
 //点と直線の距離
-float getDistance(const Vec2& point , const Segment& seg) {
+float getDistanceLine(const Vec2& point , const Segment& seg) {
 	return abs((point - seg.start).cross(seg.end - seg.start)) / (seg.end - seg.start).norm();
 }
 
@@ -116,6 +116,26 @@ float getDistance(const Vec2& point, const Segment &seg , int* pattern) {
 	*pattern = 2;
 	return getDistance(point , seg);
 }
+
+/*
+* 点と線分の距離
+* Patternなし
+*/
+float getDistance(const Vec2& point, const Segment& seg) {
+	//位置関係で場合分け
+	Vec2 StoE = seg.end - seg.start;
+	Vec2 StoP = point - seg.start;
+	Vec2 EtoP = point - seg.end;
+	if (StoE.dot(StoP) < 0) {
+		return point.distance(seg.start);
+	}
+	if ((StoE * -1).dot(EtoP) < 0) {
+		return point.distance(seg.end);
+	}
+	return getDistanceLine(point, seg);
+}
+
+
 
 //cen->p0 と cen->p1 のなす角を求める(反時計回り)
 float getTheta(const Vec2& cen , const Vec2& p0 , const Vec2&p1) {
