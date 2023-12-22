@@ -59,7 +59,7 @@ void MathTest::Update() {
 	}
 
 	switch (mode) {
-	case 0:
+	case 0://“_‚Æü•ª‚Ì‹——£
 		if (Mouse::instance()->getClickNow(LEFT_CLICK)) {
 			if (start) {
 				line.start.set(Mouse::instance()->getX(), Mouse::instance()->getY());

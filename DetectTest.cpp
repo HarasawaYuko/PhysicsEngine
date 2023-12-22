@@ -13,6 +13,7 @@ static int mode = 0;
 static std::vector<Convex> convexes;
 static std::vector<Vec2> points;
 static std::vector<Collision> collisions;
+static Vec2 contactP[2];
 
 DetectTest::DetectTest(SceneChanger* changer)
 	:BaseScene(changer)
@@ -69,6 +70,8 @@ void DetectTest::Update() {
 						ContactPoint cp = ContactPoint(d, coord[0], coord[1], n);
 						Collision col = Collision(&convexes[i], &convexes[j]);
 						col.addContactPoint(cp);
+						contactP[0] = LtoW(cp.pointA, convexes[0].getC(), convexes[0].getAngle());
+						contactP[1] = LtoW(cp.pointB, convexes[1].getC(), convexes[1].getAngle());
 						collisions.push_back(col);
 					}
 				}
@@ -119,6 +122,8 @@ void DetectTest::Draw() {
 			Vec2 n = cp.normal * cp.depth;
 			n = n + pB;
 			DrawSegment(Segment(n  , pB)  , COLOR_RED);
+			DrawString(20 , 400 , contactP[0].toString().c_str(), COLOR_RED);
+			DrawString(20, 430, contactP[1].toString().c_str(), COLOR_RED);
 		}
 		//‚»‚Ì‘¼•`‰æ
 		break;
