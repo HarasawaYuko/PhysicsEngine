@@ -14,6 +14,12 @@ static std::vector<Vec2> points;
 static Convex* convex;
 static bool make = false;
 
+//“Ê•ï‰ñ“]
+static bool rotation = false;
+static Vec2 vel;
+static float angV = -Pi/2;
+static float dot;
+
 ObjectTest::ObjectTest(SceneChanger* changer)
 	:BaseScene(changer)
 {}
@@ -39,9 +45,9 @@ void ObjectTest::Update() {
 		m_sceneChanger->ChangeScene(Scene_TEST_Math);
 	}
 
+	Rand* rand = Rand::instance();
 	switch (mode) {
 	case 0:
-		Rand * rand = Rand::instance();
 		//“Ê•ï‚Ìì¬
 		if (Mouse::instance()->getClickNow(LEFT_CLICK)) {
 			points.emplace_back(Mouse::instance()->getX(), Mouse::instance()->getY());
@@ -62,15 +68,45 @@ void ObjectTest::Update() {
 			make = true;
 		}
 		break;
+	case 1:
+		if (Mouse::instance()->getClickNow(LEFT_CLICK)) {
+			points.emplace_back(Mouse::instance()->getX(), Mouse::instance()->getY());
+		}
+		if (KeyBoard::instance()->hitNow(KEY_INPUT_L)) {
+			points.clear();
+		}
+		if (KeyBoard::instance()->hitNow(KEY_INPUT_A)) {
+			delete convex;
+			make = false;
+			rotation = false;
+			points.clear();
+		}
+		if (KeyBoard::instance()->hitNow(KEY_INPUT_RETURN) && points.size() >= 3) {
+			delete convex;
+			convex = new Convex(points,0,0,0,0,true);
+			convex->setColor(GetColor(rand->get(0, 255), rand->get(0, 255), rand->get(0, 255)));
+			points.clear();
+			((Object*)convex)->setAngV(angV);
+			make = true;
+		}
+		if (KeyBoard::instance()->hitNow(KEY_INPUT_R)) {
+			rotation = !rotation;
+		}
+		if (rotation) {
+			convex->updatePos(0.1f);
+			vel = convex->getCirV(convex->getPointL(0));
+			dot = (convex->getPointW(0)-convex->getC()).dot(vel);
+		}
+		break;
 	}
 }
 
 void ObjectTest::Draw() {
 	SetFontSize(20);
 	DrawString(640, 0, "ObjectTest", COLOR_BLACK);
+	DrawString(600 , 22 ,"P->mode‚ði‚ß‚é M->mode‚ð–ß‚·" , COLOR_BLACK);
 	switch (mode) {
 	case 0:
-		Rand * rand = Rand::instance();
 		DrawString(0, 0, "“Ê•ï‚Æ“Ê•ï‚Ì¶¬\nLeftClick->point’Ç‰Á L->pointClear A->all clear enter->make \nConvex D->detect\n", COLOR_BLACK);
 		//point
 		for (auto p : points) {
@@ -83,7 +119,28 @@ void ObjectTest::Draw() {
 			DrawFormatString(0, 110, COLOR_RED, "Ž¿—Ê:%f", convex->getM());
 		}
 		break;
+	case 1:
+		DrawString(0, 0, "“Ê•ï‚Ì‰ñ“]\nLeftClick->point’Ç‰Á L->pointClear A->all clear enter->make \nConvex R->‰ñ“]\n", COLOR_BLACK);
+		//point
+		for (auto p : points) {
+			DrawPoint(p, COLOR_RED);
+		}
+		//“Ê•ï‚Ì•`‰æ
+		if (make) {
+			convex->Draw(convex->getColor());
+			DrawFormatString(0, 80, COLOR_RED, "Šp‘¬“x rad:%f fre:%f", convex->getAngV() , getDegree(convex->getAngV()));
+			DrawFormatString(0, 110, COLOR_RED, "“àÏ %f", dot);
+			DrawFormatString(0, 140, COLOR_BLACK, "‘å‚«‚³ %f", vel.norm());
+			//printfDx("%f \n", convex->getPointL(0).toString().c_str());
+			//printfDx("vel %s\n" , vel.toString().c_str());
+			//‘¬“xƒxƒNƒgƒ‹‚Ì•`‰æ
+			Segment vSeg = Segment(convex->getPointW(0) , (convex->getPointW(0)+vel));
+			DrawSegment(vSeg, COLOR_RED);
+			DrawSegment(Segment(convex->getC() , convex->getPointW(0)), COLOR_BLACK);
+		}
+		break;
 	}
+
 }
 
 void ObjectTest::Finalize() {

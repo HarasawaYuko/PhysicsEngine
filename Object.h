@@ -24,7 +24,7 @@ protected:
 	uint8_t id;
 	int index;
 	float angle_v;//角速度　ラジアン
-	float angle;
+	float angle;//回転角　ラジアン
 	float inertiaTensor;//慣性テンソル
 	static const float MASS_RATE;
 	Object(Vec2 v , Type ,float mass = 10 ,Color color = COLOR_BLACK ,bool act = true , float ang = 0.f , float ang_v = 0.f);
@@ -33,6 +33,9 @@ public:
 	float getM();
 	Vec2 getC()const;
 	Vec2 getV()const;
+	void setAngle(const float);
+	void setAngV(const float);
+	void updateAngle(const float);
 	float getAngle()const;
 	float getAngV()const;
 	bool isActive()const;
@@ -50,4 +53,5 @@ public:
 	virtual void setColor(Color color);
 	unsigned int getColor() const;
 	float getI()const;
+	Vec2 getCirV(const Vec2&)const;
 };
