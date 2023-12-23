@@ -23,4 +23,5 @@ public:
 	void addContactPoint(const ContactPoint);
 	void addContactPoint(const float , const Vec2 ,const Vec2 , const Vec2);
 	void Draw()const;
+	ContactPoint getCp(const int)const;
 };

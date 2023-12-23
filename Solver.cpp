@@ -1,13 +1,13 @@
-#include "Constraints.h"
+#include "Solver.h"
 
 static const float e_CC = 0.8f; //円と円の反発係数
 static float k_CC;//バネ係数
 
-void Constraint::initialize(const float timeStep) {
+void Solver::initialize(const float timeStep) {
 	k_CC = (float)(1 / (timeStep));
 }
 
-bool Constraint::circle_line(Collision &col) {
+bool Solver::circle_line(Collision &col) {
 	//Circle* cir = static_cast<Circle*>(col.getObj1());
 	//Line* line = static_cast<Line*>(col.getObj2());
 	////相対速度を取得
@@ -28,7 +28,7 @@ bool Constraint::circle_line(Collision &col) {
 	return true;
 }
 
-bool Constraint::circle_circle(Collision &col ) {
+bool Solver::circle_circle(Collision &col ) {
 	//Circle* cir1 = static_cast<Circle*>(col.getObj1());
 	//Circle* cir2 = static_cast<Circle*>(col.getObj2());
 	////相対速度を取得
@@ -47,4 +47,50 @@ bool Constraint::circle_circle(Collision &col ) {
 	//cir1->addV(col.getN()*(c/cir1->getM()));
 	//cir2->addV(col.getN() * (-c / cir2->getM()));
 	return true;
+}
+
+void Solver::solve(const std::vector<Object*>& objects ,std::vector<Collision>& cols) {
+	//ソルバーボディを作成
+	SolverBody* solverBodies;
+	solverBodies = new SolverBody[objects.size()];
+	for (int i = 0; i < objects.size(); i++) {
+		Object* obj = objects[i];
+		if (obj->isActive()) {
+			solverBodies[i] = SolverBody(obj->getAngle(), 1.f/obj->getM(), 1.f/obj->getI());
+		}
+		else {
+			//動かない物体は m,I = ∞として計算
+			solverBodies[i] = SolverBody(obj->getAngle(), 0 ,0);
+		}
+	}
+
+	//拘束を設定
+	for (int i = 0; i < cols.size(); i++) {
+		//プロキシを作成
+		const Collision& col = cols[i];//衝突
+
+		Object* objA = cols[i].getObj1();
+		SolverBody bobyA = solverBodies[objA->getIndex()];
+		Object* objB = cols[i].getObj2();
+		SolverBody bodyB = solverBodies[objB->getIndex()];
+
+		for (int j = 0; j < col.getContactNum(); j++) {
+			ContactPoint cp = col.getCp(j);
+
+			//相対速度(ワールド座標)を計算
+			Vec2 vA = Vec2();//ワールド座標での衝突点に置ける速度
+			//並進速度を計算
+			vA = vA + objA->getV();
+			//回転速度を計算
+			float rotaV = cp.pointA.norm() * objA->getAngV();//大きさ
+			if (objA->getAngV() > 0) {
+				//向きを決定
+			}
+			else {
+
+			}
+		}
+	}
+
+	delete[] solverBodies;
 }

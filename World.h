@@ -7,7 +7,7 @@
 #include "Pair.h"
 #include "detect.h"
 #include "Collision.h"
-#include "Constraints.h"
+#include "Solver.h"
 
 //物理シミュレーションクラス
 

@@ -7,7 +7,7 @@ World::World(float timeStep)
 
 void World::initialize() {
 	//初期化
-	Constraint::initialize(TIME_STEP);
+	Solver::initialize(TIME_STEP);
 
 
 	//Line設置
@@ -31,9 +31,14 @@ void World::physicsSimulate() {
 
 void World::add(Object* obj) {
 	objects.push_back(obj);
+	//オブジェクト種類によってソート
 	std::sort(objects.begin(), objects.end() , [](const Object* a, const Object* b) {
 		return (uint16_t)a->getType() < (uint16_t)b->getType();
 		});
+	//インデックスの振り直し
+	for (int i = 0; i < objects.size(); i++) {
+		objects[i]->setIndex(i);
+	}
 }
 
 /***private***/
@@ -69,7 +74,7 @@ void World::detectCollision() {
 
 			//衝突した物体によって分類
 			switch (objects[i]->getType() | objects[j]->getType()) {
-			case Pair::CIRCLE_CIRCLE:
+			case Kind::CIRCLE_CIRCLE:
 				//i:circle  j:circle
 				if (Detect::circle_circle(objects[i], objects[j] ,&depth , &nVec , coord)) {
 					objects[i]->setTouch();
@@ -77,14 +82,14 @@ void World::detectCollision() {
 					contact = true;
 				}
 				break;
-			case Pair::CIRCLE_LINE:
+			case Kind::CIRCLE_LINE:
 				//i:circle  j:line
 				if (Detect::circle_line(objects[i], objects[j], &depth, &nVec, coord)) {
 					objects[i]->setTouch();
 					contact = true;
 				}
 				break;
-			case Pair::BOX_BOX:
+			case Kind::BOX_BOX:
 				//i:box j:box
 				
 				if (Detect::box_box(objects[i], objects[j], &depth, &nVec, coord)) {
@@ -117,10 +122,10 @@ void World::solveConstraints() {
 	for (auto col : collisions) {
 		switch (col.getType()) {
 		case CIRCLE_LINE:
-			Constraint::circle_line(col);
+			Solver::circle_line(col);
 			break;
 		case CIRCLE_CIRCLE:
-			Constraint::circle_circle(col);
+			Solver::circle_circle(col);
 			break;
 		}
 	}
@@ -129,16 +134,25 @@ void World::solveConstraints() {
 //位置の更新
 void World::integrate() {
 	auto itr = objects.begin();
+	bool isErase = false;//オブジェクトが削除されたか
 	while (itr != objects.end())
 	{
 		(*itr)->updatePos(TIME_STEP);
 		if (!(*itr)->isValid())
 		{
 			itr = objects.erase(itr);
+			isErase = true;
 		}
 		else
 		{
 			itr++;
+		}
+	}
+	//削除があったら
+	if (isErase) {
+		//インデックスの振り直し
+		for (int i = 0; i < objects.size(); i++) {
+			objects[i]->setIndex(i);
 		}
 	}
 }

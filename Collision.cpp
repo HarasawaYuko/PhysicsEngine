@@ -55,3 +55,8 @@ void Collision::Draw() const{
 		DrawLine(pA.x, WIN_SIZE_Y - pA.y,nVec.x , WIN_SIZE_Y - nVec.y  , COLOR_RED , 3.f);
 	}
 }
+
+ContactPoint Collision::getCp(const int i)const {
+	assert(i < 0 || contactNum <= i);
+	return contactPoints[i];
+}

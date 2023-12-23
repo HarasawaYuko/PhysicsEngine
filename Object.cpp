@@ -25,6 +25,10 @@ float Object::getAngle()const {
 	return angle;
 }
 
+float Object::getAngV()const {
+	return angle_v;
+}
+
 bool Object::isActive()const {
 	return active;
 }
@@ -46,6 +50,14 @@ void Object::setTouch() {
 
 void Object::unTouch() {
 	this->touch = false;
+}
+
+int Object::getIndex()const {
+	return index;
+}
+
+void Object::setIndex(const int i) {
+	index = i;
 }
 
 void Object::updatePos(const float step) {
