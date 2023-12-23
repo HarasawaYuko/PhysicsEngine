@@ -82,13 +82,13 @@ void Solver::solve(const std::vector<Object*>& objects ,std::vector<Collision>& 
 			//•Ài‘¬“x‚ðŒvŽZ
 			vA = vA + objA->getV();
 			//‰ñ“]‘¬“x‚ðŒvŽZ
-			float rotaV = cp.pointA.norm() * objA->getAngV();//‘å‚«‚³
-			if (objA->getAngV() > 0) {
-				//Œü‚«‚ðŒˆ’è
-			}
-			else {
+			//float rotaV = cp.pointA.norm() * objA->getAngV();//‘å‚«‚³
+			//if (objA->getAngV() > 0) {
+			//	//Œü‚«‚ðŒˆ’è
+			//}
+			//else {
 
-			}
+			//}
 		}
 	}
 

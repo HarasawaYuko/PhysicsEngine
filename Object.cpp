@@ -21,6 +21,18 @@ Vec2 Object::getV()const{
 	return velocity;
 }
 
+void Object::setAngle(const float ang) {
+	angle = ang;
+}
+
+void Object::setAngV(const float ang_v) {
+	angle_v = ang_v;
+}
+
+void Object::updateAngle(const float step) {
+	angle += (angle_v * step);
+}
+
 float Object::getAngle()const {
 	return angle;
 }
@@ -94,4 +106,13 @@ unsigned int Object::getColor() const{
 //慣性テンソルの取得
 float Object::getI()const {
 	return inertiaTensor;
+}
+
+//円運動の速度を取得　point ローカル座標
+//return ワールド座標での速度
+Vec2 Object::getCirV(const Vec2& point)const {
+	//大きさを取得 v = rω
+	float length = point.norm() * angle_v;
+	Vec2 result = point.normal().normalize() * length;
+	return result.rotation(angle);
 }

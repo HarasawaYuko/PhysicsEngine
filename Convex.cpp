@@ -55,11 +55,9 @@ void Convex::updatePos(const float step) {
 	}
 	center = center + (velocity * step);
 	angle = angle + (angle_v * step);
-	for (int i = 0; i < 4; i++) {
-		//回転後のローカル座標を求める
-		pointsL[i] = pointsL[i].rotation(angle);
+	for (int i = 0; i < pointNum; i++) {
 		//ワールド座標に反映
-		pointsW[i] = center + pointsL[i];
+		pointsW[i] = center + pointsL[i].rotation(angle);
 	}
 }
 
@@ -105,10 +103,17 @@ std::string Convex::toString()const {
 }
 
 Vec2 Convex::getPointW(const int i) const {
-	if (i < 0 || pointsW.size() <= i) {
+	if (i < 0 || pointNum <= i) {
 		return Vec2();
 	}
 	return pointsW[i];
+}
+
+Vec2 Convex::getPointL(const int i) const {
+	if (i < 0 || pointNum <= i) {
+		return Vec2();
+	}
+	return pointsL[i];
 }
 
 int Convex::getPointNum() const {

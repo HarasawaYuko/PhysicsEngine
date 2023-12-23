@@ -21,6 +21,7 @@ public:
 	bool isValid()const override;
 	std::string toString()const override;
 	Vec2 getPointW(const int)const;
+	Vec2 getPointL(const int)const;
 	int getPointNum()const;
 	void move(Vec2);
 	Segment getEdgeW(const int&)const;
