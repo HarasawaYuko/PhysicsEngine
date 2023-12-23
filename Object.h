@@ -22,7 +22,8 @@ protected:
 	const Type type;
 	Color color;
 	uint8_t id;
-	float angle_v;
+	int index;
+	float angle_v;//角速度　ラジアン
 	float angle;
 	float inertiaTensor;//慣性テンソル
 	static const float MASS_RATE;
@@ -33,12 +34,15 @@ public:
 	Vec2 getC()const;
 	Vec2 getV()const;
 	float getAngle()const;
+	float getAngV()const;
 	bool isActive()const;
 	uint8_t getId()const;
 	void setMass(const float);
 	void addV(const Vec2);
 	void setTouch();
 	void unTouch();
+	int getIndex()const;
+	void setIndex(const int);
 	virtual void updatePos(const float);
 	Type getType()const;
 	virtual bool isValid()const = 0;

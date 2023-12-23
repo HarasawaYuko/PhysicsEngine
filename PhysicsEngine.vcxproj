@@ -142,7 +142,8 @@
     <ClCompile Include="BaseScene.cpp" />
     <ClCompile Include="Circle.cpp" />
     <ClCompile Include="Collision.cpp" />
-    <ClCompile Include="Constraints.cpp" />
+    <ClCompile Include="Constraint.cpp" />
+    <ClCompile Include="Solver.cpp" />
     <ClCompile Include="ContactPoint.cpp" />
     <ClCompile Include="Convex.cpp" />
     <ClCompile Include="DEBUG.cpp" />
@@ -163,6 +164,7 @@
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="Rec.cpp" />
     <ClCompile Include="SceneMgr.cpp" />
+    <ClCompile Include="SolverBody.cpp" />
     <ClCompile Include="World.cpp" />
     <ClCompile Include="SceneChanger.cpp" />
     <ClCompile Include="Task.cpp" />
@@ -172,7 +174,8 @@
     <ClInclude Include="BaseScene.h" />
     <ClInclude Include="Circle.h" />
     <ClInclude Include="Collision.h" />
-    <ClInclude Include="Constraints.h" />
+    <ClInclude Include="Constraint.h" />
+    <ClInclude Include="Solver.h" />
     <ClInclude Include="ContactPoint.h" />
     <ClInclude Include="Convex.h" />
     <ClInclude Include="DEBUG.h" />
@@ -192,6 +195,7 @@
     <ClInclude Include="Rand.h" />
     <ClInclude Include="Box.h" />
     <ClInclude Include="Rec.h" />
+    <ClInclude Include="SolvetBody.h" />
     <ClInclude Include="World.h" />
     <ClInclude Include="SceneChanger.h" />
     <ClInclude Include="SceneMgr.h" />
