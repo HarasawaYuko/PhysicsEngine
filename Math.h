@@ -40,6 +40,11 @@ struct Matrix {
 	std::string toString()const;
 	void identity();//’PˆÊs—ñ‚É‚·‚é
 	Matrix product(const Matrix&);//s—ñÏ
+	
+	Matrix operator+(const float)const;
+	Matrix operator+(const Matrix&)const;
+	Matrix operator*(const float)const;
+	Matrix operator*(const Matrix&)const;
 };
 
 //ü•ª

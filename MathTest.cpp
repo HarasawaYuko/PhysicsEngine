@@ -128,7 +128,7 @@ void MathTest::Update() {
 			mat2->matrix[0][1] = 2.f;
 			mat2->matrix[1][0] = 5.f;
 			mat2->matrix[1][1] = 6.f;
-			pro = mat1->product(*mat2);
+			pro = (*mat1)+(*mat2);
 		}
 		if (KeyBoard::instance()->hitNow(KEY_INPUT_D)) {
 			delete matrix;
