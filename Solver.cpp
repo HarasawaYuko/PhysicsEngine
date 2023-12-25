@@ -79,16 +79,18 @@ void Solver::solve(const std::vector<Object*>& objects ,std::vector<Collision>& 
 
 			//相対速度(ワールド座標)を計算
 			Vec2 vA = Vec2();//ワールド座標での衝突点に置ける速度
+			Vec2 vB = Vec2();
 			//並進速度を計算
 			vA = vA + objA->getV();
+			vB = vB + objB->getV();
 			//回転速度を計算
-			//float rotaV = cp.pointA.norm() * objA->getAngV();//大きさ
-			//if (objA->getAngV() > 0) {
-			//	//向きを決定
-			//}
-			//else {
+			vA = vA + objA->getCirV(cp.pointA);
+			vB = vB + objB->getCirV(cp.pointB);
+			//相対速度
+			Vec2 Vab = vA - vB;
 
-			//}
+			//行列Kを計算
+
 		}
 	}
 
