@@ -181,6 +181,16 @@ Matrix Matrix::operator*(const Matrix& mat)const {
 	return result;
 }
 
+Matrix Matrix::operator-(const Matrix& mat)const {
+	Matrix result = Matrix(row, column);
+	for (int i = 0; i < row; i++) {
+		for (int j = 0; j < column; j++) {
+			result.matrix[i][j] = matrix[i][j] - mat.matrix[i][j];
+		}
+	}
+	return result;
+}
+
 Segment::Segment(const Vec2 s , const Vec2 e) 
 	:start(s) , end(e)
 {}

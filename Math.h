@@ -45,6 +45,7 @@ struct Matrix {
 	Matrix operator+(const Matrix&)const;
 	Matrix operator*(const float)const;
 	Matrix operator*(const Matrix&)const;
+	Matrix operator-(const Matrix&)const;
 };
 
 //ü•ª
