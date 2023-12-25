@@ -17,7 +17,7 @@ static bool make = false;
 //“Ê•ï‰ñ“]
 static bool rotation = false;
 static Vec2 vel;
-static float angV = -Pi/2;
+static float angV = Pi/2;
 static float dot;
 
 ObjectTest::ObjectTest(SceneChanger* changer)

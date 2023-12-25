@@ -31,6 +31,23 @@ public:
 	std::string toString()const;
 };
 
+struct Matrix {
+	int row;//列
+	int column;//行
+	std::vector<std::vector<float>> matrix;//[row][column]
+	
+	Matrix(const int , const int);
+	std::string toString()const;
+	void identity();//単位行列にする
+	Matrix product(const Matrix&);//行列積
+	
+	Matrix operator+(const float)const;
+	Matrix operator+(const Matrix&)const;
+	Matrix operator*(const float)const;
+	Matrix operator*(const Matrix&)const;
+	Matrix operator-(const Matrix&)const;
+};
+
 //線分
 struct Segment {
 public:

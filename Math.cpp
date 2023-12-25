@@ -76,6 +76,121 @@ std::string Vec2::toString() const
 	return std::to_string(x) + "," + std::to_string(y);
 }
 
+/**行列の実装**/
+
+//row 列　column 行
+Matrix::Matrix(const int row, const int column) 
+	:row(row) , column(column)
+{
+	matrix.resize(row);
+	for (int i = 0; i < row; i++) {
+		matrix[i].resize(column);
+	}
+}
+
+void Matrix::identity() {
+	//単位行列のみ
+	if (row != column) {
+		return;
+	}
+	for (int i = 0; i < row; i++) {
+		for (int j = 0; j < column; j++) {
+			if (i == j) {
+				matrix[i][j] = 1.f;
+			}
+			else {
+				matrix[i][j] = 0.f;
+			}
+		}
+	}
+}
+
+
+//行列積 right...右辺
+Matrix Matrix::product(const Matrix& right) {
+	//行列の形を確認する
+	if (this->row != right.column) {
+		assert(false);
+		return Matrix(0 ,0);
+	}
+	Matrix result = Matrix(this->column , right.row);
+	for (int i = 0; i < this->column; i++) {
+		for (int j = 0; j < right.row; j++) {
+			float element = 0.f;
+			for (int k = 0; k < this-> row ; k++) {
+				element += this->matrix[k][i] * right.matrix[j][k];
+			}
+			result.matrix[j][i] = element;
+		}
+	}
+	return result;
+}
+
+
+std::string Matrix::toString() const {
+	std::string str;
+	for (int i = 0; i < column ; i++) {
+		for (int j = 0; j < row; j++) {
+			char tmp[255];
+			sprintf_s(tmp ,"%6.1f", matrix[j][i]);
+			str += std::string(tmp);
+			str += ",";
+		}
+		str += "\n";
+	}
+	return str;
+}
+
+Matrix Matrix::operator+(const float k)const {
+	Matrix result = Matrix(row , column);
+	for (int i = 0; i < row;i++) {
+		for (int j = 0; j < column;j++) {
+			result.matrix[i][j] = matrix[i][j] + k;
+		}
+	}
+	return result;
+}
+
+Matrix Matrix::operator+(const Matrix& mat)const {
+	Matrix result = Matrix(row, column);
+	for (int i = 0; i < row; i++) {
+		for (int j = 0; j < column; j++) {
+			result.matrix[i][j] = matrix[i][j] + mat.matrix[i][j];
+		}
+	}
+	return result;
+}
+
+Matrix Matrix::operator*(const float k)const {
+	Matrix result = Matrix(row , column);
+	for (int i = 0; i < row; i++) {
+		for (int j = 0; j < column; j++) {
+			result.matrix[i][j] = matrix[i][j] * k;
+		}
+	}
+	return result;
+}
+
+Matrix Matrix::operator*(const Matrix& mat)const {
+	Matrix result = Matrix(row, column);
+	for (int i = 0; i < row; i++) {
+		for (int j = 0; j < column; j++) {
+			result.matrix[i][j] = matrix[i][j] * mat.matrix[i][j];
+		}
+	}
+	return result;
+}
+
+Matrix Matrix::operator-(const Matrix& mat)const {
+	Matrix result = Matrix(row, column);
+	for (int i = 0; i < row; i++) {
+		for (int j = 0; j < column; j++) {
+			result.matrix[i][j] = matrix[i][j] - mat.matrix[i][j];
+		}
+	}
+	return result;
+}
+
 Segment::Segment(const Vec2 s , const Vec2 e) 
 	:start(s) , end(e)
 {}

@@ -3,6 +3,9 @@
 static const float e_CC = 0.8f; //円と円の反発係数
 static float k_CC;//バネ係数
 
+//プロトタイプ宣言
+Matrix getRtilda(const Vec2&);
+
 void Solver::initialize(const float timeStep) {
 	k_CC = (float)(1 / (timeStep));
 }
@@ -79,18 +82,36 @@ void Solver::solve(const std::vector<Object*>& objects ,std::vector<Collision>& 
 
 			//相対速度(ワールド座標)を計算
 			Vec2 vA = Vec2();//ワールド座標での衝突点に置ける速度
+			Vec2 vB = Vec2();
 			//並進速度を計算
 			vA = vA + objA->getV();
+			vB = vB + objB->getV();
 			//回転速度を計算
-			//float rotaV = cp.pointA.norm() * objA->getAngV();//大きさ
-			//if (objA->getAngV() > 0) {
-			//	//向きを決定
-			//}
-			//else {
+			vA = vA + objA->getCirV(cp.pointA);
+			vB = vB + objB->getCirV(cp.pointB);
+			//相対速度
+			Vec2 Vab = vA - vB;
 
-			//}
+			//行列Kを計算
+			Matrix K = Matrix(2, 2);
+			float mSum = 1.f / objA->getM() + 1.f / objB->getM();
+			Matrix mMat = Matrix(2 , 2);
+			mMat.identity();
+			K = K + (mMat * mSum);
+			Matrix rAmat = getRtilda(cp.pointA) * (1.f/objA->getI());
+			Matrix rBmat = getRtilda(cp.pointB) * (1.f/objB->getI());
+			K = (K - rAmat) - rBmat;
 		}
 	}
 
 	delete[] solverBodies;
+}
+
+Matrix getRtilda(const Vec2& r) {
+	Matrix mat = Matrix(2 ,2);
+	mat.matrix[0][0] = r.y * r.y;
+	mat.matrix[1][0] = -1 * r.y * r.x;
+	mat.matrix[0][1] = -1 * r.y * r.x;
+	mat.matrix[1][1] = r.x * r.x;
+	return mat;
 }
