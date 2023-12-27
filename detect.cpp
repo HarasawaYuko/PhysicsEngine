@@ -384,7 +384,6 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 	Vec2 minPoint;
 	Segment minEdge;
 	if (minA) {//A‚ª’¸“_B‚ª•Ó‚¾‚Á‚½ê‡
-		printfDx("A‚ª’¸“_");
 		minPoint = con1->getPointW(minPointIndex);
 		coord[0] = WtoL(minPoint, con1->getC(), con1->getAngle());
 		coord[1] = WtoL(minPoint, con2->getC(), con2->getAngle());
@@ -405,7 +404,6 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 		//}
 	}
 	else {
-		printfDx("B‚ª’¸“_");
 		minPoint = con2->getPointW(minPointIndex);
 		coord[1] = WtoL(minPoint, con2->getC(), con2->getAngle());
 		coord[0] = WtoL(minPoint, con1->getC(), con1->getAngle());

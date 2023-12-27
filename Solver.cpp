@@ -2,6 +2,7 @@
 
 static const float e_CC = 0.8f; //円と円の反発係数
 static float k_CC;//バネ係数
+static float bias = 0.5f;//拘束力fのbias
 
 //プロトタイプ宣言
 Matrix getRtilda(const Vec2&);
@@ -67,18 +68,30 @@ void Solver::solve(const std::vector<Object*>& objects ,std::vector<Collision>& 
 		}
 	}
 
+
 	//拘束を設定
 	for (int i = 0; i < cols.size(); i++) {
 		//プロキシを作成
-		const Collision& col = cols[i];//衝突
+		Collision& col = cols[i];//衝突
 
 		Object* objA = cols[i].getObj1();
 		SolverBody bobyA = solverBodies[objA->getIndex()];
 		Object* objB = cols[i].getObj2();
 		SolverBody bodyB = solverBodies[objB->getIndex()];
 
+		//摩擦係数と跳ね返り係数の設定
+		col.setFri(sqrt(objA->getFri() * objB->getFri()));
+		//跳ね返り係数は新規に検出された衝突のみに適用
+		float restitution;
+		if (true/*とりあえず反発係数はなし*/) {
+			restitution = 0.f;
+		}
+		else {
+			restitution = 0.5f * (objA->getE() + objB->getE());
+		}
+
 		for (int j = 0; j < col.getContactNum(); j++) {
-			ContactPoint cp = col.getCp(j);
+			ContactPoint& cp = col.getCp(j);
 
 			//相対速度(ワールド座標)を計算
 			Vec2 vA = Vec2();//ワールド座標での衝突点に置ける速度
@@ -91,6 +104,8 @@ void Solver::solve(const std::vector<Object*>& objects ,std::vector<Collision>& 
 			vB = vB + objB->getCirV(cp.pointB);
 			//相対速度
 			Vec2 Vab = vA - vB;
+			printfDx("Vab %s \n" , Vab.toString().c_str());
+/*相対速度取得確認*/
 
 			//行列Kを計算
 			Matrix K = Matrix(2, 2);
@@ -101,9 +116,75 @@ void Solver::solve(const std::vector<Object*>& objects ,std::vector<Collision>& 
 			Matrix rAmat = getRtilda(cp.pointA) * (1.f/objA->getI());
 			Matrix rBmat = getRtilda(cp.pointB) * (1.f/objB->getI());
 			K = (K - rAmat) - rBmat;
+
+			/*拘束のセットアップ*/
+			//拘束軸を取得
+			Vec2 axis = cp.normal;
+			//拘束式の分母
+			Matrix axis_ = Matrix(axis);
+			Matrix denom_ = (K.product(axis_)).trans().product(axis_);
+			assert(denom_.row == 1 && denom_.column == 1);//デバッグ用　１行に書き換える
+			float denom = denom_.matrix[0][0];
+/*denom != 0*/
+			//反発方向の拘束をセット
+			cp.constraint[0].denomInv = 1.f / denom;
+			cp.constraint[0].f = -(1.0f + restitution) * Vab.dot(axis);//速度補正(fの分母)
+			//printfDx("f1 %f\n" , cp.constraint[0].f);
+			cp.constraint[0].f -= (bias * min(0.0f , cp.depth))/(1.f/(float)FPS);//位置補正 めり込み解消用
+			//printfDx("f2 %f\n", cp.constraint[0].f);
+			cp.constraint[0].f *= cp.constraint[0].denomInv;//分母を加える
+			//printfDx("f3 %f\n", cp.constraint[0].f);
+			//拘束力の最大値と最小値を設定
+			cp.constraint[0].lowerF = 0.0f;
+			cp.constraint[0].upperF = FLT_MAX;
+			//摩擦力をセット
+			//一旦パス
 		}
 	}
 
+	/*拘束の演算*/
+	printfDx("col.size() %d\n", cols.size());
+	for (int i = 0; i < cols.size(); i++) {
+		Collision& col = cols[i];
+		Object* objA = cols[i].getObj1();
+		SolverBody& bodyA = solverBodies[objA->getIndex()];
+		Object* objB = cols[i].getObj2();
+		SolverBody& bodyB = solverBodies[objB->getIndex()];
+		printfDx("contactNum %d \n", col.getContactNum());
+		for (int j = 0; j < col.getContactNum() ; j++) {
+			ContactPoint& cp = col.getCp(j);
+			Constraint& constraint = cp.constraint[0];
+			float deltaImpulse = constraint.f;//撃力を取得
+			Vec2 deltaVelocityA = bodyA.deltaLinearV + getVang(cp.pointA , bodyA.deltaRotaV);;//Aの速度変化量
+			Vec2 deltaVelocityB = bodyB.deltaLinearV + getVang(cp.pointB, bodyB.deltaRotaV);//Bの速度変化量
+			//拘束力を算出
+			deltaImpulse -= constraint.denomInv * constraint.axis.dot(deltaVelocityA - deltaVelocityB);
+/*deltaImpulse != 0 確認*/
+			//拘束力をクランプ
+			clamp(deltaImpulse , constraint.lowerF , constraint.upperF);
+			
+			//更新する速度を計算
+			//printfDx("massInv %f \n" , bodyA.massInv);
+			/*printfDx("axis %s \n", constraint.axis.toString().c_str());
+			printfDx("axis x a %s \n", (constraint.axis* (deltaImpulse* bodyA.massInv)).toString().c_str());*/
+			bodyA.deltaLinearV = bodyA.deltaLinearV +  (constraint.axis * (deltaImpulse * bodyA.massInv));
+			//printfDx("bodyA LV %s\n", bodyA.deltaLinearV.toString().c_str());
+			bodyA.deltaRotaV += deltaImpulse * bodyA.inertiaInv;
+			//printfDx("bodyA LV %s\n", bodyA.deltaLinearV.toString().c_str());
+			bodyB.deltaLinearV = bodyB.deltaLinearV - (constraint.axis * (deltaImpulse * bodyB.massInv));
+			//printfDx("bodyA LV %s\n", bodyA.deltaLinearV.toString().c_str());
+			bodyB.deltaRotaV -= deltaImpulse * bodyB.inertiaInv;
+			printfDx("bodyA LV %s\n" , bodyA.deltaLinearV.toString().c_str());
+			//printfDx("bodyB LV %s\n", bodyB.deltaLinearV.toString().c_str());
+			//摩擦力による速度変化計算
+		} 
+	}
+	//速度を更新
+	for (int i = 0; i < objects.size(); i++) {
+		printfDx("速度更新%s \n" , (solverBodies[i].deltaLinearV / (float)FPS).toString().c_str());
+		objects[i]->addV(solverBodies[i].deltaLinearV / (float)FPS);
+		objects[i]->addVang(solverBodies[i].deltaRotaV /(float)FPS);
+	}
 	delete[] solverBodies;
 }
 

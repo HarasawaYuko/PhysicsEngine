@@ -6,7 +6,7 @@
 
 struct Constraint {
 	Vec2 axis;//S‘©²
-	float denom;//•ª•ê
+	float denomInv;//•ª•ê
 	float f;//‰ŠúS‘©—Í
 	float lowerF;
 	float upperF;

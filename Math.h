@@ -37,9 +37,12 @@ struct Matrix {
 	std::vector<std::vector<float>> matrix;//[row][column]
 	
 	Matrix(const int , const int);
+	Matrix(const Vec2&);
+	float get(const int , const int)const;
 	std::string toString()const;
 	void identity();//単位行列にする
-	Matrix product(const Matrix&);//行列積
+	Matrix product(const Matrix&) const;//行列積
+	Matrix trans()const;//転置行列を返す
 	
 	Matrix operator+(const float)const;
 	Matrix operator+(const Matrix&)const;
@@ -71,3 +74,9 @@ float getTheta(const Vec2 & , const Vec2 & , const Vec2 &);
 
 Vec2 LtoW(const Vec2& local,const Vec2& worldCen,const float ang);
 Vec2 WtoL(const Vec2&, const Vec2& ,const float);
+
+//円運動の速度を取得する v = rω
+Vec2 getVang(const Vec2& ,const float);
+
+//値をクランプする
+float clamp(const float , const float , const float);

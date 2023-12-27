@@ -88,6 +88,16 @@ Matrix::Matrix(const int row, const int column)
 	}
 }
 
+//二次元ベクトルから行列にキャスト
+Matrix::Matrix(const Vec2& vec) 
+	:row(1) , column(2)
+{
+	matrix.resize(row);
+	matrix[0].resize(2);
+	matrix[0][0] = vec.x;
+	matrix[0][1] = vec.y;
+}
+
 void Matrix::identity() {
 	//単位行列のみ
 	if (row != column) {
@@ -107,13 +117,13 @@ void Matrix::identity() {
 
 
 //行列積 right...右辺
-Matrix Matrix::product(const Matrix& right) {
+Matrix Matrix::product(const Matrix& right) const{
 	//行列の形を確認する
 	if (this->row != right.column) {
 		assert(false);
 		return Matrix(0 ,0);
 	}
-	Matrix result = Matrix(this->column , right.row);
+	Matrix result = Matrix(right.row ,this->column );
 	for (int i = 0; i < this->column; i++) {
 		for (int j = 0; j < right.row; j++) {
 			float element = 0.f;
@@ -121,6 +131,17 @@ Matrix Matrix::product(const Matrix& right) {
 				element += this->matrix[k][i] * right.matrix[j][k];
 			}
 			result.matrix[j][i] = element;
+		}
+	}
+	return result;
+}
+
+//転置行列を返す
+Matrix Matrix::trans()const {
+	Matrix result = Matrix(column ,row);
+	for (int i = 0; i < row; i++) {
+		for (int j = 0; j < column; j++) {
+			result.matrix[j][i] = matrix[i][j];
 		}
 	}
 	return result;
@@ -273,4 +294,18 @@ Vec2 LtoW(const Vec2& local, const Vec2& worldCen , float ang) {
 //ワールド座標をローカル座標に変換
 Vec2 WtoL(const Vec2 &world , const Vec2& worldCen , float ang) {
 	return (world - worldCen).rotation(-ang);
+}
+
+//円運動の速度
+Vec2 getVang(const Vec2& r , const float omega) {
+	//大きさを取得 v = rω
+	float length = r.norm() * omega;
+	Vec2 result = r.normal().normalize() * length;
+	return result;
+}
+
+float clamp(const float value, const float lower , const float upper) {
+	if (value < lower) return lower;
+	if (value > upper)return upper;
+	return value;
 }

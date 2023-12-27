@@ -21,7 +21,7 @@ private:
 	void solveConstraints();
 	void integrate();
 public:
-	World(float timeStep = 0.1f);
+	World(float timeStep = 1.f/FPS);
 	std::vector<Collision> collisions;
 	std::vector<Object*> objects;
 	void initialize();
