@@ -10,6 +10,7 @@ private:
 	uint16_t key;
 	uint16_t type;
 	int contactNum;
+	float friction;//–€CŒW”
 	float e = 0.8;
 public:
 	std::vector<ContactPoint> contactPoints;
@@ -23,5 +24,7 @@ public:
 	void addContactPoint(const ContactPoint);
 	void addContactPoint(const float , const Vec2 ,const Vec2 , const Vec2);
 	void Draw()const;
-	ContactPoint getCp(const int)const;
+	void setFri(const float );
+	float getFri()const;
+	ContactPoint& getCp(const int);
 };

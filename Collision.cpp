@@ -3,6 +3,7 @@
 Collision::Collision(Object* obj1, Object* obj2) 
 	:pair(std::make_pair(obj1 , obj2))
 	,type(obj1->getType() | obj2 -> getType())
+	,contactNum(0)
 {
 	uint16_t id1 = (uint16_t)obj1->getId();
 	uint16_t id2 = (uint16_t)obj2->getId();
@@ -34,10 +35,12 @@ int Collision::getContactNum()const {
 }
 
 void Collision::addContactPoint(const ContactPoint cp) {
+	contactNum++;
 	contactPoints.push_back(cp);
 }
 
 void Collision::addContactPoint(const float d, const Vec2 pA, const Vec2 pB, const Vec2 n) {
+	contactNum++;
 	contactPoints.emplace_back(d , pA , pB , n);
 }
 
@@ -56,7 +59,15 @@ void Collision::Draw() const{
 	}
 }
 
-ContactPoint Collision::getCp(const int i)const {
-	assert(i < 0 || contactNum <= i);
+void Collision::setFri(const float fri) {
+	friction = fri;
+}
+
+float Collision::getFri()const {
+	return friction;
+}
+
+ContactPoint& Collision::getCp(const int i){
+	assert(0 <= i && i < contactNum);
 	return contactPoints[i];
 }

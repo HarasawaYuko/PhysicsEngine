@@ -23,6 +23,8 @@ protected:
 	Color color;
 	uint8_t id;
 	int index;
+	float friction;//–€CŒW”
+	float e;//”½”­ŒW”
 	float angle_v;//Šp‘¬“x@ƒ‰ƒWƒAƒ“
 	float angle;//‰ñ“]Šp@ƒ‰ƒWƒAƒ“
 	float inertiaTensor;//Šµ«ƒeƒ“ƒ\ƒ‹
@@ -42,10 +44,15 @@ public:
 	uint8_t getId()const;
 	void setMass(const float);
 	void addV(const Vec2);
+	void addVang(const float);
 	void setTouch();
 	void unTouch();
 	int getIndex()const;
 	void setIndex(const int);
+	void setFri(const float);
+	float getFri() const;
+	void setE(const float);
+	float getE()const;
 	virtual void updatePos(const float);
 	Type getType()const;
 	virtual bool isValid()const = 0;

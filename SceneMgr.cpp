@@ -4,9 +4,10 @@
 #include "DetectTest.h"
 #include "MathTest.h"
 #include "ObjectTest.h"
+#include "ConstraintTest.h"
 
 SceneMgr::SceneMgr() {
-	m_scene = (BaseScene*)new MathTest(this);
+	m_scene = (BaseScene*)new ConstraintTest(this);
 }
 
 void SceneMgr::Initialize() {
@@ -37,6 +38,9 @@ void SceneMgr::Update() {
 			break;
 		case Scene_TEST_Math:
 			m_scene = (BaseScene*) new MathTest(this);
+			break;
+		case Scene_TEST_Constraint:
+			m_scene = (BaseScene*) new ConstraintTest(this);
 			break;
 		}
 		m_next_scene = Scene_None;

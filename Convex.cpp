@@ -40,8 +40,8 @@ Convex::Convex(const std::vector<Vec2> &points ,const float v_x, const float v_y
 		I += (1.f / 12.f) * cross * (e0.squared() + e0.dot(e1) + e1.squared());
 		area += 0.5f * cross;
 	}
-	inertiaTensor = I/MASS_RATE;
-	mass = area/MASS_RATE;
+	inertiaTensor = I;
+	mass = area;
 }
 
 void Convex::loadGraph() {

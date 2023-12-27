@@ -56,6 +56,14 @@ void Object::addV(const Vec2 acc) {
 	velocity = acc + velocity;
 }
 
+void Object::addVang(const float acc) {
+	if (!active)
+	{
+		return;
+	}
+	angle_v += acc;
+}
+
 void Object::setTouch() {
 	this->touch = true;
 }
@@ -70,6 +78,22 @@ int Object::getIndex()const {
 
 void Object::setIndex(const int i) {
 	index = i;
+}
+
+void Object::setFri(const float fri) {
+	friction = fri;
+}
+
+float Object::getFri()const {
+	return friction;
+}
+
+void Object::setE(const float e_) {
+	e = e_;
+}
+
+float Object::getE()const {
+	return e;
 }
 
 void Object::updatePos(const float step) {
