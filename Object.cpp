@@ -45,10 +45,6 @@ bool Object::isActive()const {
 	return active;
 }
 
-uint8_t Object::getId()const {
-	return id;
-}
-
 void Object::addV(const Vec2 acc) {
 	if (!active) {
 		return;
@@ -70,6 +66,18 @@ void Object::setTouch() {
 
 void Object::unTouch() {
 	this->touch = false;
+}
+
+void Object::setId(const uint16_t i) {
+	if (i < 0 || UINT16_MAX < i) {
+		//追加オブジェクト数が上限なら例外
+		assert(false);
+	}
+	this->id = i;
+}
+
+uint16_t Object::getId() const{
+	return id;
 }
 
 int Object::getIndex()const {
@@ -104,6 +112,10 @@ void Object::updatePos(const float step) {
 
 Type Object::getType()const{
 	return type;
+}
+
+BBox& Object::getBbox() const{
+	return bbox;
 }
 
 //コンストラクタ

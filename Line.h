@@ -13,4 +13,5 @@ public:
 	void Draw()const override;
 	bool isValid()const override;
 	std::string toString()const override;
+	void setBbox()override;
 };

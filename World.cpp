@@ -31,6 +31,9 @@ void World::physicsSimulate() {
 
 void World::add(Object* obj) {
 	objects.push_back(obj);
+	//ユニークなidの割り当て
+	num++;
+	obj->setId(num);
 	//オブジェクト種類によってソート
 	std::sort(objects.begin(), objects.end() , [](const Object* a, const Object* b) {
 		return (uint16_t)a->getType() < (uint16_t)b->getType();
@@ -57,6 +60,8 @@ void World::detectCollision() {
 	for (auto obj : objects) {
 		obj->unTouch();
 	}
+	//ブロードフェーズ
+	
 	//各オブジェクトの衝突を検知
 	bool contact;
 	std::vector<Collision> newColls;

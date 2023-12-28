@@ -105,3 +105,19 @@ void Box::move(Vec2 vec){
 Segment Box::getEdgeW(const int &i) const{
 	return Segment(pointsW[i] , pointsW[(i+1) % pointNum]);
 }
+
+void Box::setBbox() {
+	float xMax = -FLT_MAX;
+	float xMin = FLT_MAX;
+	float yMax = -FLT_MAX;
+	float yMin = FLT_MAX;
+	for (int i = 0; i < pointNum; i++) {
+		xMax = max(xMax, pointsW[i].x);
+		xMin = min(xMin, pointsW[i].x);
+		yMax = max(yMax, pointsW[i].y);
+		yMin = min(yMin, pointsW[i].y);
+	}
+	bbox.point = Vec2(xMin, yMin);
+	bbox.height = yMax - yMin;
+	bbox.width = xMax - xMin;
+}

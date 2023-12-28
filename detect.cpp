@@ -9,7 +9,17 @@ void projection(Vec2 , Box* , float* , float*);
 void projection(Vec2, Convex*, float*, float*);
 bool getDepth(const float, const float, const float, const float  , float* , float*);
 Vec2 getContactPoint(const Vec2& , const Segment&);
+bool isCross(const BBox, const BBox);
 
+bool Detect::broard(const Object* obj1 ,const Object* obj2) {
+	//バウンディングボックスを取得
+	const BBox& bbox1 = obj1->getBbox();
+	const BBox& bbox2 = obj2->getBbox();
+
+	isCross();
+}
+
+/**ナローフェーズ****************/
 
 //円と線の衝突判定
 bool Detect::circle_line(Object* c , Object* l , float* depth , Vec2* n  , Vec2* coord) {
@@ -434,6 +444,8 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 	return true;
 }
 
+/**************************************************************/
+
 //axisにbox(convex)を投影して最大と最小を返す
 void projection(Vec2 axis , Box* box, float* min , float* max) {
 	float min_ = INF;
@@ -482,4 +494,23 @@ Vec2 getContactPoint(const Vec2& point , const Segment& edge) {
 	//始点からの距離を求める
 	float dis = StoP.dot(edgeVec);
 	return edge.start + (edgeVec * dis);
+}
+
+bool isCross(const float min1, const float max1, const float min2, const float max2) {
+	if (max1 <= min2 || max2 <= min1) {
+		return false;
+	}
+	return true;
+}
+
+bool isCross(const BBox b1, const BBox b2) {
+	//x軸を調べる
+	if (b1.point.x + b1.width <= b2.point.x || b2.point.x + b2.width <= b1.point.x) {
+		return false;
+	}
+	//y軸を調べる
+	if (b1.point.y + b1.height <= b2.point.y || b2.point.y + b2.height <= b1.point.y) {
+		return false;
+	}
+	return true;
 }

@@ -42,6 +42,7 @@ Convex::Convex(const std::vector<Vec2> &points ,const float v_x, const float v_y
 	}
 	inertiaTensor = I;
 	mass = area;
+	setBbox();
 }
 
 void Convex::loadGraph() {
@@ -59,6 +60,8 @@ void Convex::updatePos(const float step) {
 		//ワールド座標に反映
 		pointsW[i] = center + pointsL[i].rotation(angle);
 	}
+	//バウンディングボックスを設定
+	setBbox();
 }
 
 void Convex::Draw() const {
@@ -132,6 +135,24 @@ void Convex::move(Vec2 vec) {
 Segment Convex::getEdgeW(const int& i) const {
 	return Segment(pointsW[i], pointsW[(i + 1) % pointNum]);
 }
+
+void Convex::setBbox() {
+	float xMax = -FLT_MAX;
+	float xMin = FLT_MAX;
+	float yMax = -FLT_MAX;
+	float yMin = FLT_MAX;
+	for (int i = 0; i < pointNum; i++) {
+		xMax = max(xMax , pointsW[i].x);
+		xMin = min(xMin, pointsW[i].x);
+		yMax = max(yMax, pointsW[i].y);
+		yMin = min(yMin, pointsW[i].y);
+	}
+	bbox.point = Vec2(xMin , yMin);
+	bbox.height = yMax - yMin;
+	bbox.width = xMax - xMin;
+}
+
+/*************************************************/
 
 //クイックソートに用いるパーテーション
 int partition(std::vector<std::pair<Vec2, float>>& v, const int s, const int e) {

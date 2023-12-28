@@ -3,7 +3,7 @@
 #include "Object.h"
 #include "UIMaterial.h"
 
-//長方形クラス
+//凸包クラス
 class Convex :public Object {
 private:
 	std::vector<Vec2> pointsL;//ローカル座標
@@ -25,4 +25,5 @@ public:
 	int getPointNum()const;
 	void move(Vec2);
 	Segment getEdgeW(const int&)const;
+	void setBbox()override;
 };

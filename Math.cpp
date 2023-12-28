@@ -17,8 +17,16 @@ Vec2 Vec2::operator+(const Vec2 vec) const {
 	return Vec2(x + vec.x , y + vec.y);
 }
 
+Vec2 Vec2::operator+(const float val)const {
+	return Vec2(x + val , y + val);
+}
+
 Vec2 Vec2::operator-(const Vec2 vec) const {
 	return Vec2(x - vec.x, y - vec.y);
+}
+
+Vec2 Vec2::operator-(const float val) const {
+	return Vec2(x - val, y - val);
 }
 
 Vec2 Vec2::operator*(const float k) const {

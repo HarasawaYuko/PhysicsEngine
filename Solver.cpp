@@ -2,7 +2,7 @@
 
 static const float e_CC = 0.8f; //‰~‚Æ‰~‚Ì”½”­ŒW”
 static float k_CC;//ƒoƒlŒW”
-static float bias = 0.5f;//S‘©—Íf‚Ìbias
+static float bias = 1.0f;//S‘©—Íf‚Ìbias
 
 //ƒvƒƒgƒ^ƒCƒvéŒ¾
 Matrix getRtilda(const Vec2&);
@@ -104,7 +104,6 @@ void Solver::solve(const std::vector<Object*>& objects ,std::vector<Collision>& 
 			vB = vB + objB->getCirV(cp.pointB);
 			//‘Š‘Î‘¬“x
 			Vec2 Vab = vA - vB;
-			printfDx("Vab %s \n" , Vab.toString().c_str());
 /*‘Š‘Î‘¬“xæ“¾Šm”F*/
 
 			//s—ñK‚ğŒvZ
@@ -143,14 +142,12 @@ void Solver::solve(const std::vector<Object*>& objects ,std::vector<Collision>& 
 	}
 
 	/*S‘©‚Ì‰‰Z*/
-	printfDx("col.size() %d\n", cols.size());
 	for (int i = 0; i < cols.size(); i++) {
 		Collision& col = cols[i];
 		Object* objA = cols[i].getObj1();
 		SolverBody& bodyA = solverBodies[objA->getIndex()];
 		Object* objB = cols[i].getObj2();
 		SolverBody& bodyB = solverBodies[objB->getIndex()];
-		printfDx("contactNum %d \n", col.getContactNum());
 		for (int j = 0; j < col.getContactNum() ; j++) {
 			ContactPoint& cp = col.getCp(j);
 			Constraint& constraint = cp.constraint[0];

@@ -16,7 +16,9 @@ public:
 	void set(const float, const float);
 
 	Vec2 operator+(const Vec2)const;
+	Vec2 operator+(const float)const;
 	Vec2 operator-(const Vec2)const;
+	Vec2 operator-(const float)const;
 	Vec2 operator*(const float)const;
 	Vec2 operator/(const float)const;
 	

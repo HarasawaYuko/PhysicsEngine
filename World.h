@@ -15,6 +15,7 @@ class World {
 private:
 	const float gravity = 1.8f;//重力加速度
 	float TIME_STEP;
+	uint16_t num;//通算で追加したオブジェクトの数　65536以上になったら一旦リセットする必要あり
 
 	void applyForce();
 	void detectCollision();
@@ -24,6 +25,7 @@ public:
 	World(float timeStep = 1.f/FPS);
 	std::vector<Collision> collisions;
 	std::vector<Object*> objects;
+	std::vector<Pair> pairs;
 	void initialize();
 	void physicsSimulate();
 	void add(Object*);
