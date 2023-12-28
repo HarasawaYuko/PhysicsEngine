@@ -28,3 +28,21 @@ bool Line::isValid() const {
 std::string Line::toString()const {
 	return "Line";
 }
+
+void Line::setBbox() {
+	float xMax = -FLT_MAX;
+	float xMin = FLT_MAX;
+	float yMax = -FLT_MAX;
+	float yMin = FLT_MAX;
+	xMax = max(xMax, start.x);
+	xMin = min(xMin, start.x);
+	yMax = max(yMax, start.y);
+	yMin = min(yMin, start.y);
+	xMax = max(xMax, end.x);
+	xMin = min(xMin, end.x);
+	yMax = max(yMax, end.y);
+	yMin = min(yMin, end.y);
+	bbox.point = Vec2(xMin, yMin);
+	bbox.height = yMax - yMin;
+	bbox.width = xMax - xMin;
+}

@@ -18,6 +18,7 @@ static Vec2 contactP[2];
 static bool move = false;
 static bool detect = false;
 static Vec2 gravity = Vec2(0.f, -5.f);
+static Vec2 nVec;
 
 ConstraintTest::ConstraintTest(SceneChanger* changer)
 	:BaseScene(changer)
@@ -31,23 +32,23 @@ void ConstraintTest::Initialize() {
 	points.emplace_back(200.f , 400);
 	points.emplace_back(200.f, 550);
 	points.emplace_back(350.f, 400);
-	Convex* con = new Convex(points , 0 , 0 , 30.f , 0 , true);
+	Convex* con = new Convex(points , 30 , 0 , 0 , 30.f , true);
 	con->setIndex(0);
 	convexes.push_back(con);
 	points.clear();
-	/*
-	points.emplace_back(350.f, 450);
-	points.emplace_back(350.f, 550);
-	points.emplace_back(450.f, 450);
-	con = new Convex(points, -35, 0, 0, 0, true);
-	con->setIndex(1);
-	points.clear();
-	convexes.push_back(con);*/
+	
+	//points.emplace_back(350.f, 450);
+	//points.emplace_back(350.f, 550);
+	//points.emplace_back(450.f, 450);
+	//con = new Convex(points, -35, 0, 0, 30.f, true);
+	//con->setIndex(1);
+	//points.clear();
+	//convexes.push_back(con);
 
-	points.emplace_back(100.f, 200);
-	points.emplace_back(100.f, 250);
-	points.emplace_back(600.f, 200);
-	points.emplace_back(600.f, 250);
+	points.emplace_back(100.f, 300);
+	points.emplace_back(100.f, 0);
+	points.emplace_back(600.f, 300);
+	points.emplace_back(600.f, 0);
 	con = new Convex(points, 0, 0, 0, 0, false);
 	con->setIndex(1);
 	convexes.push_back(con);
@@ -65,8 +66,11 @@ void ConstraintTest::Update() {
 	if (KeyBoard::instance()->hitNow(KEY_INPUT_M)) {
 		mode--;
 	}
-	if (KeyBoard::instance()->hitNow(KEY_INPUT_C)) {
+	if (KeyBoard::instance()->hitNow(KEY_INPUT_LEFT)) {
 		m_sceneChanger->ChangeScene(Scene_TEST_Math);
+	}
+	if (KeyBoard::instance()->hitNow(KEY_INPUT_RIGHT)) {
+		m_sceneChanger->ChangeScene(Scene_Menu);
 	}
 
 	switch (mode) {
@@ -105,6 +109,7 @@ void ConstraintTest::Update() {
 			detect = false;
 			if (Detect::convex_convex(convexes[0], convexes[1], &d, &n, coord)) {
 				detect = true;
+				nVec = n;
 				ContactPoint cp = ContactPoint(d, coord[0], coord[1], n);
 				printfDx("contactPoint n %s\n" , n.toString().c_str());
 				Collision col = Collision(convexes[0], convexes[1]);
@@ -148,7 +153,7 @@ void ConstraintTest::Draw() {
 			DrawString(700 , 400 , "DETECT"  , COLOR_RED);
 		}
 		//‚»‚Ì‘¼•`‰æ
-
+		DrawFormatString(10, 550, COLOR_BLUE, "n:%s", nVec.toString().c_str());
 		break;
 	}
 }

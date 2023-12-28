@@ -54,6 +54,13 @@ void Game::Update() {
 		}
 		world.physicsSimulate();
 	}
+
+	if (KeyBoard::instance()->hitNow(KEY_INPUT_LEFT)) {
+		m_sceneChanger->ChangeScene(Scene_Menu);
+	}
+	if (KeyBoard::instance()->hitNow(KEY_INPUT_RIGHT)) {
+		m_sceneChanger->ChangeScene(Scene_Result);
+	}
 }
 
 void Game::Draw() {

@@ -57,14 +57,18 @@ void MathTest::Update() {
 		line.start = Vec2();
 		line.end = Vec2();
 	}
-	if (KeyBoard::instance()->hitNow(KEY_INPUT_C)) {
-		m_sceneChanger->ChangeScene(Scene_TEST_Detect);
-	}
+	
 	if (KeyBoard::instance()->hitNow(KEY_INPUT_P)) {
 		mode++;
 	}
 	if (KeyBoard::instance()->hitNow(KEY_INPUT_M)) {
 		mode--;
+	}
+	if (KeyBoard::instance()->hitNow(KEY_INPUT_LEFT)) {
+		m_sceneChanger->ChangeScene(Scene_TEST_Detect);
+	}
+	if (KeyBoard::instance()->hitNow(KEY_INPUT_RIGHT)) {
+		m_sceneChanger->ChangeScene(Scene_TEST_Constraint);
 	}
 
 	switch (mode) {

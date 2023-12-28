@@ -1,6 +1,7 @@
 #pragma once
 #include "Math.h"
 #include "UIMaterial.h"
+#include "BBox.h"
 
 //Objectクラス　演算対象の図形は必ず継承する
 enum Type : uint16_t {
@@ -21,7 +22,7 @@ protected:
 	float mass;
 	const Type type;
 	Color color;
-	uint8_t id;
+	uint16_t id;//削除されたオブジェクトも含めたインデックス
 	int index;
 	float friction;//摩擦係数
 	float e;//反発係数
@@ -29,6 +30,7 @@ protected:
 	float angle;//回転角　ラジアン
 	float inertiaTensor;//慣性テンソル
 	static const float MASS_RATE;
+	BBox bbox;//バウンディングボックス（ワールド座標）
 	Object(Vec2 v , Type ,float mass = 10 ,Color color = COLOR_BLACK ,bool act = true , float ang = 0.f , float ang_v = 0.f);
 public:
 	virtual void Draw()const = 0;
@@ -41,22 +43,25 @@ public:
 	float getAngle()const;
 	float getAngV()const;
 	bool isActive()const;
-	uint8_t getId()const;
 	void setMass(const float);
 	void addV(const Vec2);
 	void addVang(const float);
 	void setTouch();
 	void unTouch();
+	void setId(const uint16_t);
+	uint16_t getId()const;
 	int getIndex()const;
 	void setIndex(const int);
 	void setFri(const float);
 	float getFri() const;
 	void setE(const float);
 	float getE()const;
-	virtual void updatePos(const float);
 	Type getType()const;
+	BBox& getBbox()const;
+	virtual void updatePos(const float);
 	virtual bool isValid()const = 0;
 	virtual std::string toString()const = 0;
+	virtual void setBbox() = 0;
 	virtual void setColor(Color color);
 	unsigned int getColor() const;
 	float getI()const;

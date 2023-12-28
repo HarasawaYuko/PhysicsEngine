@@ -31,3 +31,9 @@ bool Circle::isValid()const {
 std::string Circle::toString()const {
 	return "Circle";
 }
+
+void Circle::setBbox() {
+	bbox.point = center + r;
+	bbox.height = 2 * r;
+	bbox.width = 2 * r;
+}

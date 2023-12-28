@@ -1,5 +1,7 @@
 #include "SceneMgr.h"
+#include "Menu.h"
 #include "Game.h"
+#include "Result.h"
 #include "Rec.h"
 #include "DetectTest.h"
 #include "MathTest.h"
@@ -7,7 +9,7 @@
 #include "ConstraintTest.h"
 
 SceneMgr::SceneMgr() {
-	m_scene = (BaseScene*)new ConstraintTest(this);
+	m_scene = (BaseScene*)new DetectTest(this);
 }
 
 void SceneMgr::Initialize() {
@@ -27,11 +29,20 @@ void SceneMgr::Update() {
 		delete m_scene;
 		switch (m_next_scene) {
 			break;
+		case Scene_Menu:
+			m_scene = (BaseScene*) new Menu(this);
+			break;
 		case Scene_Game:
 			m_scene = (BaseScene*) new Game(this);
 			break;
+		case Scene_Result:
+			m_scene = (BaseScene*) new Result(this);
+			break;
 		case Scene_TEST_REC:
 			m_scene = (BaseScene*) new Rec(this);
+			break;
+		case Scene_TEST_Object:
+			m_scene = (BaseScene*) new ObjectTest(this);
 			break;
 		case Scene_TEST_Detect:
 			m_scene = (BaseScene*) new DetectTest(this);

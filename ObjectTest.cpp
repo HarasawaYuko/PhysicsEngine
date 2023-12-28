@@ -41,8 +41,11 @@ void ObjectTest::Update() {
 	if (KeyBoard::instance()->hitNow(KEY_INPUT_M)) {
 		mode--;
 	}
-	if (KeyBoard::instance()->hitNow(KEY_INPUT_C)) {
-		m_sceneChanger->ChangeScene(Scene_TEST_Math);
+	if (KeyBoard::instance()->hitNow(KEY_INPUT_LEFT)) {
+		m_sceneChanger->ChangeScene(Scene_TEST_REC);
+	}
+	if (KeyBoard::instance()->hitNow(KEY_INPUT_RIGHT)) {
+		m_sceneChanger->ChangeScene(Scene_TEST_Detect);
 	}
 
 	Rand* rand = Rand::instance();

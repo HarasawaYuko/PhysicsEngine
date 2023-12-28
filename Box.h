@@ -28,4 +28,5 @@ public:
 	int getPointNum()const;
 	void move(Vec2);
 	Segment getEdgeW(const int&)const;
+	void setBbox()override;
 };
