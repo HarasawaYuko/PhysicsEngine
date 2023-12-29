@@ -54,6 +54,7 @@ void Convex::updatePos(const float step) {
 	if (!active) {
 		return;
 	}
+	//printfDx("Convex updatePos %s\n" , velocity.toString().c_str());
 	center = center + (velocity * step);
 	angle = angle + (angle_v * step);
 	for (int i = 0; i < pointNum; i++) {
@@ -65,8 +66,12 @@ void Convex::updatePos(const float step) {
 }
 
 void Convex::Draw() const {
-	for (int i = 0; i < pointNum;i++) {
-		DrawTriP(center , pointsW[i] , pointsW[(i+1)%pointNum] , COLOR_YELLOW , 0 ,3);
+	/*for (int i = 0; i < pointNum;i++) {
+		DrawTriP(center , pointsW[i] , pointsW[(i+1)%pointNum] , color , 0 ,3);
+	}*/
+	for (int i = 0; i < pointNum; i++) {
+		Segment edge = getEdgeW(i);
+		DrawSegment(edge, color);
 	}
 }
 
@@ -81,7 +86,7 @@ void Convex::Draw(const unsigned int color) const{
 bool Convex::isValid() const {
 	//最大値と最小値を取得
 	float max_x = pointsW[0].x, max_y = pointsW[0].y, min_x = pointsW[0].x;
-	for (int i = 1; i < 4; i++) {
+	for (int i = 1; i < pointNum; i++) {
 		if (pointsW[i].x > max_x) {
 			max_x = pointsW[i].x;
 		}
@@ -126,9 +131,10 @@ int Convex::getPointNum() const {
 //Vec2方向にローカル座標とワールド座標を平行移動する
 void Convex::move(Vec2 vec) {
 	for (int i = 0; i < pointNum; i++) {
-		pointsL[i] = vec + pointsL[i];
 		pointsW[i] = vec + pointsW[i];
 	}
+	center = center + vec;
+	//printfDx("center %s\n" , center.toString().c_str());
 }
 
 //ワールド座標の辺を返す

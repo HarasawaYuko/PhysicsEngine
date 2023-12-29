@@ -70,7 +70,7 @@ void ConstraintTest::Update() {
 		m_sceneChanger->ChangeScene(Scene_TEST_Math);
 	}
 	if (KeyBoard::instance()->hitNow(KEY_INPUT_RIGHT)) {
-		m_sceneChanger->ChangeScene(Scene_Menu);
+		m_sceneChanger->ChangeScene(Scene_TEST_Whole);
 	}
 
 	switch (mode) {
@@ -110,7 +110,11 @@ void ConstraintTest::Update() {
 			if (Detect::convex_convex(convexes[0], convexes[1], &d, &n, coord)) {
 				detect = true;
 				nVec = n;
-				ContactPoint cp = ContactPoint(d, coord[0], coord[1], n);
+				ContactPoint cp;
+				cp.depth = d;
+				cp.normal = n;
+				cp.pointA = coord[0];
+				cp.pointB = coord[1];
 				printfDx("contactPoint n %s\n" , n.toString().c_str());
 				Collision col = Collision(convexes[0], convexes[1]);
 				col.addContactPoint(cp);

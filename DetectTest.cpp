@@ -76,7 +76,11 @@ void DetectTest::Update() {
 					Vec2 n;
 					Vec2 coord[2];
 					if (Detect::convex_convex(&convexes[i], &convexes[j], &d, &n, coord)) {
-						ContactPoint cp = ContactPoint(d, coord[0], coord[1], n);
+						ContactPoint cp;
+						cp.depth = d;
+						cp.pointA = coord[0];
+						cp.pointB = coord[1];
+						cp.normal = n;
 						nVec = n;
 						Collision col = Collision(&convexes[i], &convexes[j]);
 						col.addContactPoint(cp);
@@ -112,7 +116,11 @@ void DetectTest::Update() {
 			if (Detect::convex_convex(&convexes[0], &convexes[1], &d, &n, coord)) {
 				detect = true;
 				nVec = n;
-				ContactPoint cp = ContactPoint(d, coord[0], coord[1], n);
+				ContactPoint cp;
+				cp.depth = d;
+				cp.pointA = coord[0];
+				cp.pointB = coord[1];
+				cp.normal = n;
 				//printfDx("contactPoint n %s\n", n.toString().c_str());
 				Collision col = Collision(&convexes[0], &convexes[1]);
 				col.addContactPoint(cp);

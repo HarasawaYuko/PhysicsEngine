@@ -9,14 +9,17 @@ void projection(Vec2 , Box* , float* , float*);
 void projection(Vec2, Convex*, float*, float*);
 bool getDepth(const float, const float, const float, const float  , float* , float*);
 Vec2 getContactPoint(const Vec2& , const Segment&);
-bool isCross(const BBox, const BBox);
+bool isCross(const BBox&, const BBox&);
 
 bool Detect::broard(const Object* obj1 ,const Object* obj2) {
 	//バウンディングボックスを取得
 	const BBox& bbox1 = obj1->getBbox();
 	const BBox& bbox2 = obj2->getBbox();
 
-	isCross();
+	if (isCross(bbox1, bbox2)) {
+		return true;
+	}
+	return false;
 }
 
 /**ナローフェーズ****************/
@@ -496,14 +499,8 @@ Vec2 getContactPoint(const Vec2& point , const Segment& edge) {
 	return edge.start + (edgeVec * dis);
 }
 
-bool isCross(const float min1, const float max1, const float min2, const float max2) {
-	if (max1 <= min2 || max2 <= min1) {
-		return false;
-	}
-	return true;
-}
 
-bool isCross(const BBox b1, const BBox b2) {
+bool isCross(const BBox& b1, const BBox& b2) {
 	//x軸を調べる
 	if (b1.point.x + b1.width <= b2.point.x || b2.point.x + b2.width <= b1.point.x) {
 		return false;

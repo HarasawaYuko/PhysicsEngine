@@ -170,6 +170,7 @@
     <ClCompile Include="Rec.cpp" />
     <ClCompile Include="SceneMgr.cpp" />
     <ClCompile Include="SolverBody.cpp" />
+    <ClCompile Include="WholeTest.cpp" />
     <ClCompile Include="World.cpp" />
     <ClCompile Include="SceneChanger.cpp" />
     <ClCompile Include="Task.cpp" />
@@ -206,6 +207,7 @@
     <ClInclude Include="Box.h" />
     <ClInclude Include="Rec.h" />
     <ClInclude Include="SolvetBody.h" />
+    <ClInclude Include="WholeTest.h" />
     <ClInclude Include="World.h" />
     <ClInclude Include="SceneChanger.h" />
     <ClInclude Include="SceneMgr.h" />

@@ -7,14 +7,10 @@
 *ペアクラス
 * ブロードフェーズを実装するまでは使用しない
 */
-enum Kind : uint16_t {
-	CIRCLE_CIRCLE = 0b0000'0000'0000'0001,
-	CIRCLE_LINE   = 0b0000'0000'0000'0011,
-	CIRCLE_BOX    = 0b0000'0000'0000'0101,
-	LINE_LINE     = 0b0000'0000'0000'0010,
-	LINE_BOX      = 0b0000'0000'0000'0110,
-	BOX_BOX       = 0b0000'0000'0000'0100,
-	CONVEX_CONVEX = 0b0000'0000'0000'1000
+enum Kind : uint8_t {
+	CIRCLE_CIRCLE = 0b0000'0001,
+	CIRCLE_CONVEX = 0b0000'1001,
+	CONVEX_CONVEX = 0b0000'1000
 };
 
 enum PairType {
@@ -27,8 +23,16 @@ private:
 	Object* obj[2];//オブジェクトへのアクセス
 	Kind kind;//オブジェクトの組み合わせ
 	PairType type;//新規に見つかったペアか
+	uint32_t key;//ユニークなキー
+	Collision* collision;//衝突情報
 public:
-	Pair();
+	Pair(Object* , Object*);
 	Kind getKind()const;
 	PairType getType()const;
+	uint32_t getKey()const;
+	void setType(PairType);
+	Object* getObj0()const;
+	Object* getObj1()const;
+	Collision* getCol()const;
+	std::string toString()const;
 };

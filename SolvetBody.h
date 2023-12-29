@@ -13,4 +13,6 @@ public:
 	float angle;//p¨
 	float inertiaInv;//Šµ«ƒeƒ“ƒ\ƒ‹‚Ì‹t”
 	float massInv;//¿—Ê‚Ì‹t”
+
+	std::string toString()const;
 };
