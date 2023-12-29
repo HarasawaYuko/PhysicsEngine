@@ -69,9 +69,8 @@ Vec2 Vec2::normalize()const {
 }
 
 Vec2 Vec2::rotation(const float & ang)const {
-	float rad = getRad(ang);
-	float x_ = x*cos(rad) - y*sin(rad);
-	float y_ = x*sin(rad) + y*cos(rad);
+	float x_ = x*cos(ang) - y*sin(ang);
+	float y_ = x*sin(ang) + y*cos(ang);
 	return Vec2(x_ , y_);
 }
 

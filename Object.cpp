@@ -49,9 +49,7 @@ void Object::addV(const Vec2 acc) {
 	if (!active) {
 		return;
 	}
-	printfDx("add V %s , %s\n" , velocity.toString().c_str(), acc.toString().c_str());
 	velocity = acc + velocity;
-	printfDx("add V %s\n", velocity.toString().c_str());
 }
 
 void Object::addVang(const float acc) {
