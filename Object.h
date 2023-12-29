@@ -4,11 +4,11 @@
 #include "BBox.h"
 
 //Objectクラス　演算対象の図形は必ず継承する
-enum Type : uint16_t {
-	CIRCLE = 0b0000'0000'0000'0001,
-	LINE   = 0b0000'0000'0000'0010,
-	BOX    = 0b0000'0000'0000'0100,
-	CONVEX = 0b0000'0000'0000'1000
+enum Type : uint8_t {
+	CIRCLE = 0b0000'0001,
+	LINE   = 0b0000'0010,
+	BOX    = 0b0000'0100,
+	CONVEX = 0b0000'1000
 };
 
 class Object {
@@ -57,8 +57,8 @@ public:
 	void setE(const float);
 	float getE()const;
 	Type getType()const;
-	BBox& getBbox()const;
-	virtual void updatePos(const float);
+	const BBox& getBbox()const;
+	virtual void updatePos(const float) = 0;
 	virtual bool isValid()const = 0;
 	virtual std::string toString()const = 0;
 	virtual void setBbox() = 0;

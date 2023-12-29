@@ -10,6 +10,41 @@ Collision::Collision(Object* obj1, Object* obj2)
 	key = (id1 << 8) | id2;
 }
 
+Collision::Collision() 
+	:contactNum(0)
+{
+}
+
+void Collision::addCp(ContactPoint cp) {
+	if (contactNum == 2) {
+		//Õ“Ë“_‚Ì”‚ª2‚Ìê‡‚Í‘‚â‚³‚È‚¢
+		
+		//Õ“Ë“_‚ª•¡”‚ ‚éê‡‚Í‹——£‚ªÅ‚à‰“‚¢‚à‚Ì‚ð‘I‘ð
+		float dis = contactPoints[0].pointA.distance(contactPoints[1].pointA);
+		float dis0 = contactPoints[0].pointA.distance(cp.pointA);
+		float dis1 = contactPoints[1].pointA.distance(cp.pointA);
+		int index;
+		float disNew;
+		if (dis0 < dis1) {
+			index = 1;
+			disNew = dis1;
+		}
+		else {
+			index = 0;
+			disNew = dis0;
+		}
+		if (dis < disNew) {
+			contactPoints[index] = cp;
+		}
+	}
+	else if (contactNum == 1) {
+		contactPoints[1] = cp;
+		contactNum++;
+	}
+	contactPoints[0] = cp;
+	contactNum++;
+}
+
 uint16_t Collision::getKey() const{
 	return key;
 }
@@ -32,16 +67,6 @@ float Collision::getE()const {
 
 int Collision::getContactNum()const {
 	return contactNum;
-}
-
-void Collision::addContactPoint(const ContactPoint cp) {
-	contactNum++;
-	contactPoints.push_back(cp);
-}
-
-void Collision::addContactPoint(const float d, const Vec2 pA, const Vec2 pB, const Vec2 n) {
-	contactNum++;
-	contactPoints.emplace_back(d , pA , pB , n);
 }
 
 void Collision::Draw() const{
@@ -70,4 +95,9 @@ float Collision::getFri()const {
 ContactPoint& Collision::getCp(const int i){
 	assert(0 <= i && i < contactNum);
 	return contactPoints[i];
+}
+
+//íœ—\’è
+void Collision::addContactPoint(const ContactPoint cp) {
+	contactPoints[0] = cp;
 }

@@ -49,7 +49,9 @@ void Object::addV(const Vec2 acc) {
 	if (!active) {
 		return;
 	}
+	printfDx("add V %s , %s\n" , velocity.toString().c_str(), acc.toString().c_str());
 	velocity = acc + velocity;
+	printfDx("add V %s\n", velocity.toString().c_str());
 }
 
 void Object::addVang(const float acc) {
@@ -104,17 +106,17 @@ float Object::getE()const {
 	return e;
 }
 
-void Object::updatePos(const float step) {
-	//ìÆÇ©Ç»Ç¢ï®ëÃÇÃèÍçáâΩÇ‡ÇµÇ»Ç¢
-	if (!active) return;
-	center = center + (velocity * step);
-}
+//void Object::updatePos(const float step) {
+//	//ìÆÇ©Ç»Ç¢ï®ëÃÇÃèÍçáâΩÇ‡ÇµÇ»Ç¢
+//	if (!active) return;
+//	center = center + (velocity * step);
+//}
 
 Type Object::getType()const{
 	return type;
 }
 
-BBox& Object::getBbox() const{
+const BBox& Object::getBbox()const{
 	return bbox;
 }
 

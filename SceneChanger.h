@@ -10,6 +10,7 @@ enum Scene{
 	Scene_TEST_Detect,
 	Scene_TEST_Math,
 	Scene_TEST_Constraint,
+	Scene_TEST_Whole,
 	Scene_Fin,
 	Scene_None
 };

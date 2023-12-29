@@ -37,3 +37,8 @@ void Circle::setBbox() {
 	bbox.height = 2 * r;
 	bbox.width = 2 * r;
 }
+
+void Circle::updatePos(const float step) {
+	center = center + (velocity * step);
+	setBbox();
+}

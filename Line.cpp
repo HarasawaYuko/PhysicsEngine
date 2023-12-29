@@ -4,6 +4,7 @@ Line::Line (const Vec2 s ,const Vec2 e ,bool active , const float v_x ,const flo
 	:Object(Vec2(v_x , v_y), LINE, 10, COLOR_BLACK, false), start(s), end(e)
 {
 	velocity.set(v_x , v_y);
+	setBbox();
 }
 
 Vec2 Line::getS()const {
@@ -45,4 +46,10 @@ void Line::setBbox() {
 	bbox.point = Vec2(xMin, yMin);
 	bbox.height = yMax - yMin;
 	bbox.width = xMax - xMin;
+}
+
+void Line::updatePos(const float step) {
+	start = start + (velocity * step);
+	end = end + (velocity *step);
+	setBbox();
 }

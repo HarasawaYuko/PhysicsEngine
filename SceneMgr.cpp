@@ -7,9 +7,10 @@
 #include "MathTest.h"
 #include "ObjectTest.h"
 #include "ConstraintTest.h"
+#include "WholeTest.h"
 
 SceneMgr::SceneMgr() {
-	m_scene = (BaseScene*)new DetectTest(this);
+	m_scene = (BaseScene*)new WholeTest(this);
 }
 
 void SceneMgr::Initialize() {
@@ -52,6 +53,9 @@ void SceneMgr::Update() {
 			break;
 		case Scene_TEST_Constraint:
 			m_scene = (BaseScene*) new ConstraintTest(this);
+			break;
+		case Scene_TEST_Whole:
+			m_scene = (BaseScene*) new WholeTest(this);
 			break;
 		}
 		m_next_scene = Scene_None;

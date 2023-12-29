@@ -1,22 +1,25 @@
+#include "Pair.h"
+#include "detect.h"
 #include "World.h"
+#include "Solver.h"
 
 World::World(float timeStep)
 {
 	TIME_STEP = timeStep;
+	objNum = 0;
 }
 
 void World::initialize() {
 	//初期化
+	objNum = 0;
 	Solver::initialize(TIME_STEP);
-
-
-	//Line設置
-	/*Line* line1 = new Line(Vec2(290, 200), Vec2(500, 500), false);
-	add(line1);*/
+	pairs.clear();
+	objects.clear();
 }
 
 void World::physicsSimulate() {
 	//外力を加える
+
 	applyForce();
 
 	//衝突検知
@@ -31,6 +34,7 @@ void World::physicsSimulate() {
 
 void World::add(Object* obj) {
 	objects.push_back(obj);
+	objNum++;
 	//ユニークなidの割り当て
 	num++;
 	obj->setId(num);
@@ -60,80 +64,78 @@ void World::detectCollision() {
 	for (auto obj : objects) {
 		obj->unTouch();
 	}
-	//ブロードフェーズ
-	
-	//各オブジェクトの衝突を検知
-	bool contact;
-	std::vector<Collision> newColls;
-	for (int i = 0; i < objects.size() - 1; i++) {
-		for (int j = i + 1 ; j < objects.size(); j++) {
-			//動かない物体同士ならスキップ
-			if (!objects[i]->isActive() && !objects[j]->isActive()) {
-				continue;
-			}
-			contact = false;
-			//衝突情報
-			float depth;//貫通深度
-			Vec2 nVec;//法線ベクトル
-			Vec2 coord[2];//衝突座標
-
-			//衝突した物体によって分類
-			switch (objects[i]->getType() | objects[j]->getType()) {
-			case Kind::CIRCLE_CIRCLE:
-				//i:circle  j:circle
-				if (Detect::circle_circle(objects[i], objects[j] ,&depth , &nVec , coord)) {
-					objects[i]->setTouch();
-					objects[j]->setTouch();
-					contact = true;
-				}
-				break;
-			case Kind::CIRCLE_LINE:
-				//i:circle  j:line
-				if (Detect::circle_line(objects[i], objects[j], &depth, &nVec, coord)) {
-					objects[i]->setTouch();
-					contact = true;
-				}
-				break;
-			case Kind::BOX_BOX:
-				//i:box j:box
-				
-				if (Detect::box_box(objects[i], objects[j], &depth, &nVec, coord)) {
-					//printfDx("return true\n");
-					objects[i]->setTouch();
-					objects[j]->setTouch();
-					contact = true;
-				}
-				break;
-			}
-			//衝突していれば
-			if (contact) {
-				newColls.emplace_back(objects[i], objects[j]);
-				newColls.back().addContactPoint(depth , coord[0] , coord[1] , nVec);
+//ブロードフェーズ
+	std::vector<Pair> nowPairs;//検出されたペア
+	for (int i = 0; i < objNum; i++) {
+		for (int j = i + 1; j < objNum; j++) {
+			//バウンディングボックスによる判定
+			if (Detect::broard(objects[i], objects[j])) {
+				//見つかったらペアを作成
+				nowPairs.emplace_back(objects[i] , objects[j]);
 			}
 		}
 	}
+	//前のリストと比較してTypeを設定
+	for (int i = 0; i < nowPairs.size(); i++) {
+		for (int j = 0; j < pairs.size();j++) {
+			//同じ種類が検出されたら
+			if (nowPairs[i].getKey() == pairs[j].getKey()) {
+				nowPairs[i].setType(Keep);
+			}
+			else {
+				nowPairs[i].setType(New);
+			}
+		}
+	}
+	//ペアの配列を更新
+	this->pairs = nowPairs;
 
-	//衝突リストを更新
-	collisions.clear();
-	//printfDx("newColls %d\n", newColls.size());
-	collisions = newColls;
-	//printfDx("collision %d\n", collisions.size());
+
+//ナローフェーズ
+	std::vector<uint32_t> erase;
+	for (int i = 0; i < pairs.size(); i++) {
+		const Pair& pair = pairs[i];
+		float depth;//貫通深度
+		Vec2 n;//衝突法線ベクトル
+		Vec2 coord[2];//衝突座標
+		//衝突した種類で場合分け
+		switch (pair.getKind()) {
+		case CONVEX_CONVEX:
+			if (Detect::convex_convex(pair.getObj0(), pair.getObj1(), &depth, &n, coord)) {
+				//衝突していたら衝突情報を記録
+				ContactPoint cp;
+				cp.depth = depth;
+				cp.normal = n;
+				cp.pointA = coord[0];
+				cp.pointB = coord[1];
+				pair.getCol()->addCp(cp);
+			}
+			else {
+				//衝突していなければ
+				erase.push_back(pair.getKey());//キーを記録
+			}
+			break;
+		case CIRCLE_CIRCLE:
+			break;
+		case CIRCLE_CONVEX:
+			break;
+		}
+	}
+	//衝突していなかったペアを削除
+	for (int i = 0; i < erase.size(); i++) {
+		for (int j = 0; j < pairs.size(); j++) {
+			if (pairs[j].getKey() == erase[i]) {
+				pairs.erase(pairs.begin() + i);
+			}
+		}
+	}
 }
 
 
 //拘束の解消
 void World::solveConstraints() {
-	//各衝突の拘束を計算
-	for (auto col : collisions) {
-		switch (col.getType()) {
-		case CIRCLE_LINE:
-			Solver::circle_line(col);
-			break;
-		case CIRCLE_CIRCLE:
-			Solver::circle_circle(col);
-			break;
-		}
-	}
+	//全てのペアについて
+	Solver::solve(this);
 }
 
 //位置の更新
@@ -143,10 +145,11 @@ void World::integrate() {
 	while (itr != objects.end())
 	{
 		(*itr)->updatePos(TIME_STEP);
-		if (!(*itr)->isValid())
+ 		if (!(*itr)->isValid())
 		{
 			itr = objects.erase(itr);
 			isErase = true;
+			objNum--;
 		}
 		else
 		{

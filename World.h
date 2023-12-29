@@ -5,17 +5,15 @@
 #include "Circle.h"
 #include "Box.h"
 #include "Pair.h"
-#include "detect.h"
-#include "Collision.h"
-#include "Solver.h"
 
 //物理シミュレーションクラス
 
 class World {
 private:
-	const float gravity = 1.8f;//重力加速度
+	const float gravity = 200.8f;//重力加速度
 	float TIME_STEP;
 	uint16_t num;//通算で追加したオブジェクトの数　65536以上になったら一旦リセットする必要あり
+	int objNum;
 
 	void applyForce();
 	void detectCollision();

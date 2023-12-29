@@ -81,7 +81,16 @@ Vec2 Vec2::normal()const {
 
 std::string Vec2::toString() const
 {
-	return std::to_string(x) + "," + std::to_string(y);
+	std::string str;
+	char tmp[255];
+	str += "(";
+	sprintf_s(tmp, "%.0f", x);
+	str += std::string(tmp);
+	str += ",";
+	sprintf_s(tmp, "%.0f", y);
+	str += std::string(tmp);
+	str += ")";
+	return str;
 }
 
 /**s—ñ‚ÌÀ‘•**/

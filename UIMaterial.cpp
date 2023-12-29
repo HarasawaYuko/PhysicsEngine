@@ -146,3 +146,9 @@ int DrawPoint(const Vec2& v, const unsigned int color) {
 int DrawStrP(const Vec2& p , const std::string str , const unsigned int color) {
 	return DrawString(p.x ,WIN_SIZE_Y - p.y , str.c_str(), color);
 }
+
+std::string FtoStr(const float val) {
+	char tmp[255];
+	sprintf_s(tmp, "%.0f", val);
+	return std::string(tmp);
+}

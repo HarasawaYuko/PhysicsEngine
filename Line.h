@@ -14,4 +14,5 @@ public:
 	bool isValid()const override;
 	std::string toString()const override;
 	void setBbox()override;
+	void updatePos(const float step)override;
 };
