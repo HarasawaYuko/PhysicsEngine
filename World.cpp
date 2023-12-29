@@ -72,6 +72,7 @@ void World::detectCollision() {
 			if (Detect::broard(objects[i], objects[j])) {
 				//Œ©‚Â‚©‚Á‚½‚çƒyƒA‚ğì¬
 				nowPairs.emplace_back(objects[i] , objects[j]);
+				nowPairs.back().setType(New);
 			}
 		}
 	}
@@ -81,9 +82,6 @@ void World::detectCollision() {
 			//“¯‚¶í—Ş‚ªŒŸo‚³‚ê‚½‚ç
 			if (nowPairs[i].getKey() == pairs[j].getKey()) {
 				nowPairs[i].setType(Keep);
-			}
-			else {
-				nowPairs[i].setType(New);
 			}
 		}
 	}

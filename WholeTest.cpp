@@ -27,6 +27,7 @@ void WholeTest::Initialize() {
 	//ŽOŠpŒ`‚ðÝ’u
 	con = getCon(1);
 	con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
+	con->setAngV(Pi/6.f);
 	con->move(Vec2(400.f , 500.f));
 	//printfDx("%s\n" , con->getC().toString().c_str());
 	world.add(con);
