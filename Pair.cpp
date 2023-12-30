@@ -5,12 +5,13 @@ Pair::Pair(Object* obj1 , Object* obj2) {
 	uint32_t id1 = (uint32_t)obj1->getId();
 	uint32_t id2 = (uint32_t)obj2->getId();
 	if (id1 < id2) {
-		id2 = id2 << 8;
+		id2 = id2 << 16;
 	}
 	else {
-		id1 = id1 << 8;
+		id1 = id1 << 16;
 	}
 	key = id1 | id2;
+	//printfDx("key %x\n" , key);
 	kind = (Kind)(obj1->getType() | obj2->getType());
 	obj[0] = obj1;
 	obj[1] = obj2;
@@ -46,6 +47,33 @@ Collision* Pair::getCol()const {
 	return collision;
 }
 
+//contactPointが有効かを確認する
+void Pair::refreshCp() {
+	std::vector<int> deleteIndex;
+	for (int i = 0; i < collision->getContactNum(); i++) {
+		ContactPoint cp = collision->getCp(i);
+		//それぞれから見た接触点をワールド座標に変換
+		Vec2 rA = LtoW(cp.pointA , obj[0]->getC() , obj[0]->getAngle());
+		Vec2 rB = LtoW(cp.pointB, obj[1]->getC(), obj[1]->getAngle());
+		DrawPoint(rA, COLOR_RED);
+		DrawPoint(rB, COLOR_BLUE);
+		Vec2 rAB = (rA - rB).normalize();
+		/*printfDx("rA %s , rB %s\n" , rA.toString().c_str() , rB.toString().c_str());
+		printfDx("normal %s , rAB %s\n" , cp.normal.toString().c_str() , rAB.toString().c_str());*/
+		//貫通深度と逆向きの時
+		if (cp.normal.dot(rAB) > 0) {
+			//無効
+			deleteIndex.push_back(i);
+		}
+	}
+	//indexが変わるため後ろから削除する
+	for (int i = deleteIndex.size() - 1; i >= 0; i--) {
+		if (i == deleteIndex[i]) {
+			collision->deleteCp(i);
+		}
+	}
+}
+
 std::string Pair::toString()const {
 	std::string str;
 	//種類の取得
@@ -73,7 +101,7 @@ std::string Pair::toString()const {
 	
 	str += "contactPoint:" + std::to_string(collision->getContactNum()) + "\n";
 	for (int i = 0; i < collision->getContactNum();i++) {
-		ContactPoint cp = collision->contactPoints[i];
+		ContactPoint cp = collision->getCp(i);
 		char tmp[255];
 		sprintf_s(tmp, "%6.1f", cp.depth);
 		str += std::to_string(i) + " depth:" + std::string(tmp) + " pointA:" + cp.pointA.toString() + " pointB:" + cp.pointB.toString() + " normal" + cp.normal.toString() + "\n";

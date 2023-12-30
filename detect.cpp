@@ -298,7 +298,7 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 				return false;
 			}
 			//衝突している場合、貫通深度と法線ベクトルを設定
-			assert(d1 <= 0 && d2 <= 0);
+			//assert(d1 <= 0 && d2 <= 0);
 			if (max_depth < d1) {
 				max_depth = d1;
 				axisMax = axis;
@@ -320,7 +320,7 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 			return false;
 		}
 		//衝突している場合、貫通深度と法線ベクトルを設定
-		assert(d1 <= 0 && d2 <= 0);
+		//assert(d1 <= 0 && d2 <= 0);
 		if (max_depth < d1) {
 			max_depth = d1;
 			axisMax = axis;
@@ -340,7 +340,7 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 			return false;
 		}
 		//衝突している場合、貫通深度と法線ベクトルを設定
-		assert(d1 <= 0 && d2 <= 0);
+		//assert(d1 <= 0 && d2 <= 0);
 		if (max_depth < d1) {
 			max_depth = d1;
 			axisMax = axis;

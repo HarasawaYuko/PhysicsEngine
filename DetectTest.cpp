@@ -174,7 +174,7 @@ void DetectTest::Draw() {
 			DrawString(0 , 100 , "Detect!" ,COLOR_RED);
 		}
 		for (auto col : collisions) {
-			ContactPoint cp = col.contactPoints[0];
+			ContactPoint cp = col.getCp(0);
 			DrawFormatString(300, 150, COLOR_BLACK, "ŠÑ’Ê[“x:%f", cp.depth);
 			Vec2 pA = LtoW(cp.pointA , col.getObj1()->getC() , 0);
 			Vec2 pB = LtoW(cp.pointB , col.getObj2()->getC() , 0);
@@ -208,7 +208,7 @@ void DetectTest::Draw() {
 			DrawString(0, 100, "Detect!", COLOR_RED);
 		}
 		for (auto col : collisions) {
-			ContactPoint cp = col.contactPoints[0];
+			ContactPoint cp = col.getCp(0);
 			DrawFormatString(300, 150, COLOR_BLACK, "ŠÑ’Ê[“x:%f", cp.depth);
 			Vec2 pA = LtoW(cp.pointA, col.getObj1()->getC(), 0);
 			Vec2 pB = LtoW(cp.pointB, col.getObj2()->getC(), 0);
