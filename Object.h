@@ -37,6 +37,7 @@ public:
 	float getM();
 	Vec2 getC()const;
 	Vec2 getV()const;
+	void setV(const Vec2);
 	void setAngle(const float);
 	void setAngV(const float);
 	void updateAngle(const float);
@@ -65,5 +66,6 @@ public:
 	virtual void setColor(Color color);
 	unsigned int getColor() const;
 	float getI()const;
+	Vec2 getCirV(const Vec2& , const Vec2&)const;
 	Vec2 getCirV(const Vec2&)const;
 };

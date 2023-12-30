@@ -10,5 +10,5 @@ struct Constraint {
 	float f;//‰ŠúS‘©—Í
 	float lowerF;
 	float upperF;
-	float accumImpulse;//’~Ï‚³‚ê‚½S‘©—Í
+	float accumImpulse = 0.f;//’~Ï‚³‚ê‚½S‘©—Í
 };

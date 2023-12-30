@@ -34,5 +34,6 @@ public:
 	Object* getObj0()const;
 	Object* getObj1()const;
 	Collision* getCol()const;
+	void refreshCp();//contactPoint‚ğƒŠƒtƒŒƒbƒVƒ…‚·‚é
 	std::string toString()const;
 };
