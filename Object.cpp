@@ -21,6 +21,10 @@ Vec2 Object::getV()const{
 	return velocity;
 }
 
+void Object::setV(const Vec2 v) {
+	velocity = v;
+}
+
 void Object::setAngle(const float ang) {
 	angle = ang;
 }
@@ -129,6 +133,7 @@ Object::Object(Vec2 v ,Type type ,float mass, Color color , bool act , float ang
 			this->id = id;
 		}
 	}
+	e = 0.2f;
 }
 
 void Object::setColor(Color c) {

@@ -169,7 +169,7 @@ std::string Matrix::toString() const {
 	for (int i = 0; i < column ; i++) {
 		for (int j = 0; j < row; j++) {
 			char tmp[255];
-			sprintf_s(tmp ,"%6.1f", matrix[j][i]);
+			sprintf_s(tmp ,"%f", matrix[j][i]);
 			str += std::string(tmp);
 			str += ",";
 		}
@@ -298,7 +298,9 @@ float getTheta(const Vec2& cen , const Vec2& p0 , const Vec2&p1) {
 		return 2*Pi - acos(v1.dot(v2));
 	}
 	else {//0 < x < 180‚ÌŽž
-		return acos(v1.dot(v2));
+		//­”Œë·—p‚ÉƒNƒ‰ƒ“ƒv‚·‚é
+		float dot = clamp(v1.dot(v2) , 0.f , 1.0f);
+		return acos(dot);
 	}
 }
 
@@ -316,7 +318,7 @@ Vec2 WtoL(const Vec2 &world , const Vec2& worldCen , float ang) {
 Vec2 getVang(const Vec2& r , const float omega) {
 	//‘å‚«‚³‚ðŽæ“¾ v = rƒÖ
 	float length = r.norm() * omega;
-	Vec2 result = r.normal().normalize() * length;
+	Vec2 result = (r.normal().normalize()) * length;
 	return result;
 }
 

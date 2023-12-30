@@ -16,33 +16,87 @@ Collision::Collision()
 }
 
 void Collision::addCp(ContactPoint cp) {
-	if (contactNum == 2) {
-		//衝突点の数が2の場合は増やさない
-		
-		//衝突点が複数ある場合は距離が最も遠いものを選択
-		float dis = contactPoints[0].pointA.distance(contactPoints[1].pointA);
-		float dis0 = contactPoints[0].pointA.distance(cp.pointA);
-		float dis1 = contactPoints[1].pointA.distance(cp.pointA);
-		int index;
-		float disNew;
-		if (dis0 < dis1) {
-			index = 1;
-			disNew = dis1;
+	//既存の衝突点と同じ点であれば、それを更新する
+	const float SAME_POINT = 1.0f;//同じ点と見なせる範囲
+	int existIndex = -1;//同じ点だった時のindex
+	for (int i = 0; i < contactNum; i++) {
+		ContactPoint& exist = contactPoints[i];
+		//衝突新規の点と比較
+		float diffA = (cp.pointA - exist.pointA).norm();
+		float diffB = (cp.pointB - exist.pointB).norm();
+		float dot = cp.normal.dot(exist.normal);//法線ベクトルの角度が同じか
+		if (diffA < SAME_POINT && diffB < SAME_POINT && dot > 0.99f ) {
+			existIndex = i;
+			break;
 		}
+	}
+
+	//新規衝突点の場合
+	if (existIndex == -1) {
+		//まだ追加できる場合
+		if (contactNum < 2) {
+			contactPoints.push_back(cp);
+			contactNum++;
+			return;
+		}
+		//既に二つある場合
 		else {
-			index = 0;
-			disNew = dis0;
-		}
-		if (dis < disNew) {
-			contactPoints[index] = cp;
+			contactPoints.push_back(cp);
+			//貫通深度が最も深いものは必ず採用する
+			float maxDepth = FLT_MAX;
+			int deepestIndex = -1;
+			for (int i = 0; i < 3; i++) {
+				if (maxDepth > contactPoints[i].depth) {
+					maxDepth = contactPoints[i].depth;
+					deepestIndex = i;
+				}
+			}
+			ContactPoint deepest = contactPoints[deepestIndex];
+			contactPoints.erase(contactPoints.begin() + deepestIndex);
+			//確定点から最も離れてる点を採用する
+			if (contactPoints[0].pointA.distance(deepest.pointA) < contactPoints[1].pointA.distance(deepest.pointA)) {
+				contactPoints.erase(contactPoints.begin() + 0);
+			}
+			else {
+				contactPoints.erase(contactPoints.begin() + 1);
+			}
+			contactPoints.push_back(deepest);
+			//衝突点が複数ある場合は距離が最も遠いものを選択
+			float dis = contactPoints[0].pointA.distance(contactPoints[1].pointA);
+			float dis0 = contactPoints[0].pointA.distance(cp.pointA);
+			float dis1 = contactPoints[1].pointA.distance(cp.pointA);
+			int index;
+			float disNew;
+			if (dis0 < dis1) {
+				index = 1;
+				disNew = dis1;
+			}
+			else {
+				index = 0;
+				disNew = dis0;
+			}
+			if (dis < disNew) {
+				contactPoints[index] = cp;
+			}
+			return;
 		}
 	}
-	else if (contactNum == 1) {
-		contactPoints[1] = cp;
-		contactNum++;
+	//既存の衝突点の場合
+	else {
+		//新しい情報に更新する
+		contactPoints[existIndex].depth = cp.depth;
+		contactPoints[existIndex].normal = cp.normal;
+		contactPoints[existIndex].pointA = cp.pointA;
+		contactPoints[existIndex].pointB = cp.pointB;
+		//printfDx("accume--- %f\n", contactPoints[existIndex].constraint->accumImpulse);
+		return;
 	}
-	contactPoints[0] = cp;
-	contactNum++;
+}
+
+void Collision::deleteCp(const int index) {
+	assert(0 <= index && index < contactNum);
+	contactPoints.erase(contactPoints.begin() + index);
+	contactNum--;
 }
 
 uint16_t Collision::getKey() const{
