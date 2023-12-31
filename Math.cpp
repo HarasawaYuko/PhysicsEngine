@@ -83,10 +83,10 @@ std::string Vec2::toString() const
 	std::string str;
 	char tmp[255];
 	str += "(";
-	sprintf_s(tmp, "%.0f", x);
+	sprintf_s(tmp, "%f", x);
 	str += std::string(tmp);
 	str += ",";
-	sprintf_s(tmp, "%.0f", y);
+	sprintf_s(tmp, "%f", y);
 	str += std::string(tmp);
 	str += ")";
 	return str;
@@ -254,17 +254,24 @@ pattern‚Éü•ª‚Æ“_‚ÌˆÊ’uŠÖŒW‚ğ‹L˜^
 */
 float getDistance(const Vec2& point, const Segment &seg , int* pattern) {
 	//ˆÊ’uŠÖŒW‚Åê‡•ª‚¯
+	//printfDx("getDistance\n");
 	Vec2 StoE = seg.end - seg.start;
 	Vec2 StoP = point - seg.start;
 	Vec2 EtoP = point - seg.end;
+	/*printfDx("StoE %s\n", StoE.toString().c_str());
+	printfDx("StoP %s\n", StoP.toString().c_str());
+	printfDx("EtoP %s\n", EtoP.toString().c_str());*/
 	if (StoE.dot(StoP) < 0) {
+		//printfDx("pattern 0\n");
 		*pattern = 0;
 		return point.distance(seg.start);
 	}
 	if ((StoE * -1).dot(EtoP) < 0 ) {
+		//printfDx("pattern 1\n");
 		*pattern = 1;
 		return point.distance(seg.end);
 	}
+	//printfDx("pattern 2\n");
 	*pattern = 2;
 	return getDistance(point , seg);
 }
@@ -273,7 +280,7 @@ float getDistance(const Vec2& point, const Segment &seg , int* pattern) {
 * “_‚Æü•ª‚Ì‹——£
 * Pattern‚È‚µ
 */
-float getDistance(const Vec2& point, const Segment& seg) {
+float getDistance(const Vec2& point, const Segment& seg ) {
 	//ˆÊ’uŠÖŒW‚Åê‡•ª‚¯
 	Vec2 StoE = seg.end - seg.start;
 	Vec2 StoP = point - seg.start;
