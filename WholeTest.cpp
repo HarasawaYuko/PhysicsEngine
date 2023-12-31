@@ -9,6 +9,7 @@ Convex* getCon(const int);
 
 static bool move = false;
 static Rand* rand_;
+static std::vector<Vec2> points;
 
 WholeTest::WholeTest(SceneChanger* changer)
 	:BaseScene(changer)
@@ -28,29 +29,46 @@ void WholeTest::Initialize() {
 	//三角形を設置
 	con = getCon(1);
 	con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
-	con->setAngV(Pi/1.f);
-	//con->setV(Vec2(30 , 0));
+	//con->setAngV(Pi/1.f);
+	con->setV(Vec2(0 , -50));
 	//con->setAngV(Pi/12.f);
 	con->move(Vec2(350.f , 500.f));
 	//printfDx("%s\n" , con->getC().toString().c_str());
 	world.add(con);
 
-	//四角形を設置
-	con = getCon(0);
-	con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
-	con->setV(Vec2(20.f , 0.f));
+	///*四角形を設置
+	//con = getCon(0);
+	//con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
+	//con->setV(Vec2(20.f , 0.f));
 	//con->setAngV(Pi / 6.f);
-	con->move(Vec2(550.f , 500.f));
-	world.add(con);
+	//con->move(Vec2(550.f , 500.f));
+	//world.add(con);
 
 	//四角形を設置
-	con = getCon(0);
-	con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
-	con->setV(Vec2(0.f, -20.f));
-	con->setAngV(Pi / 6.f);
-	con->move(Vec2(450.f, 500.f));
-	world.add(con);
+	//con = getCon(0);
+	//con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
+	//con->setV(Vec2(0.f, -20.f));
+	//con->setAngV(Pi / 6.f);
+	//con->move(Vec2(450.f, 500.f));
+	//world.add(con);
 
+	//四角形を設置
+	//con = getCon(0);
+	//con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
+	//con->setV(Vec2(0.f, 20.f));
+	//con->setAngV(Pi / 6.f);
+	//con->move(Vec2(280.f, 500.f));
+	//world.add(con);
+
+	//三角形を設置
+	//con = getCon(1);
+	//con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
+	//con->setAngV(Pi / 1.f);
+	//con->setV(Vec2(30 , 0));
+	//con->setAngV(Pi/12.f);
+	//con->move(Vec2(200.f, 500.f));
+	//printfDx("%s\n" , con->getC().toString().c_str());
+	//world.add(con);*/
 }
 
 //円の並進運動
@@ -72,7 +90,19 @@ void WholeTest::Update() {
 		Finalize();
 		Initialize();
 	}
-
+	if (Mouse::instance()->getClickNow(LEFT_CLICK)) {
+		//凸包の点を追加
+		points.emplace_back(Mouse::instance()->getX(), Mouse::instance()->getY());
+	}
+	if (KeyBoard::instance()->hitNow(KEY_INPUT_C)) {
+		Convex* con = new Convex(points ,0.f , 0.f , 0.f , 0.f , true);
+		con->setColor(GetColor(rand_->get(100, 255), rand_->get(100, 255), rand_->get(100, 255)));
+		world.add(con);
+		points.clear();
+	}
+	if (KeyBoard::instance()->hitNow(KEY_INPUT_A)) {
+		points.clear();
+	}
   	if(move)world.physicsSimulate();
 	if (!move && Mouse::instance()->getClickNow(RIGHT_CLICK)) {
 		world.physicsSimulate();
@@ -82,20 +112,29 @@ void WholeTest::Update() {
 void WholeTest::Draw() {
 	SetFontSize(20);
 	DrawString(640, 0, "Scene WholeTest", COLOR_BLACK);
+	DrawString(640 , 23 , "LeftClick->point追加\nC->凸包追加\nA->point削除" , COLOR_BLACK);
 	for (auto& obj : world.objects) {
 		obj->Draw();
 	}
+	//pointの描画
+	for (int i = 0; i < points.size(); i++) {
+		DrawPoint(points[i] , COLOR_RED);
+	}
 /*その他描画*/
 	//ペアの衝突情報
-	if (world.pairs.size()!= 0) {
-		DrawString(0 , 20 ,"Detect!" , COLOR_RED);
-		DrawFormatString(0 , 40 ,COLOR_BLUE, "%s" ,world.pairs[0].toString().c_str());
-	}
-	DrawFormatString(150 , 200 , COLOR_BLACK,"ペア数 %d\n" , world.pairs.size());
-	//三角形の速度
-	if (world.objects.size() == 2) {
-		DrawFormatString(world.objects[1]->getC().x + 40 , WIN_SIZE_Y - world.objects[1]->getC().y ,COLOR_GREEN , "%s" , world.objects[1]->getV().toString().c_str());
-	}
+	//if (world.pairs.size()!= 0) {
+	//	DrawString(0 , 20 ,"Detect!" , COLOR_RED);
+	//	DrawFormatString(0 , 40 ,COLOR_BLUE, "%s" ,world.pairs[0].toString().c_str());
+	//}
+	//DrawFormatString(150 , 200 , COLOR_BLACK,"ペア数 %d\n" , world.pairs.size());
+	////三角形の速度
+	//if (world.objects.size() == 2) {
+	//	DrawFormatString(world.objects[1]->getC().x + 40 , WIN_SIZE_Y - world.objects[1]->getC().y ,COLOR_GREEN , "%s" , world.objects[1]->getV().toString().c_str());
+	//}
+	////速度
+	//for (int i = 0; i < world.objects.size(); i++) {
+	//	DrawFormatString(600 , 30 + i*23, COLOR_BLUE , "V:%s\n" , world.objects[i]->getV().toString().c_str());
+	//}
 }
 
 void WholeTest::Finalize() {

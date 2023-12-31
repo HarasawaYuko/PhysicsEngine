@@ -71,28 +71,16 @@ void World::detectCollision() {
 			//バウンディングボックスによる判定
 			if (Detect::broard(objects[i], objects[j])) {
 				//見つかったらペアを作成
-				printfDx("ペア発見 %d & %d\n" , objects[i]->getId() , objects[j]->getId());
 				nowPairs.emplace_back(objects[i] , objects[j]);
 				nowPairs.back().setType(New);
 			}
 		}
 	}
-	printfDx("今見つかったペア");
-	for (int i = 0; i < nowPairs.size();i++) {
-		printfDx("%d ," ,nowPairs[i].getKey());
-	}
-	printfDx("\n");
-	printfDx("前見つかったペア");
-	for (int i = 0; i < pairs.size(); i++) {
-		printfDx("%d ,", pairs[i].getKey());
-	}
-	printfDx("\n");
 	//前のリストと比較してTypeを設定
 	for (int i = 0; i < nowPairs.size(); i++) {
 		for (int j = 0; j < pairs.size();j++) {
 			//同じ種類が検出されたら
 			if (nowPairs[i].getKey() == pairs[j].getKey()) {
-				printfDx("同じペアが検出 %d\n" , pairs[j].getKey());
 				nowPairs[i] = pairs[j];
 				nowPairs[i].setType(Keep);
 			}
@@ -100,11 +88,6 @@ void World::detectCollision() {
 	}
 	//ペアの配列を更新
 	this->pairs = nowPairs;
-	printfDx("更新後");
-	for (int i = 0; i < pairs.size(); i++) {
-		printfDx("%d ,", pairs[i].getKey());
-	}
-	printfDx("\n");
 	//以前の衝突点の状況を確認し、更新する
 	for (int i = 0; i < pairs.size();i++) {
 		pairs[i].refreshCp();
@@ -134,7 +117,6 @@ void World::detectCollision() {
 			else {
 				//衝突していなければ
 				erase.push_back(pair.getKey());//キーを記録
-				printfDx("衝突してなかったkey %d\n" , pair.getKey());
 			}
 			break;
 		case CIRCLE_CIRCLE:
@@ -151,11 +133,6 @@ void World::detectCollision() {
 			}
 		}
 	}
-	printfDx("ナロー後");
-	for (int i = 0; i < pairs.size(); i++) {
-		printfDx("%d ,", pairs[i].getKey());
-	}
-	printfDx("\n");
 }
 
 

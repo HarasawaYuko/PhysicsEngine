@@ -359,19 +359,24 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 	float minDistance = INF;//最短距離
 	bool  minA = false;
 	int minPointIndex = -1;
+	int minEdgeIndex = -1;
+	int minPattern;
 	//物体1を貫通深度より若干ずらす
 	Vec2 disV = axisMax * (abs(*depth) * 2.f);//ずらすベクトル
 	con1->move(disV);
 	//物体1の頂点から見た最短距離
 	for (int i = 0; i < con1->getPointNum(); i++) {
 		for (int j = 0; j < con2->getPointNum(); j++) {
+			int pattern;
 			Segment edge = con2->getEdgeW(j);
-			float dis = getDistance(con1->getPointW(i), edge);
+			float dis = getDistance(con1->getPointW(i), edge );
 			if (minDistance > dis) {
 				//記録
 				minA = true;
 				minDistance = dis;
 				minPointIndex = i;
+				minEdgeIndex = j;
+				//minPattern = pattern;
 			}
 		}
 	}
@@ -386,6 +391,9 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 				minA = false;
 				minDistance = dis;
 				minPointIndex = i;
+				minEdgeIndex = j;
+				//minPattern = pattern;
+				//printfDx("更新!-------\n");
 			}
 		}
 	}
@@ -396,19 +404,24 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 	//最短距離だった組み合わせの衝突点のローカル座標を設定
 	Vec2 minPoint;
 	Segment minEdge;
+
 	if (minA) {//Aが頂点Bが辺だった場合
+		//printfDx("Aが頂点\n");
 		minPoint = con1->getPointW(minPointIndex);
 		coord[0] = WtoL(minPoint, con1->getC(), con1->getAngle());
 		coord[1] = WtoL(minPoint, con2->getC(), con2->getAngle());
-		//minEdge = con2->getEdgeW(minEdgeIndex);
+		minEdge = con2->getEdgeW(minEdgeIndex);
 		//switch (minPattern) {
 		//case 0:
+		//	//printfDx("パターン0\n");
 		//	coord[1] = WtoL(minEdge.start, con2->getC(), con2->getAngle());
 		//	break;
 		//case 1:
+		//	//printfDx("パターン1\n");
 		//	coord[1] = WtoL(minEdge.end, con2->getC(), con2->getAngle());
 		//	break;
 		//case 2:
+		//	//printfDx("パターン2\n");
 		//	coord[1] = WtoL(getContactPoint(minPoint, minEdge), con2->getC(), con2->getAngle());
 		//	break;
 		//default:
@@ -417,24 +430,28 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 		//}
 	}
 	else {
+		//printfDx("Bが頂点");
 		minPoint = con2->getPointW(minPointIndex);
-		coord[1] = WtoL(minPoint, con2->getC(), con2->getAngle());
 		coord[0] = WtoL(minPoint, con1->getC(), con1->getAngle());
-		/*minEdge = con1->getEdgeW(minEdgeIndex);
-		switch (minPattern) {
-		case 0:
-			coord[0] = WtoL(minEdge.start, con1->getC(), con1->getAngle());
-			break;
-		case 1:
-			coord[0] = WtoL(minEdge.end, con1->getC(), con1->getAngle());
-			break;
-		case 2:
-			coord[0] = WtoL(getContactPoint(minPoint, minEdge), con1->getC(), con1->getAngle());
-			break;
-		default:
-			assert(false);
-			break;
-		}*/
+		coord[1] = WtoL(minPoint, con2->getC(), con2->getAngle());
+		//minEdge = con1->getEdgeW(minEdgeIndex);
+		//switch (minPattern) {
+		//case 0:
+		//	//printfDx("パターン0\n");
+		//	coord[0] = WtoL(minEdge.start, con1->getC(), con1->getAngle());
+		//	break;
+		//case 1:
+		//	//printfDx("パターン1\n");
+		//	coord[0] = WtoL(minEdge.end, con1->getC(), con1->getAngle());
+		//	break;
+		//case 2:
+		//	//printfDx("パターン2\n");
+		//	coord[0] = WtoL(getContactPoint(minPoint, minEdge), con1->getC(), con1->getAngle());
+		//	break;
+		//default:
+		//	assert(false);
+		//	break;
+		//}
 	}
 
 
@@ -442,8 +459,6 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 	Debug* debug = Debug::instance();
 	debug->minPointA = minPoint;
 	debug->minEdgeB = minEdge;
-
-
 	return true;
 }
 

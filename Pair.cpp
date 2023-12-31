@@ -63,6 +63,8 @@ void Pair::refreshCp() {
 		//ŠÑ’Ê[“x‚Æ‹tŒü‚«‚Ì
 		if (cp.normal.dot(rAB) > 0) {
 			//–³Œø
+			//printfDx("–³Œø –@ü:%s rAB:%s\n" , cp.normal.toString().c_str() , rAB.toString().c_str());
+			//printfDx("rA %s , rB %s\n" ,rA.toString().c_str() , rB.toString().c_str());
 			deleteIndex.push_back(i);
 		}
 	}

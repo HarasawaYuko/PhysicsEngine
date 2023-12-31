@@ -44,7 +44,7 @@ Convex::Convex(const std::vector<Vec2> &points ,const float v_x, const float v_y
 	mass = area;
 	setBbox();
 
-	friction = 0.5f;
+	friction = 0.3f;
 }
 
 void Convex::loadGraph() {
@@ -56,9 +56,14 @@ void Convex::updatePos(const float step) {
 	if (!active) {
 		return;
 	}
-	//printfDx("Convex updatePos %s\n" , velocity.toString().c_str());
-	center = center + (velocity * step);
-	angle = angle + (angle_v * step);
+	Vec2 deltaLinearV = (velocity * step);
+	float deltaRotaV = (angle_v * step);
+	if (deltaLinearV.norm() > 0.001) {
+		center = center + deltaLinearV;
+	}
+	if (abs(deltaRotaV) > 0.001) {
+		angle = angle + deltaRotaV;
+	}
 	for (int i = 0; i < pointNum; i++) {
 		//ƒ[ƒ‹ƒhÀ•W‚É”½‰f
 		pointsW[i] = center + pointsL[i].rotation(angle);
@@ -68,9 +73,6 @@ void Convex::updatePos(const float step) {
 }
 
 void Convex::Draw() const {
-	/*for (int i = 0; i < pointNum;i++) {
-		DrawTriP(center , pointsW[i] , pointsW[(i+1)%pointNum] , color , 0 ,3);
-	}*/
 	for (int i = 0; i < pointNum; i++) {
 		Segment edge = getEdgeW(i);
 		DrawSegment(edge, color);
