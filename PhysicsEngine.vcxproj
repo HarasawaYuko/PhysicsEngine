@@ -144,6 +144,7 @@
     <ClCompile Include="BroardTest.cpp" />
     <ClCompile Include="Circle.cpp" />
     <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="Constant.cpp" />
     <ClCompile Include="Constraint.cpp" />
     <ClCompile Include="ConstraintTest.cpp" />
     <ClCompile Include="Menu.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="BroardTest.h" />
     <ClInclude Include="Circle.h" />
     <ClInclude Include="Collision.h" />
+    <ClInclude Include="Constant.h" />
     <ClInclude Include="Constraint.h" />
     <ClInclude Include="ConstraintTest.h" />
     <ClInclude Include="Menu.h" />

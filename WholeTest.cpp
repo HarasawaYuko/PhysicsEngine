@@ -36,39 +36,39 @@ void WholeTest::Initialize() {
 	//printfDx("%s\n" , con->getC().toString().c_str());
 	world.add(con);
 
-	///*四角形を設置
-	//con = getCon(0);
-	//con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
-	//con->setV(Vec2(20.f , 0.f));
-	//con->setAngV(Pi / 6.f);
-	//con->move(Vec2(550.f , 500.f));
-	//world.add(con);
+	//四角形を設置
+	con = getCon(0);
+	con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
+	con->setV(Vec2(20.f , 0.f));
+	con->setAngV(Pi / 6.f);
+	con->move(Vec2(550.f , 500.f));
+	world.add(con);
 
 	//四角形を設置
-	//con = getCon(0);
-	//con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
-	//con->setV(Vec2(0.f, -20.f));
-	//con->setAngV(Pi / 6.f);
-	//con->move(Vec2(450.f, 500.f));
-	//world.add(con);
+	con = getCon(0);
+	con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
+	con->setV(Vec2(0.f, -20.f));
+	con->setAngV(Pi / 6.f);
+	con->move(Vec2(450.f, 500.f));
+	world.add(con);
 
 	//四角形を設置
-	//con = getCon(0);
-	//con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
-	//con->setV(Vec2(0.f, 20.f));
-	//con->setAngV(Pi / 6.f);
-	//con->move(Vec2(280.f, 500.f));
-	//world.add(con);
+	con = getCon(0);
+	con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
+	con->setV(Vec2(0.f, 20.f));
+	con->setAngV(Pi / 6.f);
+	con->move(Vec2(280.f, 500.f));
+	world.add(con);
 
 	//三角形を設置
-	//con = getCon(1);
-	//con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
-	//con->setAngV(Pi / 1.f);
-	//con->setV(Vec2(30 , 0));
-	//con->setAngV(Pi/12.f);
-	//con->move(Vec2(200.f, 500.f));
-	//printfDx("%s\n" , con->getC().toString().c_str());
-	//world.add(con);*/
+	con = getCon(1);
+	con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
+	con->setAngV(Pi / 1.f);
+	con->setV(Vec2(30 , 0));
+	con->setAngV(Pi/12.f);
+	con->move(Vec2(200.f, 500.f));
+	printfDx("%s\n" , con->getC().toString().c_str());
+	world.add(con);
 }
 
 //円の並進運動

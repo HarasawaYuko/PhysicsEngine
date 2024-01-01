@@ -19,7 +19,6 @@ void World::initialize() {
 
 void World::physicsSimulate() {
 	//外力を加える
-
 	applyForce();
 
 	//衝突検知
@@ -36,8 +35,8 @@ void World::add(Object* obj) {
 	objects.push_back(obj);
 	objNum++;
 	//ユニークなidの割り当て
-	num++;
-	obj->setId(num);
+	totalNum++;
+	obj->setId(totalNum);
 	//オブジェクト種類によってソート
 	std::sort(objects.begin(), objects.end() , [](const Object* a, const Object* b) {
 		return (uint16_t)a->getType() < (uint16_t)b->getType();
@@ -101,16 +100,19 @@ void World::detectCollision() {
 		float depth;//貫通深度
 		Vec2 n;//衝突法線ベクトル
 		Vec2 coord[2];//衝突座標
+		Vec2 coord_[2];//衝突座標（辺上）
 		//衝突した種類で場合分け
 		switch (pair.getKind()) {
 		case CONVEX_CONVEX:
-			if (Detect::convex_convex(pair.getObj0(), pair.getObj1(), &depth, &n, coord)) {
+			if (Detect::convex_convex(pair.getObj0(), pair.getObj1(), &depth, &n, coord ,coord_)) {
 				//衝突していたら衝突情報を記録
 				ContactPoint cp;
 				cp.depth = depth;
 				cp.normal = n;
 				cp.pointA = coord[0];
 				cp.pointB = coord[1];
+				cp.pointA_ = coord_[0];
+				cp.pointB_ = coord_[1];
 				cp.constraint->accumImpulse = 0.f;
 				pair.getCol()->addCp(cp);
 			}

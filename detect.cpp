@@ -276,7 +276,7 @@ bool Detect::box_box(Object* b1, Object* b2, float* depth, Vec2* n, Vec2* coord)
 	return true;
 }
 
-bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* coord) {
+bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* coord , Vec2* coord_) {
 	//ダウンキャスト
 	Convex* con1 = static_cast<Convex*>(c1);
 	Convex* con2 = static_cast<Convex*>(c2);
@@ -369,14 +369,14 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 		for (int j = 0; j < con2->getPointNum(); j++) {
 			int pattern;
 			Segment edge = con2->getEdgeW(j);
-			float dis = getDistance(con1->getPointW(i), edge );
+			float dis = getDistance(con1->getPointW(i), edge  ,&pattern);
 			if (minDistance > dis) {
 				//記録
 				minA = true;
 				minDistance = dis;
 				minPointIndex = i;
 				minEdgeIndex = j;
-				//minPattern = pattern;
+				minPattern = pattern;
 			}
 		}
 	}
@@ -385,14 +385,14 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 		for (int j = 0; j < con1->getPointNum(); j++) {
 			int pattern;
 			Segment edge = con1->getEdgeW(j);
-			float dis = getDistance(con2->getPointW(i), edge);
+			float dis = getDistance(con2->getPointW(i), edge ,&pattern);
 			if (minDistance > dis) {
 				//記録
 				minA = false;
 				minDistance = dis;
 				minPointIndex = i;
 				minEdgeIndex = j;
-				//minPattern = pattern;
+				minPattern = pattern;
 				//printfDx("更新!-------\n");
 			}
 		}
@@ -410,48 +410,50 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 		minPoint = con1->getPointW(minPointIndex);
 		coord[0] = WtoL(minPoint, con1->getC(), con1->getAngle());
 		coord[1] = WtoL(minPoint, con2->getC(), con2->getAngle());
+		coord_[0] = WtoL(minPoint, con1->getC(), con1->getAngle());
 		minEdge = con2->getEdgeW(minEdgeIndex);
-		//switch (minPattern) {
-		//case 0:
-		//	//printfDx("パターン0\n");
-		//	coord[1] = WtoL(minEdge.start, con2->getC(), con2->getAngle());
-		//	break;
-		//case 1:
-		//	//printfDx("パターン1\n");
-		//	coord[1] = WtoL(minEdge.end, con2->getC(), con2->getAngle());
-		//	break;
-		//case 2:
-		//	//printfDx("パターン2\n");
-		//	coord[1] = WtoL(getContactPoint(minPoint, minEdge), con2->getC(), con2->getAngle());
-		//	break;
-		//default:
-		//	assert(false);
-		//	break;
-		//}
+		switch (minPattern) {
+		case 0:
+			//printfDx("パターン0\n");
+			coord_[1] = WtoL(minEdge.start, con2->getC(), con2->getAngle());
+			break;
+		case 1:
+			//printfDx("パターン1\n");
+			coord_[1] = WtoL(minEdge.end, con2->getC(), con2->getAngle());
+			break;
+		case 2:
+			//printfDx("パターン2\n");
+			coord_[1] = WtoL(getContactPoint(minPoint, minEdge), con2->getC(), con2->getAngle());
+			break;
+		default:
+			assert(false);
+			break;
+		}
 	}
 	else {
 		//printfDx("Bが頂点");
 		minPoint = con2->getPointW(minPointIndex);
 		coord[0] = WtoL(minPoint, con1->getC(), con1->getAngle());
 		coord[1] = WtoL(minPoint, con2->getC(), con2->getAngle());
-		//minEdge = con1->getEdgeW(minEdgeIndex);
-		//switch (minPattern) {
-		//case 0:
-		//	//printfDx("パターン0\n");
-		//	coord[0] = WtoL(minEdge.start, con1->getC(), con1->getAngle());
-		//	break;
-		//case 1:
-		//	//printfDx("パターン1\n");
-		//	coord[0] = WtoL(minEdge.end, con1->getC(), con1->getAngle());
-		//	break;
-		//case 2:
-		//	//printfDx("パターン2\n");
-		//	coord[0] = WtoL(getContactPoint(minPoint, minEdge), con1->getC(), con1->getAngle());
-		//	break;
-		//default:
-		//	assert(false);
-		//	break;
-		//}
+		coord_[1] = WtoL(minPoint, con2->getC(), con2->getAngle());
+		minEdge = con1->getEdgeW(minEdgeIndex);
+		switch (minPattern) {
+		case 0:
+			//printfDx("パターン0\n");
+			coord_[0] = WtoL(minEdge.start, con1->getC(), con1->getAngle());
+			break;
+		case 1:
+			//printfDx("パターン1\n");
+			coord_[0] = WtoL(minEdge.end, con1->getC(), con1->getAngle());
+			break;
+		case 2:
+			//printfDx("パターン2\n");
+			coord_[0] = WtoL(getContactPoint(minPoint, minEdge), con1->getC(), con1->getAngle());
+			break;
+		default:
+			assert(false);
+			break;
+		}
 	}
 
 

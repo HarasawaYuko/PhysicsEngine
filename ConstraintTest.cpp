@@ -33,7 +33,7 @@ void ConstraintTest::Initialize() {
 	points.emplace_back(200.f, 550);
 	points.emplace_back(350.f, 400);
 	Convex* con = new Convex(points , 30 , 0 , 0 , 30.f , true);
-	con->setIndex(0);
+	//con->setIndex(0);
 	convexes.push_back(con);
 	points.clear();
 	
@@ -106,8 +106,9 @@ void ConstraintTest::Update() {
 			float d;
 			Vec2 n;
 			Vec2 coord[2];
+			Vec2 coord_[2];
 			detect = false;
-			if (Detect::convex_convex(convexes[0], convexes[1], &d, &n, coord)) {
+			if (Detect::convex_convex(convexes[0], convexes[1], &d, &n, coord , coord_)) {
 				detect = true;
 				nVec = n;
 				ContactPoint cp;

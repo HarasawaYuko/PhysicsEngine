@@ -108,12 +108,6 @@ float Object::getE()const {
 	return e;
 }
 
-//void Object::updatePos(const float step) {
-//	//“®‚©‚È‚¢•¨‘Ì‚Ìê‡‰½‚à‚µ‚È‚¢
-//	if (!active) return;
-//	center = center + (velocity * step);
-//}
-
 Type Object::getType()const{
 	return type;
 }

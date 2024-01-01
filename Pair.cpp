@@ -53,8 +53,8 @@ void Pair::refreshCp() {
 	for (int i = 0; i < collision->getContactNum(); i++) {
 		ContactPoint cp = collision->getCp(i);
 		//それぞれから見た接触点をワールド座標に変換
-		Vec2 rA = LtoW(cp.pointA , obj[0]->getC() , obj[0]->getAngle());
-		Vec2 rB = LtoW(cp.pointB, obj[1]->getC(), obj[1]->getAngle());
+		Vec2 rA = LtoW(cp.pointA_ , obj[0]->getC() , obj[0]->getAngle());
+		Vec2 rB = LtoW(cp.pointB_, obj[1]->getC(), obj[1]->getAngle());
 		DrawPoint(rA, COLOR_RED);
 		DrawPoint(rB, COLOR_BLUE);
 		Vec2 rAB = (rA - rB).normalize();

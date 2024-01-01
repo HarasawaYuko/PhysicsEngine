@@ -1,4 +1,5 @@
 #include "Convex.h"
+#include "Constant.h"
 
 int partition(std::vector<std::pair<Vec2, float>>& , const int , const int);
 void quick_sort(std::vector<std::pair<Vec2 , float>>& , const int  , const int);
@@ -58,10 +59,10 @@ void Convex::updatePos(const float step) {
 	}
 	Vec2 deltaLinearV = (velocity * step);
 	float deltaRotaV = (angle_v * step);
-	if (deltaLinearV.norm() > 0.001) {
+	if (deltaLinearV.norm() > 0.001f) {
 		center = center + deltaLinearV;
 	}
-	if (abs(deltaRotaV) > 0.001) {
+	if (abs(deltaRotaV) > 0.001f) {
 		angle = angle + deltaRotaV;
 	}
 	for (int i = 0; i < pointNum; i++) {

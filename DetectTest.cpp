@@ -75,7 +75,8 @@ void DetectTest::Update() {
 					float d;
 					Vec2 n;
 					Vec2 coord[2];
-					if (Detect::convex_convex(&convexes[i], &convexes[j], &d, &n, coord)) {
+					Vec2 coord_[2];
+					if (Detect::convex_convex(&convexes[i], &convexes[j], &d, &n, coord ,coord_)) {
 						ContactPoint cp;
 						cp.depth = d;
 						cp.pointA = coord[0];
@@ -112,8 +113,9 @@ void DetectTest::Update() {
 			float d;
 			Vec2 n;
 			Vec2 coord[2];
+			Vec2 coord_[2];
 			detect = false;
-			if (Detect::convex_convex(&convexes[0], &convexes[1], &d, &n, coord)) {
+			if (Detect::convex_convex(&convexes[0], &convexes[1], &d, &n, coord , coord_)) {
 				detect = true;
 				nVec = n;
 				ContactPoint cp;
