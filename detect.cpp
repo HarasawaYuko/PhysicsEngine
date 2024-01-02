@@ -22,7 +22,7 @@ bool Detect::broard(const Object* obj1 ,const Object* obj2) {
 /**ナローフェーズ****************/
 
 //円と円の衝突判定
-bool Detect::circle_circle(Object* c1 , Object* c2, float* depth, Vec2* n, Vec2* coord) {
+bool Detect::circle_circle(Object* c1 , Object* c2, float* depth, Vec2* n, Vec2* coord , Vec2* coord_) {
 	//ダウンキャスト
 	Circle* cir1 = static_cast<Circle*>(c1);
 	Circle* cir2 = static_cast<Circle*>(c2);
@@ -295,8 +295,10 @@ bool Detect::circle_convex(Object* cir_, Object* con_, float* depth, Vec2* n, Ve
 	//衝突点を追加
 	coord[0] = WtoL(point, cir->getC(), cir->getAngle());
 	coord[1] = WtoL(point, con->getC(), con->getAngle());
-	coord_[0] = cir->getC() - (ConToCir.normalize() * -r);
+	coord_[0] = WtoL(cir->getC() - (ConToCir.normalize() * r) , cir->getC() ,cir->getAngle());
 	coord_[1] = WtoL(point, con->getC(), con->getAngle());
+
+	return true;
 }
 
 /**************************************************************/
