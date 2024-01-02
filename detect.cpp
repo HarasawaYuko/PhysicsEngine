@@ -12,7 +12,6 @@ bool Detect::broard(const Object* obj1 ,const Object* obj2) {
 	//バウンディングボックスを取得
 	const BBox& bbox1 = obj1->getBbox();
 	const BBox& bbox2 = obj2->getBbox();
-
 	if (isCross(bbox1, bbox2)) {
 		return true;
 	}
@@ -44,6 +43,7 @@ bool Detect::circle_circle(Object* c1 , Object* c2, float* depth, Vec2* n, Vec2*
 	coord[1] = WtoL(coordWorld , cir2->getC() , cir2->getAngle());
 	coord_[0] = WtoL(cir1->getC() + ((*n * -1) * r1) , cir1->getC() , cir1->getAngle());
 	coord_[1] = coord[1];
+	return true;
 }
 
 bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* coord , Vec2* coord_) {
@@ -280,7 +280,7 @@ bool Detect::circle_convex(Object* cir_, Object* con_, float* depth, Vec2* n, Ve
 	if (pointFlag) {
 		//頂点が衝突点になる場合
 		point = con->getPointW(minIndex);
-		Vec2 ConToCir = cirCenter - point;//凸包→円のベクトル
+		ConToCir = cirCenter - point;//凸包→円のベクトル
 	}
 	else {
 		//辺上に衝突点がある場合
@@ -291,6 +291,7 @@ bool Detect::circle_convex(Object* cir_, Object* con_, float* depth, Vec2* n, Ve
 	}
 	//法線ベクトルの設定
 	*n = ConToCir.normalize();
+	printfDx("Detect n%s" , (*n).toString().c_str());
 	//貫通深度の計算
 	*depth = ConToCir.norm() - r;
 	//衝突点を追加

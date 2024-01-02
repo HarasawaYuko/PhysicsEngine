@@ -74,7 +74,7 @@ void DetectTest::Update() {
 			if (KeyBoard::instance()->hitNow(KEY_INPUT_RETURN) && points.size() >= 3) {
 				Convex* con = new Convex(points);
 				objects.emplace_back(con);
-				objects.back()->setColor(GetColor(rand->get(150, 255), rand->get(150, 255), rand->get(150, 255)));
+				objects.back()->setColor(GetColor(rand->get(0, 150), rand->get(0, 150), rand->get(0, 150)));
 				points.clear();
 			}
 		}
@@ -90,7 +90,7 @@ void DetectTest::Update() {
 			if (KeyBoard::instance()->hitNow(KEY_INPUT_RETURN)) {
 				Circle* cir = new Circle(cirCenter , r , Vec2() , false);
 				objects.emplace_back(cir);
-				objects.back()->setColor(GetColor(rand->get(150, 255), rand->get(150, 255), rand->get(150, 255)));
+				objects.back()->setColor(GetColor(rand->get(0 ,150), rand->get(0, 150), rand->get(0, 150)));
 				points.clear();
 			}
 		}
@@ -182,6 +182,7 @@ void DetectTest::Draw() {
 			ContactPoint cp = col.getCp(0);
 			//貫通深度を描画
 			DrawFormatString(0, 150, COLOR_BLACK, "貫通深度:%f", cp.depth);
+			DrawFormatString(0, 180, COLOR_BLACK, "法線ベクトル:%s", cp.normal.toString().c_str());
 			//衝突点を取得
 			Vec2 pA = LtoW(cp.pointA_ , col.getObj1()->getC() , 0);
 			Vec2 pB = LtoW(cp.pointB_ , col.getObj2()->getC() , 0);

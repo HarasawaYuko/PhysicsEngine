@@ -135,8 +135,14 @@ int DrawTriP(const Vec2& p0, const Vec2& p1, const Vec2& p2,const unsigned int c
 	return DrawTriangleAA(p0.x , WIN_SIZE_Y -  p0.y , p1.x , WIN_SIZE_Y - p1.y ,p2.x ,  WIN_SIZE_Y - p2.y , color , fill ,thick);
 }
 
+//線分の描画
 int DrawSegment(const Segment& line, const unsigned int color) {
 	return DrawLineAA(line.start.x , WIN_SIZE_Y - line.start.y , line.end.x , WIN_SIZE_Y - line.end.y , color , 3.f);
+}
+
+//線分の描画　二点を受け取るオーバーロード
+int DrawSegment(const Vec2& s, const Vec2& e, const unsigned int color) {
+	return DrawLineAA(s.x , WIN_SIZE_Y - s.y , e.x , WIN_SIZE_Y - e.y , color ,3.f);
 }
 
 int DrawPoint(const Vec2& v, const unsigned int color) {

@@ -142,6 +142,7 @@ void Solver::solve(World* world) {
 	for (int i = 0; i < objects.size(); i++) {
 		Object* obj = objects[i];
 		if (obj->isActive()) {
+			printfDx("active\n");
 			solverBodies[i] = SolverBody(obj->getAngle(), 1.f / obj->getM(), 1.f / obj->getI());
 		}
 		else {
@@ -173,7 +174,7 @@ void Solver::solve(World* world) {
 		else {
 			restitution = 0.5f * (objA->getE() + objB->getE());
 		}
-
+		printfDx("跳ね返り係数%f\n" ,restitution);
 		for (int j = 0; j < col->getContactNum(); j++) {
 			ContactPoint& cp = col->getCp(j);
 
@@ -204,12 +205,13 @@ void Solver::solve(World* world) {
 			{
 				//拘束軸を取得
 				Vec2 axis = cp.normal;
+				printfDx("axis %s\n" ,axis.toString().c_str());
 				//拘束式の分母
 				Matrix axis_ = Matrix(axis);
 				Matrix denom_ = (K.product(axis_)).trans().product(axis_);
 				float denom = denom_.matrix[0][0];//分母
 				//反発方向の拘束をセット
-				cp.constraint[0].denomInv = 1.f / denom;\
+				cp.constraint[0].denomInv = 1.f / denom;
 				cp.constraint[0].f = -(1.0f + restitution) * Vab.dot(axis);//速度補正(fの分母)
 				cp.constraint[0].f -= (bias * min(0.0f, cp.depth + 0.1f )) / (1.f / (float)FPS);//位置補正 めり込み解消用
 				cp.constraint[0].f *= cp.constraint[0].denomInv;//分母を加える
@@ -269,6 +271,7 @@ void Solver::solve(World* world) {
 					//摩擦力による速度変化計算
 					Constraint constraint = cp.constraint[1];
 					float deltaImpulse = constraint.f;//撃力を取得
+					printfDx("delta %f\n", deltaImpulse);
 					Vec2 deltaVelocityA = bodyA.deltaLinearV + getVang(cp.pointA, bodyA.deltaRotaV).rotation(objA->getAngle());//Aの速度変化量
 					Vec2 deltaVelocityB = bodyB.deltaLinearV + getVang(cp.pointB, bodyB.deltaRotaV).rotation(objB->getAngle());//Bの速度変化量
 					//拘束力を算出
@@ -287,6 +290,7 @@ void Solver::solve(World* world) {
 	}
 	//速度を更新
 	for (int i = 0; i < objects.size(); i++) {
+		printfDx("addV %s\n" , solverBodies[i].deltaLinearV.toString().c_str());
 		objects[i]->addV(solverBodies[i].deltaLinearV);
 		objects[i]->addVang(solverBodies[i].deltaRotaV);
 	}
