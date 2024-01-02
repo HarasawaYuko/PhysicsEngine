@@ -22,27 +22,28 @@ bool Detect::broard(const Object* obj1 ,const Object* obj2) {
 /**ナローフェーズ****************/
 
 //円と円の衝突判定
-bool Detect::circle_circle(Object* c1 , Object* c2, float* depth, Vec2* n, Vec2* coord) {
+bool Detect::circle_circle(Object* c1 , Object* c2, float* depth, Vec2* n, Vec2* coord , Vec2* coord_) {
 	//ダウンキャスト
 	Circle* cir1 = static_cast<Circle*>(c1);
 	Circle* cir2 = static_cast<Circle*>(c2);
 
 	//中心間の距離を取得
-	float distance = cir1->getC().distance(cir2->getC());
-	if (distance < cir1->getR() + cir2->getR()) {
-		//衝突している場合、衝突情報を計算
-		//貫通深度
-		*depth = cir1->getR() + cir2->getR() - distance;
-		//衝突ベクトル c1->c2(正規化)
-		Vec2 nVec = Vec2(c2->getC().x - c1->getC().x, c2->getC().y - c1->getC().y).normalize();
-		*n = nVec;
-		nVec = nVec * cir1->getR();//大きさを半径に合わせる
-		//衝突座標 c1が最もc2にめり込んでいる点 (c1の中心からnの方向にr1進んだ点)
-		coord[0] = Vec2(c1->getC().x + nVec.x, c1->getC().y + nVec.y);
-		coord[1] = Vec2(c2->getC().x - nVec.x, c2->getC().y - nVec.y);
-		return true;
+	float dis = cir1->getC().distance(cir2->getC());
+	float r1 = cir1->getR();
+	float r2 = cir2->getR();
+	if ((r1 + r2) < dis) {
+		return false;
 	}
-	return false;
+	//貫通深度を取得
+	*depth = dis - (r1 + r2);
+	//法線ベクトル
+	*n = (cir1->getC() - cir2->getC()).normalize();
+	//衝突点を取得 2の円周上
+	Vec2 coordWorld = cir2->getC() + (n->normalize() * r2);
+	coord[0] = WtoL(coordWorld , cir1->getC() , cir1->getAngle());
+	coord[1] = WtoL(coordWorld , cir2->getC() , cir2->getAngle());
+	coord_[0] = WtoL(cir1->getC() + ((*n * -1) * r1) , cir1->getC() , cir1->getAngle());
+	coord_[1] = coord[1];
 }
 
 bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* coord , Vec2* coord_) {
@@ -295,8 +296,10 @@ bool Detect::circle_convex(Object* cir_, Object* con_, float* depth, Vec2* n, Ve
 	//衝突点を追加
 	coord[0] = WtoL(point, cir->getC(), cir->getAngle());
 	coord[1] = WtoL(point, con->getC(), con->getAngle());
-	coord_[0] = cir->getC() - (ConToCir.normalize() * -r);
+	coord_[0] = WtoL(cir->getC() - (ConToCir.normalize() * r) , cir->getC() ,cir->getAngle());
 	coord_[1] = WtoL(point, con->getC(), con->getAngle());
+
+	return true;
 }
 
 /**************************************************************/
