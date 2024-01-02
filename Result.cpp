@@ -20,7 +20,7 @@ void Result::Update() {
 	Mouse::instance()->update();
 
 	if (KeyBoard::instance()->hitNow(KEY_INPUT_RIGHT)) {
-		m_sceneChanger->ChangeScene(Scene_TEST_REC);
+		m_sceneChanger->ChangeScene(Scene_Game);
 	}
 	if (KeyBoard::instance()->hitNow(KEY_INPUT_LEFT)) {
 		m_sceneChanger->ChangeScene(Scene_Game);

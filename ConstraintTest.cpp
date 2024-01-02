@@ -116,7 +116,6 @@ void ConstraintTest::Update() {
 				cp.normal = n;
 				cp.pointA = coord[0];
 				cp.pointB = coord[1];
-				printfDx("contactPoint n %s\n" , n.toString().c_str());
 				Collision col = Collision(convexes[0], convexes[1]);
 				col.addContactPoint(cp);
 				contactP[0] = LtoW(cp.pointA, convexes[0]->getC(), convexes[0]->getAngle());
@@ -148,7 +147,7 @@ void ConstraintTest::Draw() {
 		DrawString(0, 25, "“Ê•ï‚Æ“Ê•ï‚ÌS‘©‰ðÁ\nLeftClick->point’Ç‰Á L->pointClear A->all clear enter->make \nConvex D->detect\n", COLOR_BLACK);
 		//“Ê•ï‚Ì•`‰æ
 		for (auto con : convexes) {
-			((Convex*)con)->Draw(con->getColor());
+			((Convex*)con)->DrawEdge();
 		}
 		//point‚Ì•`‰æ
 		for (auto p : points) {

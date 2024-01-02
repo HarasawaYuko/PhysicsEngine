@@ -59,10 +59,6 @@ void World::applyForce() {
 
 //衝突検知
 void World::detectCollision() {
-	//DEBUG
-	for (auto obj : objects) {
-		obj->unTouch();
-	}
 //ブロードフェーズ
 	std::vector<Pair> nowPairs;//検出されたペア
 	for (int i = 0; i < objNum; i++) {

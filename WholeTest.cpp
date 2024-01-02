@@ -67,7 +67,6 @@ void WholeTest::Initialize() {
 	con->setV(Vec2(30 , 0));
 	con->setAngV(Pi/12.f);
 	con->move(Vec2(200.f, 500.f));
-	printfDx("%s\n" , con->getC().toString().c_str());
 	world.add(con);
 }
 

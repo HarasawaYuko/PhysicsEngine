@@ -44,8 +44,6 @@ MathTest::~MathTest()
 {}
 
 void MathTest::Initialize() {
-	//‰æ‘œ‚Ì“Ç‚İ‚İ
-	Box::loadGraph();
 }
 
 void MathTest::Update() {

@@ -1,9 +1,7 @@
 #pragma once
 #include <random>
 
-#include "Line.h"
 #include "Circle.h"
-#include "Box.h"
 #include "Pair.h"
 
 //物理シミュレーションクラス

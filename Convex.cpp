@@ -80,8 +80,8 @@ void Convex::Draw() const {
 	}
 }
 
-//テスト用描画関数
-void Convex::Draw(const unsigned int color) const{
+//テスト用描画関数(辺を描画する)
+void Convex::DrawEdge() const{
 	for (int i = 0; i < pointNum; i++) {
 		Segment edge = getEdgeW(i);
 		DrawSegment(edge , color);
@@ -102,7 +102,6 @@ bool Convex::isValid() const {
 			min_x = pointsW[i].x;
 		}
 	}
-	//printfDx("max_x %f min_x %f max_y %f\n" , max_x , min_x , max_y);
 	//画面外か判定
 	if (max_x < 0.f || max_y < 0.f || min_x > WIN_SIZE_X) {
 		return false;
@@ -112,7 +111,7 @@ bool Convex::isValid() const {
 }
 
 std::string Convex::toString()const {
-	return "Box";
+	return "";
 }
 
 Vec2 Convex::getPointW(const int i) const {
@@ -161,6 +160,27 @@ void Convex::setBbox() {
 	bbox.point = Vec2(xMin , yMin);
 	bbox.height = yMax - yMin;
 	bbox.width = xMax - xMin;
+}
+
+void Convex::operator=(const Convex& con) {
+	this->pointsL = con.pointsL;
+	this->pointsW = con.pointsW;
+	this->height = con.height;
+	this->width = con.width;
+	this->pointNum = con.pointNum;
+	this->center = con.center;
+	this->velocity = con.velocity;
+	this->active = con.active;
+	this->mass = con.mass;
+	this->type = con.type;
+	this->color = con.color;
+	this->index = con.index;
+	this->friction = con.friction;
+	this->e = con.e;
+	this->angle_v = con.angle_v;
+	this->angle = con.angle;
+	this->inertiaTensor = con.inertiaTensor;
+	this->bbox = con.bbox;
 }
 
 /*************************************************/

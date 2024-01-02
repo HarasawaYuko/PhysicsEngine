@@ -42,7 +42,7 @@ void ObjectTest::Update() {
 		mode--;
 	}
 	if (KeyBoard::instance()->hitNow(KEY_INPUT_LEFT)) {
-		m_sceneChanger->ChangeScene(Scene_TEST_REC);
+		m_sceneChanger->ChangeScene(Scene_Result);
 	}
 	if (KeyBoard::instance()->hitNow(KEY_INPUT_RIGHT)) {
 		m_sceneChanger->ChangeScene(Scene_TEST_Detect);
@@ -117,7 +117,7 @@ void ObjectTest::Draw() {
 		}
 		//“Ê•ï‚Ì•`‰æ
 		if (make) {
-			convex->Draw(convex->getColor());
+			convex->DrawEdge();
 			DrawFormatString(0, 80, COLOR_RED, "Šµ«ƒeƒ“ƒ\ƒ‹:%f", convex->getI());
 			DrawFormatString(0, 110, COLOR_RED, "¿—Ê:%f", convex->getM());
 		}
@@ -130,7 +130,7 @@ void ObjectTest::Draw() {
 		}
 		//“Ê•ï‚Ì•`‰æ
 		if (make) {
-			convex->Draw(convex->getColor());
+			convex->DrawEdge();
 			DrawFormatString(0, 80, COLOR_RED, "Šp‘¬“x rad:%f fre:%f", convex->getAngV() , getDegree(convex->getAngV()));
 			DrawFormatString(0, 110, COLOR_RED, "“àÏ %f", dot);
 			DrawFormatString(0, 140, COLOR_BLACK, "‘å‚«‚³ %f", vel.norm());

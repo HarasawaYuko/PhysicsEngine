@@ -55,16 +55,10 @@ void Pair::refreshCp() {
 		//それぞれから見た接触点をワールド座標に変換
 		Vec2 rA = LtoW(cp.pointA_ , obj[0]->getC() , obj[0]->getAngle());
 		Vec2 rB = LtoW(cp.pointB_, obj[1]->getC(), obj[1]->getAngle());
-		DrawPoint(rA, COLOR_RED);
-		DrawPoint(rB, COLOR_BLUE);
 		Vec2 rAB = (rA - rB).normalize();
-		/*printfDx("rA %s , rB %s\n" , rA.toString().c_str() , rB.toString().c_str());
-		printfDx("normal %s , rAB %s\n" , cp.normal.toString().c_str() , rAB.toString().c_str());*/
 		//貫通深度と逆向きの時
 		if (cp.normal.dot(rAB) > 0) {
 			//無効
-			//printfDx("無効 法線:%s rAB:%s\n" , cp.normal.toString().c_str() , rAB.toString().c_str());
-			//printfDx("rA %s , rB %s\n" ,rA.toString().c_str() , rB.toString().c_str());
 			deleteIndex.push_back(i);
 		}
 	}
