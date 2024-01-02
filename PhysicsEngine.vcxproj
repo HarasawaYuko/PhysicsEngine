@@ -141,9 +141,9 @@
   <ItemGroup>
     <ClCompile Include="BaseScene.cpp" />
     <ClCompile Include="BBox.cpp" />
-    <ClCompile Include="BroardTest.cpp" />
     <ClCompile Include="Circle.cpp" />
     <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="Constant.cpp" />
     <ClCompile Include="Constraint.cpp" />
     <ClCompile Include="ConstraintTest.cpp" />
     <ClCompile Include="Menu.cpp" />
@@ -157,7 +157,6 @@
     <ClCompile Include="FpsControl.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="KeyBoard.cpp" />
-    <ClCompile Include="Line.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="MathTest.cpp" />
@@ -166,8 +165,6 @@
     <ClCompile Include="ObjectTest.cpp" />
     <ClCompile Include="Pair.cpp" />
     <ClCompile Include="Rand.cpp" />
-    <ClCompile Include="Box.cpp" />
-    <ClCompile Include="Rec.cpp" />
     <ClCompile Include="SceneMgr.cpp" />
     <ClCompile Include="SolverBody.cpp" />
     <ClCompile Include="WholeTest.cpp" />
@@ -179,9 +176,9 @@
   <ItemGroup>
     <ClInclude Include="BaseScene.h" />
     <ClInclude Include="BBox.h" />
-    <ClInclude Include="BroardTest.h" />
     <ClInclude Include="Circle.h" />
     <ClInclude Include="Collision.h" />
+    <ClInclude Include="Constant.h" />
     <ClInclude Include="Constraint.h" />
     <ClInclude Include="ConstraintTest.h" />
     <ClInclude Include="Menu.h" />
@@ -196,7 +193,6 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="include.h" />
     <ClInclude Include="KeyBoard.h" />
-    <ClInclude Include="Line.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="MathTest.h" />
     <ClInclude Include="Mouse.h" />
@@ -204,8 +200,6 @@
     <ClInclude Include="ObjectTest.h" />
     <ClInclude Include="Pair.h" />
     <ClInclude Include="Rand.h" />
-    <ClInclude Include="Box.h" />
-    <ClInclude Include="Rec.h" />
     <ClInclude Include="SolvetBody.h" />
     <ClInclude Include="WholeTest.h" />
     <ClInclude Include="World.h" />

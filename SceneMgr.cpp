@@ -2,7 +2,6 @@
 #include "Menu.h"
 #include "Game.h"
 #include "Result.h"
-#include "Rec.h"
 #include "DetectTest.h"
 #include "MathTest.h"
 #include "ObjectTest.h"
@@ -38,9 +37,6 @@ void SceneMgr::Update() {
 			break;
 		case Scene_Result:
 			m_scene = (BaseScene*) new Result(this);
-			break;
-		case Scene_TEST_REC:
-			m_scene = (BaseScene*) new Rec(this);
 			break;
 		case Scene_TEST_Object:
 			m_scene = (BaseScene*) new ObjectTest(this);

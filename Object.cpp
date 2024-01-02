@@ -1,10 +1,5 @@
 #include "Object.h"
 
-static std::vector<uint8_t> usedId;
-static const int ObjMax = 100;
-
-const float Object::MASS_RATE = 1600.f;
-
 float Object::getM() {
 	return mass;
 }
@@ -64,32 +59,20 @@ void Object::addVang(const float acc) {
 	angle_v += acc;
 }
 
-void Object::setTouch() {
-	this->touch = true;
-}
-
-void Object::unTouch() {
-	this->touch = false;
-}
-
-void Object::setId(const uint16_t i) {
-	if (i < 0 || UINT16_MAX < i) {
-		//追加オブジェクト数が上限なら例外
-		assert(false);
-	}
-	this->id = i;
-}
-
-uint16_t Object::getId() const{
-	return id;
-}
-
 int Object::getIndex()const {
 	return index;
 }
 
 void Object::setIndex(const int i) {
 	index = i;
+}
+
+uint16_t Object::getId() const{
+	return id;
+}
+
+void Object::setId(const uint16_t i) {
+	id = i;
 }
 
 void Object::setFri(const float fri) {
@@ -108,12 +91,6 @@ float Object::getE()const {
 	return e;
 }
 
-//void Object::updatePos(const float step) {
-//	//動かない物体の場合何もしない
-//	if (!active) return;
-//	center = center + (velocity * step);
-//}
-
 Type Object::getType()const{
 	return type;
 }
@@ -126,13 +103,6 @@ const BBox& Object::getBbox()const{
 Object::Object(Vec2 v ,Type type ,float mass, Color color , bool act , float ang , float ang_v ) 
 	:velocity(v) ,  type(type),color(color) ,mass(mass),active(act) , angle(ang), angle_v(ang_v)
 {
-	//idの設定
-	for (int id = 0; id < ObjMax; id++) {
-		//使われていないidを検索
-		if (std::find(usedId.begin(), usedId.end(), id) != usedId.end()) {
-			this->id = id;
-		}
-	}
 	e = 0.2f;
 }
 

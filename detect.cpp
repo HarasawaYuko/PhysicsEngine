@@ -1,11 +1,8 @@
 #include "detect.h"
 #include "Circle.h"
-#include "Line.h"
-#include "Box.h"
 #include "Convex.h"
 #include "DEBUG.h"
 //プロトタイプ宣言
-void projection(Vec2 , Box* , float* , float*);
 void projection(Vec2, Convex*, float*, float*);
 bool getDepth(const float, const float, const float, const float  , float* , float*);
 Vec2 getContactPoint(const Vec2& , const Segment&);
@@ -23,73 +20,6 @@ bool Detect::broard(const Object* obj1 ,const Object* obj2) {
 }
 
 /**ナローフェーズ****************/
-
-//円と線の衝突判定
-bool Detect::circle_line(Object* c , Object* l , float* depth , Vec2* n  , Vec2* coord) {
-	//それぞれの型へダウンキャスト
-	Circle* circle = static_cast<Circle*>(c);
-	Line* line = static_cast<Line*>(l);
-	//ベクトルを取得
-	Vec2 lineSeg = line->getE() - line->getS();
-	Vec2 StoC = circle->getC() - line->getS();
-	Vec2 EtoC = circle->getC() - line->getE();
-	float r = circle->getR();
-	Vec2 center = circle->getC();
-
-	//円の中心と直線の最短距離を求める
-	Vec2 NormalSeg = lineSeg.normalize();
-	float dis = std::abs(NormalSeg.cross(StoC));
-	//半径より離れていれば接触していない
-	if (dis > circle->getR()) {
-		return false;
-	}
-
-	//線分が円の内部にあるか確認
-	float dotS = lineSeg.dot(StoC);//始点からのベクトルとの内積
-	float dotE = lineSeg.dot(EtoC);//終点からのベクトルとの内積
-	if (dotS * dotE < 0) {
-		//通常の接触
-		//貫通深度
-		*depth = circle->getR() - dis;
-		//法線ベクトルを求める
-		n->set(-NormalSeg.y , NormalSeg.x);
-		//向きを確認
-		if (NormalSeg.cross(*n) * NormalSeg.cross(StoC) > 0) {
-			n->set(NormalSeg.y , -NormalSeg.x);
-		}
-		//衝突座標を求める
-		coord[0] = center + *n * r;
-		return true;
-	}
-
-	//線分の端点が円の内部にあるか
-	float disS = line->getS().distance(center);
-	float disE = line->getE().distance(center);
-	if (r >  disS|| r > disE) {
-		//端点で接触している
-		//円の中心に近い端点を求める
-		Vec2 point;
-		float disC;
-		if (disS < disE) {
-			point = line->getS();
-			disC = disS;
-		}
-		else {
-			point = line->getE();
-			disC = disE;
-		}
-		//貫通深度
-		*depth = r - disC;
-		//法線ベクトル
-		*n = (point - center).normalize();
-		//接触点
-		coord[0] = center + (*n * r);
-		return true;
-	}
-	else {
-		return false;
-	}
-}
 
 //円と円の衝突判定
 bool Detect::circle_circle(Object* c1 , Object* c2, float* depth, Vec2* n, Vec2* coord) {
@@ -115,168 +45,7 @@ bool Detect::circle_circle(Object* c1 , Object* c2, float* depth, Vec2* n, Vec2*
 	return false;
 }
 
-//四角形と四角形の衝突判定（凸包に変更予定）
-bool Detect::box_box(Object* b1, Object* b2, float* depth, Vec2* n, Vec2* coord) {
-	//ダウンキャスト
-	Box* box1 = static_cast<Box*>(b1);
-	Box* box2 = static_cast<Box*>(b2);
-
-	//分離軸判定
-	float max1, min1;//box1の投影座標の最大最小
-	float max2, min2;//box2の投影座標の最大最小
-	bool result;//判定結果 接触してればtrue
-	float max_depth = -INF;
-	Vec2 axisMax;//分離軸候補
-	//頂点→頂点のベクトルの分離軸判定
-	for (int i = 0; i < 4; i++) {
-		for (int j = i; j < 4; j++) {
-			Vec2 axis = (box1->getPointW(i) - box2->getPointW(j)).normalize();
-			projection(axis , box1 , &min1 , &max1);
-			projection(axis , box2 , &min2 , &max2);
-			float d1, d2;
-			if (getDepth(min1, max1, min2, max2, &d1, &d2)) {
-				return false;
-			}
-			//衝突している場合、貫通深度と法線ベクトルを設定
-			assert(d1 <= 0 && d2 <= 0);
-			if (max_depth < d1) {
-				max_depth = d1;
-				axisMax = axis;
-			}
-			if (max_depth < d2) {
-				max_depth = d2;
-				axisMax = axis * -1;
-			}
-		}
-	}
-	//辺の法線ベクトルの分離軸判定
-	//convex1
-	for (int i = 0 ; i < box1->getPointNum(); i++) {
-		Vec2 axis = (box1->getPointW(i) - box1->getPointW((i+1)%4)).normalize().normal();
-		projection(axis, box1, &min1, &max1);
-		projection(axis, box2, &min2, &max2);
-		float d1, d2;
-		if (getDepth(min1, max1, min2, max2, &d1, &d2)) {
-			return false;
-		}
-		//衝突している場合、貫通深度と法線ベクトルを設定
-		assert(d1 <= 0 && d2 <= 0);
-		if (max_depth < d1) {
-			max_depth = d1;
-			axisMax = axis;
-		}
-		if (max_depth < d2) {
-			max_depth = d2;
-			axisMax = axis * -1;
-		}
-	}
-	//convex2
-	for (int i = 0 ; i < box2->getPointNum(); i++) {
-		Vec2 axis = (box2->getPointW(i) - box2->getPointW((i + 1) % 4)).normalize().normal();
-		projection(axis, box1, &min1, &max1);
-		projection(axis, box2, &min2, &max2);
-		float d1, d2;
-		if (getDepth(min1, max1, min2, max2, &d1, &d2)) {
-			return false;
-		}
-		//衝突している場合、貫通深度と法線ベクトルを設定
-		assert(d1 <= 0 && d2 <= 0);
-		if (max_depth < d1) {
-			max_depth = d1;
-			axisMax = axis;
-		}
-		if (max_depth < d2) {
-			max_depth = d2;
-			axisMax = axis * -1;
-		}
-	}
-	//貫通深度等の設定
-	*depth = max_depth;
-	*n = axisMax;
-
-
-	//衝突点を取得
-	float minDistance = INF;//最短距離
-	int minPattern = 0;
-	bool  minA = false;
-	Vec2 minPoint;
-	Segment minEdge;
-	//物体1を貫通深度より若干ずらす
-	Vec2 disV = axisMax * (abs(*depth) * 2.f);//ずらすベクトル
-	box1->move(disV);
-	//物体1の頂点から見た最短距離
-	for (int i = 0; i < box1->getPointNum();i++) {
-		for (int j = 0; j < box2->getPointNum(); j++) {
-			int pattern;
-			Segment edge = box2->getEdgeW(j);
-			float dis = getDistance(box1->getPointW(i), edge , &pattern);
-			if (minDistance > dis) {
-				//記録
-				minPattern = pattern;
-				minA = true;
-				minPoint = box1->getPointW(i);
-				minEdge = edge;
-			}
-		}
-	}
-	//物体2の頂点から見た最短距離
-	for (int i = 0; i < box2->getPointNum(); i++) {
-		for (int j = 0; j < box1->getPointNum(); j++) {
-			int pattern;
-			Segment edge = box1->getEdgeW(j);
-			float dis = getDistance(box2->getPointW(i), edge, &pattern);
-			if (minDistance > dis) {
-				//記録
-				minPattern = pattern;
-				minA = false;
-				minPoint = box2->getPointW(i);
-				minEdge = edge;
-			}
-		}
-	}
-	//最短距離だった組み合わせの衝突点のローカル座標を設定
-	if (minA) {//Aが頂点Bが辺だった場合
-		coord[0] = WtoL(minPoint , box1->getC() , box1->getAngle());
-		switch (minPattern) {
-		case 0:
-			coord[1] = WtoL(minEdge.start , box2->getC() , box2->getAngle());
-			break;
-		case 1:
-			coord[1] = WtoL(minEdge.end , box2->getC(), box2->getAngle());
-			break;
-		case 2:
-			coord[1] = WtoL(getContactPoint(minPoint  , minEdge) , box2->getC(), box2->getAngle());
-			break;
-		default:
-			assert(false);
-			break;
-		}
-	}
-	else {
-		coord[1] = WtoL(minPoint, box2->getC(), box2->getAngle());
-		switch (minPattern) {
-		case 0:
-			coord[0] = WtoL(minEdge.start, box1->getC(), box1->getAngle());
-			break;
-		case 1:
-			coord[0] = WtoL(minEdge.end, box1->getC(), box1->getAngle());
-			break;
-		case 2:
-			coord[0] = WtoL(getContactPoint(minPoint, minEdge), box1->getC(), box1->getAngle());
-			break;
-		default:
-			assert(false);
-			break;
-		}
-	}
-
-	//ずらした分戻す
-	box1->move(disV * -1);
-
-	return true;
-}
-
-bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* coord) {
+bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* coord , Vec2* coord_) {
 	//ダウンキャスト
 	Convex* con1 = static_cast<Convex*>(c1);
 	Convex* con2 = static_cast<Convex*>(c2);
@@ -369,14 +138,14 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 		for (int j = 0; j < con2->getPointNum(); j++) {
 			int pattern;
 			Segment edge = con2->getEdgeW(j);
-			float dis = getDistance(con1->getPointW(i), edge );
+			float dis = getDistance(con1->getPointW(i), edge  ,&pattern);
 			if (minDistance > dis) {
 				//記録
 				minA = true;
 				minDistance = dis;
 				minPointIndex = i;
 				minEdgeIndex = j;
-				//minPattern = pattern;
+				minPattern = pattern;
 			}
 		}
 	}
@@ -385,14 +154,14 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 		for (int j = 0; j < con1->getPointNum(); j++) {
 			int pattern;
 			Segment edge = con1->getEdgeW(j);
-			float dis = getDistance(con2->getPointW(i), edge);
+			float dis = getDistance(con2->getPointW(i), edge ,&pattern);
 			if (minDistance > dis) {
 				//記録
 				minA = false;
 				minDistance = dis;
 				minPointIndex = i;
 				minEdgeIndex = j;
-				//minPattern = pattern;
+				minPattern = pattern;
 				//printfDx("更新!-------\n");
 			}
 		}
@@ -410,48 +179,49 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 		minPoint = con1->getPointW(minPointIndex);
 		coord[0] = WtoL(minPoint, con1->getC(), con1->getAngle());
 		coord[1] = WtoL(minPoint, con2->getC(), con2->getAngle());
+		coord_[0] = WtoL(minPoint, con1->getC(), con1->getAngle());
 		minEdge = con2->getEdgeW(minEdgeIndex);
-		//switch (minPattern) {
-		//case 0:
-		//	//printfDx("パターン0\n");
-		//	coord[1] = WtoL(minEdge.start, con2->getC(), con2->getAngle());
-		//	break;
-		//case 1:
-		//	//printfDx("パターン1\n");
-		//	coord[1] = WtoL(minEdge.end, con2->getC(), con2->getAngle());
-		//	break;
-		//case 2:
-		//	//printfDx("パターン2\n");
-		//	coord[1] = WtoL(getContactPoint(minPoint, minEdge), con2->getC(), con2->getAngle());
-		//	break;
-		//default:
-		//	assert(false);
-		//	break;
-		//}
+		switch (minPattern) {
+		case 0:
+			//printfDx("パターン0\n");
+			coord_[1] = WtoL(minEdge.start, con2->getC(), con2->getAngle());
+			break;
+		case 1:
+			//printfDx("パターン1\n");
+			coord_[1] = WtoL(minEdge.end, con2->getC(), con2->getAngle());
+			break;
+		case 2:
+			//printfDx("パターン2\n");
+			coord_[1] = WtoL(getContactPoint(minPoint, minEdge), con2->getC(), con2->getAngle());
+			break;
+		default:
+			assert(false);
+			break;
+		}
 	}
 	else {
 		//printfDx("Bが頂点");
 		minPoint = con2->getPointW(minPointIndex);
 		coord[0] = WtoL(minPoint, con1->getC(), con1->getAngle());
 		coord[1] = WtoL(minPoint, con2->getC(), con2->getAngle());
-		//minEdge = con1->getEdgeW(minEdgeIndex);
-		//switch (minPattern) {
-		//case 0:
-		//	//printfDx("パターン0\n");
-		//	coord[0] = WtoL(minEdge.start, con1->getC(), con1->getAngle());
-		//	break;
-		//case 1:
-		//	//printfDx("パターン1\n");
-		//	coord[0] = WtoL(minEdge.end, con1->getC(), con1->getAngle());
-		//	break;
-		//case 2:
-		//	//printfDx("パターン2\n");
-		//	coord[0] = WtoL(getContactPoint(minPoint, minEdge), con1->getC(), con1->getAngle());
-		//	break;
-		//default:
-		//	assert(false);
-		//	break;
-		//}
+		coord_[1] = WtoL(minPoint, con2->getC(), con2->getAngle());
+		minEdge = con1->getEdgeW(minEdgeIndex);
+		switch (minPattern) {
+		case 0:
+			//printfDx("パターン0\n");
+			coord_[0] = WtoL(minEdge.start, con1->getC(), con1->getAngle());
+			break;
+		case 1:
+			//printfDx("パターン1\n");
+			coord_[0] = WtoL(minEdge.end, con1->getC(), con1->getAngle());
+			break;
+		case 2:
+			coord_[0] = WtoL(getContactPoint(minPoint, minEdge), con1->getC(), con1->getAngle());
+			break;
+		default:
+			assert(false);
+			break;
+		}
 	}
 
 
@@ -462,22 +232,74 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 	return true;
 }
 
-/**************************************************************/
+bool Detect::circle_convex(Object* cir_, Object* con_, float* depth, Vec2* n, Vec2* coord, Vec2* coord_) {
+	//ダウンキャスト
+	Circle* cir = static_cast<Circle*>(cir_);
+	Convex* con = static_cast<Convex*>(con_);
 
-//axisにbox(convex)を投影して最大と最小を返す
-void projection(Vec2 axis , Box* box, float* min , float* max) {
-	float min_ = INF;
-	float max_ = -INF;
-	//全ての頂点を投影
-	for (int i = 0; i < box->getPointNum(); i++) {
-		float dot;
-		dot = axis.dot(box->getPointW(i));
-		min_ = min(min_ , dot);
-		max_ = max(max_, dot);
+	//分離軸判定
+	bool result;//判定結果 接触してればtrue
+	bool pointFlag = false;//頂点が衝突点かのフラグ
+	int minIndex = -1;
+	float minDis = FLT_MAX;
+	Vec2 axis;//分離軸候補
+	Vec2 cirCenter = cir->getC();//円の中心座標
+	float r = cir->getR();//円の半径
+	//凸包の頂点→円までの距離
+	for (int i = 0; i < con->getPointNum(); i++) {
+		float dis = con->getPointW(i).distance(cirCenter);
+		if (minDis > dis) {
+			//最短距離が更新されたら
+			minDis = dis;
+			pointFlag = true;
+			minIndex = i;
+		}
 	}
-	*min = min_;
-	*max = max_;
+	//凸包の辺→円までの距離
+	int minPattern = -1;
+	for (int i = 0; i < con->getPointNum(); i++) {
+		int pattern;
+		float dis = getDistance(cirCenter, con->getEdgeW(i), &pattern);
+		if (minDis > dis) {
+			minDis = dis;
+			pointFlag = false;
+			minIndex = i;
+			minPattern = pattern;
+		}
+	}
+
+	//最短距離で衝突判定
+	if (minDis > r) {
+		return false;
+	}
+
+	//衝突している場合、衝突情報を計算する
+	Vec2 point;
+	Vec2 ConToCir;
+	if (pointFlag) {
+		//頂点が衝突点になる場合
+		point = con->getPointW(minIndex);
+		Vec2 ConToCir = cirCenter - point;//凸包→円のベクトル
+	}
+	else {
+		//辺上に衝突点がある場合
+		assert(minPattern == 2);
+		Segment edge = con->getEdgeW(minIndex);
+		point = getContactPoint(cirCenter, edge);
+		ConToCir = cirCenter - point;
+	}
+	//法線ベクトルの設定
+	*n = ConToCir.normalize();
+	//貫通深度の計算
+	*depth = ConToCir.norm() - r;
+	//衝突点を追加
+	coord[0] = WtoL(point, cir->getC(), cir->getAngle());
+	coord[1] = WtoL(point, con->getC(), con->getAngle());
+	coord_[0] = cir->getC() - (ConToCir.normalize() * -r);
+	coord_[1] = WtoL(point, con->getC(), con->getAngle());
 }
+
+/**************************************************************/
 
 //axisにbox(convex)を投影して最大と最小を返す
 void projection(Vec2 axis, Convex* con, float* min, float* max) {

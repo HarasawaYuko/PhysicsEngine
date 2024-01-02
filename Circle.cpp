@@ -11,13 +11,11 @@ float Circle::getR() const{
 }
 
 void Circle::Draw() const{
-	if (touch) {
-		//DEBUG
-		DrawCircleP(center.x, center.y, r, COLOR_GREEN, true);
-	}
-	else {
-		DrawCircleP(center.x, center.y, r, color, true);
-	}
+	DrawCircleP(center.x, center.y, r, color, true);
+}
+
+void Circle::DrawEdge()const {
+	DrawCircleP(center.x, center.y, r, color, true ,3.f);
 }
 
 bool Circle::isValid()const {
