@@ -165,8 +165,6 @@ void Convex::setBbox() {
 void Convex::operator=(const Convex& con) {
 	this->pointsL = con.pointsL;
 	this->pointsW = con.pointsW;
-	this->height = con.height;
-	this->width = con.width;
 	this->pointNum = con.pointNum;
 	this->center = con.center;
 	this->velocity = con.velocity;

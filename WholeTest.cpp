@@ -10,6 +10,10 @@ Convex* getCon(const int);
 static bool move = false;
 static Rand* rand_;
 static std::vector<Vec2> points;
+static float r;
+static Vec2 cirCenter;
+static Vec2 cirEdge;
+static bool makeCon = true;
 
 WholeTest::WholeTest(SceneChanger* changer)
 	:BaseScene(changer)
@@ -26,48 +30,48 @@ void WholeTest::Initialize() {
 	//床を設置
 	world.add(con);
 
-	//三角形を設置
-	con = getCon(1);
-	con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
-	//con->setAngV(Pi/1.f);
-	con->setV(Vec2(0 , -50));
+	////三角形を設置
+	//con = getCon(1);
+	//con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
+	////con->setAngV(Pi/1.f);
+	//con->setV(Vec2(0 , -50));
+	////con->setAngV(Pi/12.f);
+	//con->move(Vec2(350.f , 500.f));
+	////printfDx("%s\n" , con->getC().toString().c_str());
+	//world.add(con);
+
+	////四角形を設置
+	//con = getCon(0);
+	//con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
+	//con->setV(Vec2(20.f , 0.f));
+	//con->setAngV(Pi / 6.f);
+	//con->move(Vec2(550.f , 500.f));
+	//world.add(con);
+
+	////四角形を設置
+	//con = getCon(0);
+	//con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
+	//con->setV(Vec2(0.f, -20.f));
+	//con->setAngV(Pi / 6.f);
+	//con->move(Vec2(450.f, 500.f));
+	//world.add(con);
+
+	////四角形を設置
+	//con = getCon(0);
+	//con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
+	//con->setV(Vec2(0.f, 20.f));
+	//con->setAngV(Pi / 6.f);
+	//con->move(Vec2(280.f, 500.f));
+	//world.add(con);
+
+	////三角形を設置
+	//con = getCon(1);
+	//con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
+	//con->setAngV(Pi / 1.f);
+	//con->setV(Vec2(30 , 0));
 	//con->setAngV(Pi/12.f);
-	con->move(Vec2(350.f , 500.f));
-	//printfDx("%s\n" , con->getC().toString().c_str());
-	world.add(con);
-
-	//四角形を設置
-	con = getCon(0);
-	con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
-	con->setV(Vec2(20.f , 0.f));
-	con->setAngV(Pi / 6.f);
-	con->move(Vec2(550.f , 500.f));
-	world.add(con);
-
-	//四角形を設置
-	con = getCon(0);
-	con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
-	con->setV(Vec2(0.f, -20.f));
-	con->setAngV(Pi / 6.f);
-	con->move(Vec2(450.f, 500.f));
-	world.add(con);
-
-	//四角形を設置
-	con = getCon(0);
-	con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
-	con->setV(Vec2(0.f, 20.f));
-	con->setAngV(Pi / 6.f);
-	con->move(Vec2(280.f, 500.f));
-	world.add(con);
-
-	//三角形を設置
-	con = getCon(1);
-	con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
-	con->setAngV(Pi / 1.f);
-	con->setV(Vec2(30 , 0));
-	con->setAngV(Pi/12.f);
-	con->move(Vec2(200.f, 500.f));
-	world.add(con);
+	//con->move(Vec2(200.f, 500.f));
+	//world.add(con);
 }
 
 //円の並進運動
@@ -85,19 +89,39 @@ void WholeTest::Update() {
 	if (KeyBoard::instance()->hitNow(KEY_INPUT_SPACE)) {
 		move = !move;
 	}
-	if (KeyBoard::instance()->hitNow(KEY_INPUT_RETURN)) {
+	if (KeyBoard::instance()->hitNow(KEY_INPUT_R)) {
 		Finalize();
 		Initialize();
 	}
-	if (Mouse::instance()->getClickNow(LEFT_CLICK)) {
-		//凸包の点を追加
-		points.emplace_back(Mouse::instance()->getX(), Mouse::instance()->getY());
+	if (KeyBoard::instance()->hitNow(KEY_INPUT_S)) {
+		makeCon = !makeCon;
 	}
-	if (KeyBoard::instance()->hitNow(KEY_INPUT_C)) {
-		Convex* con = new Convex(points ,0.f , 0.f , 0.f , 0.f , true);
-		con->setColor(GetColor(rand_->get(100, 255), rand_->get(100, 255), rand_->get(100, 255)));
-		world.add(con);
-		points.clear();
+	if (makeCon) {
+		if (Mouse::instance()->getClickNow(LEFT_CLICK)) {
+			//凸包の点を追加
+			points.emplace_back(Mouse::instance()->getX(), Mouse::instance()->getY());
+		}
+		if (KeyBoard::instance()->hitNow(KEY_INPUT_RETURN)) {
+			Convex* con = new Convex(points, 0.f, 0.f, 0.f, 0.f, true);
+			con->setColor(GetColor(rand_->get(0, 150), rand_->get(0, 150), rand_->get(0, 150)));
+			world.add(con);
+			points.clear();
+		}
+	}
+	else {
+		if (Mouse::instance()->getClickNow(LEFT_CLICK)) {
+			cirCenter = Vec2(Mouse::instance()->getX(), Mouse::instance()->getY());
+		}
+		if (Mouse::instance()->getClickNow(RIGHT_CLICK)) {
+			cirEdge = Vec2(Mouse::instance()->getX(), Mouse::instance()->getY());
+			r = cirCenter.distance(cirEdge);
+		}
+		if (KeyBoard::instance()->hitNow(KEY_INPUT_RETURN)) {
+			Circle* cir = new Circle(cirCenter, r, Vec2(), true);
+			cir->setColor(GetColor(rand_->get(0, 150), rand_->get(0 ,150), rand_->get(0, 150)));
+			world.add(cir);
+			points.clear();
+		}
 	}
 	if (KeyBoard::instance()->hitNow(KEY_INPUT_A)) {
 		points.clear();
@@ -113,12 +137,22 @@ void WholeTest::Draw() {
 	DrawString(640, 0, "Scene WholeTest", COLOR_BLACK);
 	DrawString(640 , 23 , "LeftClick->point追加\nC->凸包追加\nA->point削除" , COLOR_BLACK);
 	for (auto& obj : world.objects) {
-		obj->Draw();
+		obj->DrawEdge();
+		//obj->getBbox().Draw();
 	}
-	//pointの描画
-	for (int i = 0; i < points.size(); i++) {
-		DrawPoint(points[i] , COLOR_RED);
+	if (makeCon) {
+		//pointの描画
+		for (int i = 0; i < points.size(); i++) {
+			DrawPoint(points[i], COLOR_RED);
+		}
+		DrawStrP(Vec2(600, 50), "凸包作成(Sで切り替え)", COLOR_BLUE);
 	}
+	else {
+		DrawPoint(cirCenter , COLOR_RED);
+		DrawPoint(cirEdge, COLOR_BLUE);
+		DrawStrP(Vec2(600, 50), "円作成(Sで切り替え)", COLOR_BLUE);
+	}
+	//
 /*その他描画*/
 	//ペアの衝突情報
 	//if (world.pairs.size()!= 0) {

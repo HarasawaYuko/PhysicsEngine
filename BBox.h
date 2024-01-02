@@ -8,4 +8,6 @@ struct BBox {
 	float height;//‚‚³
 	float width;//•
 	Vec2 point;//¶‰º‚Ì“_
+
+	void Draw()const;
 };
