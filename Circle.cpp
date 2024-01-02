@@ -4,12 +4,19 @@ Circle::Circle(const float cen_x, const float cen_y, const float r, const float 
 	:r(r) , Object( Vec2(v_x , v_y), CIRCLE, (10 * r * r * 3.14), COLOR_RED, act)
 {
 	center.set(cen_x, cen_y);
+	setBbox();
+	inertiaTensor = 0.5f * mass * r * r;
+	friction = 0.3f;
 }
 
 Circle::Circle(const Vec2 cen, const float r, const Vec2 v, const bool act)
 	:r(r) , Object(v , CIRCLE, (10 * r * r * 3.14), COLOR_RED, act)
 {
 	center = cen;
+	setBbox();
+	inertiaTensor = 0.5f * mass * r * r;
+	friction = 0.3f;
+	
 }
 
 float Circle::getR() const{
@@ -37,12 +44,25 @@ std::string Circle::toString()const {
 }
 
 void Circle::setBbox() {
-	bbox.point = center + r;
-	bbox.height = 2 * r;
-	bbox.width = 2 * r;
+	bbox.point.x = center.x - r;
+	bbox.point.y =center.y - r;
+	bbox.height = r * 2.f;
+	bbox.width = r * 2.f;
 }
 
 void Circle::updatePos(const float step) {
-	center = center + (velocity * step);
+	//動かない物体の場合何もしない
+	if (!active) {
+		return;
+	}
+	Vec2 deltaLinearV = (velocity * step);
+	float deltaRotaV = (angle_v * step);
+	if (deltaLinearV.norm() > 0.001f) {
+		center = center + deltaLinearV;
+	}
+	if (abs(deltaRotaV) > 0.001f) {
+		angle = angle + deltaRotaV;
+	}
+	//バウンディングボックスを設定
 	setBbox();
 }

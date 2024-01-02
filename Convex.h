@@ -8,8 +8,6 @@ class Convex :public Object {
 private:
 	std::vector<Vec2> pointsL;//ローカル座標
 	std::vector<Vec2> pointsW;//ワールド座標
-	float height;//高さ
-	float width;//幅
 	int pointNum;
 
 public:

@@ -262,16 +262,13 @@ float getDistance(const Vec2& point, const Segment &seg , int* pattern) {
 	printfDx("StoP %s\n", StoP.toString().c_str());
 	printfDx("EtoP %s\n", EtoP.toString().c_str());*/
 	if (StoE.dot(StoP) < 0) {
-		printfDx("pattern 0\n");
 		*pattern = 0;
 		return point.distance(seg.start);
 	}
 	if ((StoE * -1).dot(EtoP) < 0 ) {
-		printfDx("pattern 1\n");
 		*pattern = 1;
 		return point.distance(seg.end);
 	}
-	printfDx("pattern 2\n");
 	*pattern = 2;
 	return getDistance(point , seg);
 }

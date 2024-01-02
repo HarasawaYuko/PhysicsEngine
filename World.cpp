@@ -18,6 +18,9 @@ void World::initialize() {
 }
 
 void World::physicsSimulate() {
+	static int count = 0;
+	printfDx("%d objNum %d\n" , count,objects.size());
+	count++;
 	//外力を加える
 	applyForce();
 
@@ -61,13 +64,20 @@ void World::applyForce() {
 void World::detectCollision() {
 //ブロードフェーズ
 	std::vector<Pair> nowPairs;//検出されたペア
+	static int count = 0;
+	printfDx("%d ブロードフェーズ前 objNum %d\n", count, objNum);
+	count++;
 	for (int i = 0; i < objNum; i++) {
 		for (int j = i + 1; j < objNum; j++) {
 			//バウンディングボックスによる判定
 			if (Detect::broard(objects[i], objects[j])) {
 				//見つかったらペアを作成
+				printfDx("ブロードフェーズ　検出\n");
 				nowPairs.emplace_back(objects[i] , objects[j]);
 				nowPairs.back().setType(New);
+			}
+			else {
+				printfDx("ブロードフェーズ検出されず\n");
 			}
 		}
 	}
@@ -90,6 +100,7 @@ void World::detectCollision() {
 
 
 //ナローフェーズ
+	printfDx("ナロー前ペア数%d\n", pairs.size());
 	std::vector<uint32_t> erase;
 	for (int i = 0; i < pairs.size(); i++) {
 		const Pair& pair = pairs[i];
@@ -118,8 +129,41 @@ void World::detectCollision() {
 			}
 			break;
 		case CIRCLE_CIRCLE:
+			if (Detect::circle_circle(pair.getObj0(), pair.getObj1(), &depth, &n, coord, coord_)) {
+				//衝突していたら衝突情報を記録
+				printfDx("CIRCLE_CIRCLE\n");
+				ContactPoint cp;
+				cp.depth = depth;
+				cp.normal = n;
+				cp.pointA = coord[0];
+				cp.pointB = coord[1];
+				cp.pointA_ = coord_[0];
+				cp.pointB_ = coord_[1];
+				cp.constraint->accumImpulse = 0.f;
+				pair.getCol()->addCp(cp);
+			}
+			else {
+				//衝突していなければ
+				erase.push_back(pair.getKey());//キーを記録
+			}
 			break;
 		case CIRCLE_CONVEX:
+			if (Detect::circle_convex(pair.getObj0(), pair.getObj1(), &depth, &n, coord, coord_)) {
+				//衝突していたら衝突情報を記録
+				ContactPoint cp;
+				cp.depth = depth;
+				cp.normal = n;
+				cp.pointA = coord[0];
+				cp.pointB = coord[1];
+				cp.pointA_ = coord_[0];
+				cp.pointB_ = coord_[1];
+				cp.constraint->accumImpulse = 0.f;
+				pair.getCol()->addCp(cp);
+			}
+			else {
+				//衝突していなければ
+				erase.push_back(pair.getKey());//キーを記録
+			}
 			break;
 		}
 	}
@@ -131,6 +175,7 @@ void World::detectCollision() {
 			}
 		}
 	}
+	printfDx("ナロー後ペア数%d\n" , pairs.size());
 }
 
 
