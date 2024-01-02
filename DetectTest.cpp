@@ -19,10 +19,6 @@ static Vec2 cirCenter;
 static Vec2 cirEdge;
 static bool makeCon = true;
 
-//Convex vs Convex mode = 1 動く物体同士
-static bool move = false;
-static bool detect = false;
-static Vec2 gravity = Vec2(0.f, -5.f);
 
 DetectTest::DetectTest(SceneChanger* changer)
 	:BaseScene(changer)
@@ -152,13 +148,13 @@ void DetectTest::Draw() {
 	switch (mode) {
 	case 0:
 		if (makeCon) {
-			DrawStrP(Vec2(600, 40), "凸包作成(Sで切り替え)" ,COLOR_BLUE);
+			DrawStrP(Vec2(600, 50), "凸包作成(Sで切り替え)" ,COLOR_BLUE);
 		}
 		else {
-			DrawStrP(Vec2(600, 40), "円作成(Sで切り替え)", COLOR_BLUE);
+			DrawStrP(Vec2(600, 50), "円作成(Sで切り替え)", COLOR_BLUE);
 		}
 		SetFontSize(30);
-		DrawString(0 , 0 , "凸包と凸包の衝突\n" , COLOR_BLACK);
+		DrawString(0 , 0 , "衝突判定テスト\n" , COLOR_BLACK);
 		SetFontSize(20);
 		DrawString(0, 30, "LeftClick->point追加 L->pointClear A->all clear enter->make \nConvex D->detect\n", COLOR_BLACK);
 		//図形の描画
