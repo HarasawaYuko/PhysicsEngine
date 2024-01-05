@@ -17,7 +17,7 @@ Collision::Collision()
 
 void Collision::addCp(ContactPoint cp) {
 	//既存の衝突点と同じ点であれば、それを更新する
-	const float SAME_POINT = 1.0f;//同じ点と見なせる範囲
+	const float SAME_POINT = 0.1f;//同じ点と見なせる範囲
 	int existIndex = -1;//同じ点だった時のindex
 	for (int i = 0; i < contactNum; i++) {
 		ContactPoint& exist = contactPoints[i];

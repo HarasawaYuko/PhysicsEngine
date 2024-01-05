@@ -30,47 +30,67 @@ void WholeTest::Initialize() {
 	//床を設置
 	world.add(con);
 
-	////三角形を設置
-	//con = getCon(1);
-	//con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
-	////con->setAngV(Pi/1.f);
-	//con->setV(Vec2(0 , -50));
-	////con->setAngV(Pi/12.f);
-	//con->move(Vec2(350.f , 500.f));
-	////printfDx("%s\n" , con->getC().toString().c_str());
-	//world.add(con);
+	//三角形を設置
+	con = getCon(1);
+	con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
+	//con->setAngV(Pi/1.f);
+	con->setV(Vec2(20.f , 0));
+	con->setAngle(Pi/12.f);
+	con->move(Vec2(200.f , 300.f));
+	//printfDx("%s\n" , con->getC().toString().c_str());
+	world.add(con);
 
-	////四角形を設置
-	//con = getCon(0);
-	//con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
-	//con->setV(Vec2(20.f , 0.f));
-	//con->setAngV(Pi / 6.f);
-	//con->move(Vec2(550.f , 500.f));
-	//world.add(con);
+	//三角形を設置
+	con = getCon(1);
+	con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
+	//con->setAngV(Pi/1.f);
+	con->setV(Vec2(0 , -50));
+	//con->setAngV(Pi/12.f);
+	con->move(Vec2(350.f , 500.f));
+	//printfDx("%s\n" , con->getC().toString().c_str());
+	world.add(con);
 
-	////四角形を設置
-	//con = getCon(0);
-	//con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
-	//con->setV(Vec2(0.f, -20.f));
-	//con->setAngV(Pi / 6.f);
-	//con->move(Vec2(450.f, 500.f));
-	//world.add(con);
+	//四角形を設置
+	con = getCon(0);
+	con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
+	con->setV(Vec2(20.f , 0.f));
+	con->setAngV(Pi / 6.f);
+	con->move(Vec2(550.f , 500.f));
+	world.add(con);
 
-	////四角形を設置
-	//con = getCon(0);
-	//con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
+	//四角形を設置
+	con = getCon(0);
+	con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
+	con->setV(Vec2(0.f, -20.f));
+	con->setAngV(Pi / 2.1f);
+	con->move(Vec2(450.f, 500.f));
+	world.add(con);
+
+	//四角形を設置
+	con = getCon(0);
+	con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
 	//con->setV(Vec2(0.f, 20.f));
 	//con->setAngV(Pi / 6.f);
-	//con->move(Vec2(280.f, 500.f));
-	//world.add(con);
+	con->setAngle(Pi/3.3f);
+	con->move(Vec2(330.f, 500.f));
+	world.add(con);
 
-	////三角形を設置
-	//con = getCon(1);
+	//三角形を設置
+	con = getCon(1);
+	con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
+	con->setAngV(Pi / 1.f);
+	con->setV(Vec2(30 , 0));
+	con->setAngV(Pi/12.f);
+	con->move(Vec2(200.f, 500.f));
+	world.add(con);
+
+	//三角形を設置
+	//con = getCon(4);
 	//con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
-	//con->setAngV(Pi / 1.f);
-	//con->setV(Vec2(30 , 0));
-	//con->setAngV(Pi/12.f);
-	//con->move(Vec2(200.f, 500.f));
+	////con->setAngV(Pi / 1.f);
+	////con->setV(Vec2(30 , 0));
+	////con->setAngV(Pi/12.f);
+	//con->move(Vec2(300.f, 400.f));
 	//world.add(con);
 }
 
@@ -101,7 +121,7 @@ void WholeTest::Update() {
 			//凸包の点を追加
 			points.emplace_back(Mouse::instance()->getX(), Mouse::instance()->getY());
 		}
-		if (KeyBoard::instance()->hitNow(KEY_INPUT_RETURN)) {
+		if (KeyBoard::instance()->hitNow(KEY_INPUT_RETURN) && points.size() >= 3) {
 			Convex* con = new Convex(points, 0.f, 0.f, 0.f, 0.f, true);
 			con->setColor(GetColor(rand_->get(0, 150), rand_->get(0, 150), rand_->get(0, 150)));
 			world.add(con);
@@ -207,6 +227,20 @@ Convex* getCon(const int p) {
 		points.emplace_back(0.f, 200.f);
 		points.emplace_back((float)WIN_SIZE_X, 200.f);
 		con = new Convex(points, 0.f, 0.f, 0.f, 0.f, false);
+		break;
+	case 3:
+		//直角三角形
+		points.emplace_back(-40.f, 30.f);
+		points.emplace_back(-40.f, -30.f);
+		points.emplace_back(40.f, -30.f);
+		con = new Convex(points, 0.f, 0.f, 0.f, 0.f, true);
+		break;
+	case 4:
+		//直角三角形
+		points.emplace_back(-80.f, 180.f);
+		points.emplace_back(-80.f, -180.f);
+		points.emplace_back(80.f, -180.f);
+		con = new Convex(points, 0.f, 0.f, 0.f, 0.f, true);
 		break;
 	default:
 		//床

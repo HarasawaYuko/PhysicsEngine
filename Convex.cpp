@@ -45,7 +45,7 @@ Convex::Convex(const std::vector<Vec2> &points ,const float v_x, const float v_y
 	mass = area;
 	setBbox();
 
-	friction = 0.3f;
+	friction = 0.1f;
 }
 
 void Convex::loadGraph() {

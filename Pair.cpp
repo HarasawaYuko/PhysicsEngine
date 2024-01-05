@@ -64,9 +64,7 @@ void Pair::refreshCp() {
 	}
 	//index‚ª•Ï‚í‚é‚½‚ßŒã‚ë‚©‚çíœ‚·‚é
 	for (int i = deleteIndex.size() - 1; i >= 0; i--) {
-		if (i == deleteIndex[i]) {
-			collision->deleteCp(i);
-		}
+		collision->deleteCp(i);
 	}
 }
 
