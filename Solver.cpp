@@ -3,7 +3,7 @@
 
 static const float e_CC = 0.8f; //‰~‚Æ‰~‚Ì”½”­ŒW”
 static float k_CC;//ƒoƒlŒW”
-static float bias = 0.5f;//S‘©—Íf‚Ìbias
+static float bias = 0.25f;//S‘©—Íf‚Ìbias
 
 //ƒvƒƒgƒ^ƒCƒvéŒ¾
 Matrix getRtilda(const Vec2&);
@@ -142,7 +142,6 @@ void Solver::solve(World* world) {
 	for (int i = 0; i < objects.size(); i++) {
 		Object* obj = objects[i];
 		if (obj->isActive()) {
-			printfDx("active\n");
 			solverBodies[i] = SolverBody(obj->getAngle(), 1.f / obj->getM(), 1.f / obj->getI());
 		}
 		else {
@@ -174,7 +173,6 @@ void Solver::solve(World* world) {
 		else {
 			restitution = 0.5f * (objA->getE() + objB->getE());
 		}
-		printfDx("’µ‚Ë•Ô‚èŒW”%f\n" ,restitution);
 		for (int j = 0; j < col->getContactNum(); j++) {
 			ContactPoint& cp = col->getCp(j);
 
@@ -205,7 +203,6 @@ void Solver::solve(World* world) {
 			{
 				//S‘©²‚ğæ“¾
 				Vec2 axis = cp.normal;
-				printfDx("axis %s\n" ,axis.toString().c_str());
 				//S‘©®‚Ì•ª•ê
 				Matrix axis_ = Matrix(axis);
 				Matrix denom_ = (K.product(axis_)).trans().product(axis_);
@@ -237,7 +234,7 @@ void Solver::solve(World* world) {
 
 /********S‘©‚Ì‰‰Z*******/
 	//printfDx("-------------‰‰Z---------------\n");
-	for (int k = 0; k < 5; k++) {
+	for (int k = 0; k < 10; k++) {
 		for (int i = 0; i < pairs.size(); i++) {
 			Collision* col = pairs[i].getCol();
 			Object* objA = pairs[i].getObj0();
@@ -248,6 +245,7 @@ void Solver::solve(World* world) {
 				ContactPoint& cp = col->getCp(j);
 				Vec2 rA = cp.pointA.rotation(bodyA.angle);
 				Vec2 rB = cp.pointB.rotation(bodyB.angle);
+				//printfDx("rB %s\n" , rB.toString().c_str());
 				{//”½”­•ûŒü
 					Constraint& constraint = cp.constraint[0];
 					float deltaImpulse = constraint.f;//Œ‚—Í‚ğæ“¾
@@ -271,7 +269,6 @@ void Solver::solve(World* world) {
 					//–€C—Í‚É‚æ‚é‘¬“x•Ï‰»ŒvZ
 					Constraint constraint = cp.constraint[1];
 					float deltaImpulse = constraint.f;//Œ‚—Í‚ğæ“¾
-					printfDx("delta %f\n", deltaImpulse);
 					Vec2 deltaVelocityA = bodyA.deltaLinearV + getVang(cp.pointA, bodyA.deltaRotaV).rotation(objA->getAngle());//A‚Ì‘¬“x•Ï‰»—Ê
 					Vec2 deltaVelocityB = bodyB.deltaLinearV + getVang(cp.pointB, bodyB.deltaRotaV).rotation(objB->getAngle());//B‚Ì‘¬“x•Ï‰»—Ê
 					//S‘©—Í‚ğZo
@@ -284,13 +281,16 @@ void Solver::solve(World* world) {
 					bodyA.deltaRotaV += (rA.cross(constraint.axis * deltaImpulse)) * bodyA.inertiaInv;
 					bodyB.deltaLinearV = bodyB.deltaLinearV - (constraint.axis * (deltaImpulse * bodyB.massInv));
 					bodyB.deltaRotaV -= (rB.cross(constraint.axis * deltaImpulse)) * bodyB.inertiaInv;
+					//printfDx("²%s\n" , constraint.axis.toString().c_str());
 				}
 			}
 		}
 	}
 	//‘¬“x‚ğXV
+	//printfDx("Šp‘¬“x%f\n", solverBodies[1].deltaRotaV);
 	for (int i = 0; i < objects.size(); i++) {
-		printfDx("addV %s\n" , solverBodies[i].deltaLinearV.toString().c_str());
+		//printfDx("%s\n" , solverBodies[i].deltaLinearV.toString().c_str());
+		//printfDx("Šp‘¬“x%f\n", solverBodies[i].deltaRotaV);
 		objects[i]->addV(solverBodies[i].deltaLinearV);
 		objects[i]->addVang(solverBodies[i].deltaRotaV);
 	}

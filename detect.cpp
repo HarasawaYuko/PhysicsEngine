@@ -291,7 +291,6 @@ bool Detect::circle_convex(Object* cir_, Object* con_, float* depth, Vec2* n, Ve
 	}
 	//法線ベクトルの設定
 	*n = ConToCir.normalize();
-	printfDx("Detect n%s" , (*n).toString().c_str());
 	//貫通深度の計算
 	*depth = ConToCir.norm() - r;
 	//衝突点を追加
