@@ -11,18 +11,15 @@
 
 //ƒQ[ƒ€‰æ–Ê
 
-class Menu :public BaseScene {
+class Setting :public BaseScene {
 private:
-	int backPic;//”wŒi
-	int bgm;//BGM
-	Button startButton;
-	Button setButton;
+	World world;
 public:
 	//ŠÖ”
 	void deleteMem();
 
-	Menu(SceneChanger*);
-	~Menu();
+	Setting(SceneChanger*);
+	~Setting();
 	void Initialize() override;
 	void Finalize() override;
 	void Update() override;

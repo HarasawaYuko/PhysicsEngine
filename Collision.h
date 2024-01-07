@@ -8,7 +8,7 @@ class Collision {
 private:
 	int contactNum;
 	float friction;//–€CŒW”
-	float e = 0.8;
+	float e = 0.8f;
 	std::vector<ContactPoint> contactPoints;
 
 	std::pair<Object*, Object*> pair;//‚¢‚ç‚È‚¢

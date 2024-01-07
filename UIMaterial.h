@@ -19,23 +19,31 @@ const Color COLOR_YELLOW = GetColor(255 , 217 ,0);
 
 class Button {
 private:
-	int pic;
-	int onPic;
-	int offPic;
+	//画像
+	int pic;//通常の画像
+	int onPic;//カーソルが合っている時の画像
+	int offPic;//無効時の画像
+	//音声
+	int sound;
+	//左上の点
 	int x;
 	int y;
+	//大きさ
 	int width;
 	int height;
-	bool isOn;
-	bool active = true;
+	bool isOn;//カーソルが合っているか
+	bool active = true;//ボタンが有効か
+	bool push = false;//押されたら
 
 public:
 	Button() {};
-	Button(const int , const int,const int , const int, const int, const int  , const int offPic = 1);
-	void update(bool*);
+	Button(const int pic, const int onPic, const int sound ,const int x, const int y, const int width , const int height , const int offPic = 0);
+	Button(const int pic, const int onPic, const int sound, const int y, const int width ,const int offPic = 0);
+	void update();
 	void draw();
-	void turnOff();
-	void turnOn();
+	void act(const bool);
+	bool isPush();
+	void finalize();
 };
 
 class RadioButton {
