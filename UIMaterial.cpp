@@ -12,41 +12,74 @@ bool isIn(const int x, const int y, const int width, const int height) {
 }
 
 /*****ボタンクラス******/
-Button::Button(const int pic , const int onPic , const int x, const int y , const int width, const int height , const int offPic)
-	: pic(pic) ,onPic(onPic) , x(x) , y(y) , width(width) , height(height) , isOn(false) ,offPic(offPic)
+
+//全てを指定するコンストラクタ
+Button::Button(const int pic , const int onPic , const int sound ,const int x ,const int y , const int width, const int height, const int offPic)
+	: pic(pic) ,onPic(onPic),sound(sound), x(x), y(y), width(width), height(height), isOn(false), offPic(offPic)
 {}
 
-void Button::update(bool* click) {
+//左上のyと幅を指定する　中央配置
+Button::Button(const int pic, const int onPic, const int sound, const int y, const int width, const int offPic)
+	: pic(pic), onPic(onPic), sound(sound), y(y), width(width) , isOn(false), offPic(offPic)
+{
+	//xの値を設定
+	x = (WIN_SIZE_X / 2) - (width / 2);
+	//画像サイズを取得
+	int x_size;
+	int y_size;
+	GetGraphSize(pic , &x_size ,&y_size);
+	//heightの設定
+	float rate = (float)width / (float)x_size;
+	height = (int)((float)y_size * rate);
+}
+
+void Button::update() {
 	if (!active) return;
-	*click = false;
+	push = false;
 	isOn = false;
-	if (isIn(x ,y , width ,height)) {
+	if (isIn(x, y, width, height)) {
 		isOn = true;
 		if (Mouse::instance()->getClickNow(LEFT_CLICK)) {
-			*click = true;
+			push = true;
 		}
 	}
 }
 
 void Button::draw() {
 	if (!active) {
-		DrawExtendGraph(x, y, x + width, y + height, offPic, true);
+		DrawExtendGraph(x, WIN_SIZE_Y - (y + height), x + width, WIN_SIZE_Y - y, offPic, true);
 		return;
 	}
 	if(isOn){
-		DrawExtendGraph(x , y , x+width , y+height , onPic ,true);
+		DrawExtendGraph(x, WIN_SIZE_Y - (y + height), x + width, WIN_SIZE_Y - y, onPic ,true);
 	}
 	else{
-		DrawExtendGraph(x, y, x + width, y + height, pic, true);
+		DrawExtendGraph(x, WIN_SIZE_Y - (y + height), x + width, WIN_SIZE_Y - y, pic, true);
+	}
+	//押されたら音声を再生
+	if (push) {
+		int d;
+		d = PlaySoundMem(sound , DX_PLAYTYPE_BACK, true);
+		printfDx("Play%d\n" , d);
 	}
 }
 
-void Button::turnOff() {
-	active = false;
+void Button::act(const bool a) {
+	active = a;
 }
 
-void Button::turnOn() {
-	active = true;
+bool Button::isPush() {
+	return push;
+}
+
+void Button::finalize() {
+	//画像の削除
+	DeleteGraph(pic);
+	DeleteGraph(onPic);
+	DeleteGraph(offPic);
+	//音声が再生中か確認する
+	while (CheckSoundMem(sound) == 1);
+	DeleteSoundMem(sound);
 }
 
 /**********ラジオボタン***********/
@@ -54,20 +87,6 @@ void Button::turnOn() {
 RadioButton::RadioButton(const int x , const int y ,const int size , const int space, const int num ,const int font ,const std::vector<std::string> strs)
 	:x(x) , y(y) ,size(size),space(space), num(num), on(-1), fontsize(font), strs(strs)
 {}
-
-void RadioButton::update(bool* click) {
-	*click = false;
-	on = -1;
-	for (int i = 0; i < num; i++) {
-		if (isIn(x + space * i, y, size * 2, size * 2)) {
-			on = i;
-			if (Mouse::instance()->getClickNow(LEFT_CLICK)) {
-				select = i;
-				*click = true;
-			}
-		}
-	}
-}
 
 void RadioButton::draw() const{
 	SetFontSize(fontsize);

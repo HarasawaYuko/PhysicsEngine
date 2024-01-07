@@ -3,6 +3,7 @@
 //ƒV[ƒ“—p—ñ‹“Œ^
 enum Scene{
 	Scene_Menu,
+	Scene_Setting,
 	Scene_Game,
 	Scene_Result,
 	Scene_TEST_Object,

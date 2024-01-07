@@ -1,5 +1,6 @@
 #include "SceneMgr.h"
 #include "Menu.h"
+#include "Setting.h"
 #include "Game.h"
 #include "Result.h"
 #include "DetectTest.h"
@@ -9,7 +10,7 @@
 #include "WholeTest.h"
 
 SceneMgr::SceneMgr() {
-	m_scene = (BaseScene*)new WholeTest(this);
+	m_scene = (BaseScene*)new Menu(this);
 }
 
 void SceneMgr::Initialize() {
@@ -31,6 +32,9 @@ void SceneMgr::Update() {
 			break;
 		case Scene_Menu:
 			m_scene = (BaseScene*) new Menu(this);
+			break;
+		case Scene_Setting:
+			m_scene = (BaseScene*) new Setting(this);
 			break;
 		case Scene_Game:
 			m_scene = (BaseScene*) new Game(this);

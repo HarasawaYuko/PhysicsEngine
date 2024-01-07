@@ -1,18 +1,17 @@
 #pragma once
-#include <functional>
 
 #include "BaseScene.h"
 #include "SceneChanger.h"
 #include "World.h"
 #include "UIMaterial.h"
-#include "Circle.h"
-
-#include "Pair.h"
 
 //ƒQ[ƒ€‰æ–Ê
 
 class Game :public BaseScene {
 private:
+	int backPic;
+	int bgm;
+	int windowPic;
 	World world;
 public:
 	//ŠÖ”
