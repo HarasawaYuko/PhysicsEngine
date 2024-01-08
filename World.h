@@ -12,17 +12,20 @@ private:
 	float TIME_STEP;
 	uint16_t totalNum;//通算で追加したオブジェクトの数　65536以上になったら一旦リセットする必要あり
 	int objNum;//world内にあるオブジェクトの数
+	int SIZE_X;
+	int SIZE_Y;
 
 	void applyForce();
 	void detectCollision();
 	void solveConstraints();
 	void integrate();
 public:
-	World(float timeStep = 1.f/(float)FPS);
+	World(float timeStep = 1.f/(float)FPS , const int x = WIN_SIZE_X, const int y = WIN_SIZE_Y);
 	std::vector<Collision> collisions;
 	std::vector<Object*> objects;
 	std::vector<Pair> pairs;
 	void initialize();
 	void physicsSimulate();
 	void add(Object*);
+	void Draw(const int , const int) const;
 };

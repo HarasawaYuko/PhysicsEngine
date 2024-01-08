@@ -12,6 +12,10 @@ Vec2 Object::getC()const {
 	return center;
 }
 
+void Object::setC(const Vec2 c) {
+	center = c;
+}
+
 Vec2 Object::getV()const{
 	return velocity;
 }

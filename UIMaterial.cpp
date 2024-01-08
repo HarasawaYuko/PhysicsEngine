@@ -1,9 +1,10 @@
 #include "UIMaterial.h"
 #include "Mouse.h"
+#include "Rand.h"
 
 bool isIn(const int x, const int y, const int width, const int height) {
 	if (x < Mouse::instance()->getX() && Mouse::instance()->getX() < x + width
-		&& y < Mouse::instance()->getY() && Mouse::instance()->getY() < y + height) {
+		&& (y - height) < Mouse::instance()->getY() && Mouse::instance()->getY() < y){
 		return true;
 	}
 	else {
@@ -46,21 +47,20 @@ void Button::update() {
 }
 
 void Button::draw() {
+	//printfDx("x:%d\n" ,x);
 	if (!active) {
-		DrawExtendGraph(x, WIN_SIZE_Y - (y + height), x + width, WIN_SIZE_Y - y, offPic, true);
+		DrawExtendGraph(x, WIN_SIZE_Y - y , x + width, WIN_SIZE_Y - (y - height), offPic, true);
 		return;
 	}
 	if(isOn){
-		DrawExtendGraph(x, WIN_SIZE_Y - (y + height), x + width, WIN_SIZE_Y - y, onPic ,true);
+		DrawExtendGraph(x, WIN_SIZE_Y - y , x + width, WIN_SIZE_Y - (y - height), onPic ,true);
 	}
 	else{
-		DrawExtendGraph(x, WIN_SIZE_Y - (y + height), x + width, WIN_SIZE_Y - y, pic, true);
+		DrawExtendGraph(x, WIN_SIZE_Y - y , x + width, WIN_SIZE_Y - (y - height), pic, true);
 	}
 	//押されたら音声を再生
 	if (push) {
-		int d;
-		d = PlaySoundMem(sound , DX_PLAYTYPE_BACK, true);
-		printfDx("Play%d\n" , d);
+		PlaySoundMem(sound , DX_PLAYTYPE_BACK, true);
 	}
 }
 
@@ -164,6 +164,11 @@ int DrawSegment(const Vec2& s, const Vec2& e, const unsigned int color) {
 	return DrawLineAA(s.x , WIN_SIZE_Y - s.y , e.x , WIN_SIZE_Y - e.y , color ,3.f);
 }
 
+//線分の描画　二点を受け取るオーバーロード
+int DrawSegment(const Vec2& s, const Vec2& e, const unsigned int color , const float thick) {
+	return DrawLineAA(s.x, WIN_SIZE_Y - s.y, e.x, WIN_SIZE_Y - e.y, color, thick);
+}
+
 int DrawPoint(const Vec2& v, const unsigned int color) {
 	return DrawCircle(v.x , WIN_SIZE_Y - v.y , 5 , color);
 }
@@ -176,4 +181,9 @@ std::string FtoStr(const float val) {
 	char tmp[255];
 	sprintf_s(tmp, "%.0f", val);
 	return std::string(tmp);
+}
+
+unsigned int getColorRand() {
+	Rand* rand = Rand::instance();
+	return GetColor(rand->get(0 , 200) , rand->get(0, 200) , rand->get(0, 200));
 }

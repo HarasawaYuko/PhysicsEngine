@@ -12,7 +12,12 @@ private:
 	int backPic;
 	int bgm;
 	int windowPic;
+	int windowFramePic;
+	int scorePic;
+	int score = 0;
+	Button selectButton[3];
 	World world;
+	Object* Objects[3];
 public:
 	//ä÷êî
 	void deleteMem();
@@ -23,4 +28,7 @@ public:
 	void Finalize() override;
 	void Update() override;
 	void Draw() override;
+
+	void initWorld();
+	void initSelect();
 };

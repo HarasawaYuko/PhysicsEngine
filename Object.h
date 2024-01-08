@@ -30,10 +30,14 @@ public:
 	Object() {}
 	virtual void Draw()const = 0;
 	virtual void DrawEdge()const = 0;
+	virtual void Draw(const int scroll_x, const int scroll_y)const = 0;
+	virtual void changeSize(const float area) = 0;
+	virtual void move(const Vec2) = 0;
 	float getM();
 	Vec2 getC()const;
 	Vec2 getV()const;
 	uint16_t getId()const;
+	virtual void setC(const Vec2);
 	void setV(const Vec2);
 	void setAngle(const float);
 	void setAngV(const float);
@@ -54,7 +58,7 @@ public:
 	Type getType()const;
 	const BBox& getBbox()const;
 	virtual void updatePos(const float) = 0;
-	virtual bool isValid()const = 0;
+	virtual bool isValid(const int x = WIN_SIZE_X, const int y = WIN_SIZE_Y)const = 0;
 	virtual std::string toString()const = 0;
 	virtual void setBbox() = 0;
 	virtual void setColor(Color color);

@@ -15,6 +15,7 @@ Convex::Convex(const std::vector<Vec2> &points ,const float v_x, const float v_y
 	cen = cen / (float)points.size();
 	center = cen;
 	pointNum = points.size();
+	//printfDx("重心%s\n" ,center.toString().c_str());
 	
 	//点を重心からソート
 	std::vector<std::pair<Vec2, float>> pointAng;
@@ -29,6 +30,7 @@ Convex::Convex(const std::vector<Vec2> &points ,const float v_x, const float v_y
 	for (int i = 0; i < pointNum; i++) {
 		pointsL.push_back(pointAng[i].first - cen);
 		pointsW.push_back(pointAng[i].first);
+		//printfDx("L %s\n" , pointsL[i].toString().c_str());
 	}
 
 	//慣性テンソルと質量の計算
@@ -80,6 +82,17 @@ void Convex::Draw() const {
 	}
 }
 
+void Convex::Draw(const int x_scroll , const int y_scroll) const {
+	Vec2 scroll = Vec2(x_scroll , y_scroll);
+	for (int i = 0; i < pointNum; i++) {
+		Segment edge = getEdgeW(i);
+		Vec2 cen = center + scroll;
+		Vec2 sta = edge.start + scroll;
+		DrawTriP(cen, sta ,edge.end + scroll ,color);
+		DrawSegment(cen , cen * 0.1f + sta*0.9f , color , 2.f);
+	}
+}
+
 //テスト用描画関数(辺を描画する)
 void Convex::DrawEdge() const{
 	for (int i = 0; i < pointNum; i++) {
@@ -88,7 +101,44 @@ void Convex::DrawEdge() const{
 	}
 }
 
-bool Convex::isValid() const {
+void Convex::changeSize(const float area) {
+	float rate = area/mass;
+	//printfDx("rate %f\n" ,rate);
+	//ローカル座標を変更
+	for (int i = 0; i < pointNum; i++) {
+		pointsL[i] = pointsL[i] * sqrtf(rate);
+	}
+	for (int i = 0; i < pointNum; i++) {
+		//ワールド座標に反映
+		pointsW[i] = LtoW(pointsL[i], center, angle);
+		//printfDx("local %s\n", pointsL[i].toString().c_str());
+	}
+	for (int i = 0; i < pointNum; i++) {
+		//ワールド座標に反映
+		pointsW[i] = LtoW(pointsL[i] , center , angle);
+		//printfDx("world %s\n",pointsW[i].toString().c_str());
+	}
+	//printfDx("mass %f\n" , mass);
+	mass = area;
+	//printfDx("mass変更後 %f\n", area_);
+	//慣性テンソルを計算しなおす
+	//慣性テンソルと質量の計算
+	float I = 0.f;
+	float area_ = 0.f;
+	for (int i = 0; i < pointNum; i++) {
+		Vec2 e0 = pointsL[i];
+		Vec2 e1 = pointsL[(i + 1) % pointNum];
+		float cross = abs(e0.cross(e1));
+		I += (1.f / 12.f) * cross * (e0.squared() + e0.dot(e1) + e1.squared());
+		area_ += 0.5f * cross;
+	}
+	inertiaTensor = I;
+	mass = area_;
+	setBbox();
+
+}
+
+bool Convex::isValid(const int x , const int y) const {
 	//最大値と最小値を取得
 	float max_x = pointsW[0].x, max_y = pointsW[0].y, min_x = pointsW[0].x;
 	for (int i = 1; i < pointNum; i++) {
@@ -103,7 +153,7 @@ bool Convex::isValid() const {
 		}
 	}
 	//画面外か判定
-	if (max_x < 0.f || max_y < 0.f || min_x > WIN_SIZE_X) {
+	if (max_x < 0.f || max_y < 0.f || min_x > x) {
 		return false;
 	}
 
@@ -133,12 +183,14 @@ int Convex::getPointNum() const {
 }
 
 //Vec2方向にローカル座標とワールド座標を平行移動する
-void Convex::move(Vec2 vec) {
+void Convex::move(const Vec2 vec) {
 	for (int i = 0; i < pointNum; i++) {
 		pointsW[i] = vec + pointsW[i];
+		//printfDx("world move %s\n" , pointsW[i].toString().c_str());
 	}
 	center = center + vec;
-	//printfDx("center %s\n" , center.toString().c_str());
+	//printfDx("center move %s\n", center.toString().c_str());
+	setBbox();
 }
 
 //ワールド座標の辺を返す
@@ -160,6 +212,18 @@ void Convex::setBbox() {
 	bbox.point = Vec2(xMin , yMin);
 	bbox.height = yMax - yMin;
 	bbox.width = xMax - xMin;
+}
+
+void Convex::setC(const Vec2 c) {
+	center = c;
+	setW();
+}
+
+void Convex::setW() {
+	//ワールド座標を設定しなおす
+	for (int i = 0; i < pointNum; i++) {
+		pointsW[i] = center + pointsL[i].rotation(angle);
+	}
 }
 
 void Convex::operator=(const Convex& con) {
