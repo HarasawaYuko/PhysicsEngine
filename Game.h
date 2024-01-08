@@ -18,6 +18,10 @@ private:
 	Button selectButton[3];
 	World world;
 	Object* Objects[3];
+
+	void initWorld();
+	void initSelect();
+	Object* getBasicObj()const;
 public:
 	//ä÷êî
 	void deleteMem();
@@ -28,7 +32,4 @@ public:
 	void Finalize() override;
 	void Update() override;
 	void Draw() override;
-
-	void initWorld();
-	void initSelect();
 };

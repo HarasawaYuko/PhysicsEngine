@@ -19,4 +19,5 @@ public:
 	void setBbox()override;
 	void updatePos(const float step)override;
 	void move(const Vec2)override;
+	void rotation(const float)override;
 };

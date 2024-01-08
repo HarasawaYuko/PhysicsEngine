@@ -86,10 +86,11 @@ void Convex::Draw(const int x_scroll , const int y_scroll) const {
 	Vec2 scroll = Vec2(x_scroll , y_scroll);
 	for (int i = 0; i < pointNum; i++) {
 		Segment edge = getEdgeW(i);
+		DrawSegment(edge.start + scroll , edge.end + scroll , COLOR_BLACK ,4.f);
 		Vec2 cen = center + scroll;
 		Vec2 sta = edge.start + scroll;
 		DrawTriP(cen, sta ,edge.end + scroll ,color);
-		DrawSegment(cen , cen * 0.1f + sta*0.9f , color , 2.f);
+		DrawSegment(cen , cen * 0.01f + sta*0.99f , color , 2.f);
 	}
 }
 
@@ -103,7 +104,6 @@ void Convex::DrawEdge() const{
 
 void Convex::changeSize(const float area) {
 	float rate = area/mass;
-	//printfDx("rate %f\n" ,rate);
 	//ローカル座標を変更
 	for (int i = 0; i < pointNum; i++) {
 		pointsL[i] = pointsL[i] * sqrtf(rate);
@@ -111,16 +111,12 @@ void Convex::changeSize(const float area) {
 	for (int i = 0; i < pointNum; i++) {
 		//ワールド座標に反映
 		pointsW[i] = LtoW(pointsL[i], center, angle);
-		//printfDx("local %s\n", pointsL[i].toString().c_str());
 	}
 	for (int i = 0; i < pointNum; i++) {
 		//ワールド座標に反映
 		pointsW[i] = LtoW(pointsL[i] , center , angle);
-		//printfDx("world %s\n",pointsW[i].toString().c_str());
 	}
-	//printfDx("mass %f\n" , mass);
 	mass = area;
-	//printfDx("mass変更後 %f\n", area_);
 	//慣性テンソルを計算しなおす
 	//慣性テンソルと質量の計算
 	float I = 0.f;
@@ -186,10 +182,14 @@ int Convex::getPointNum() const {
 void Convex::move(const Vec2 vec) {
 	for (int i = 0; i < pointNum; i++) {
 		pointsW[i] = vec + pointsW[i];
-		//printfDx("world move %s\n" , pointsW[i].toString().c_str());
 	}
 	center = center + vec;
-	//printfDx("center move %s\n", center.toString().c_str());
+	setBbox();
+}
+
+void Convex::rotation(const float ang) {
+	angle += ang;
+	setW();
 	setBbox();
 }
 

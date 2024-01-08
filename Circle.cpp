@@ -1,7 +1,7 @@
 #include "Circle.h"
 
 Circle::Circle(const float cen_x, const float cen_y, const float r, const float v_x, const float v_y , const bool act) 
-	:r(r) , Object( Vec2(v_x , v_y), CIRCLE, (10 * r * r * 3.14), COLOR_RED, act)
+	:r(r) , Object( Vec2(v_x , v_y), CIRCLE, ( r * r * 3.14), COLOR_RED, act)
 {
 	center.set(cen_x, cen_y);
 	setBbox();
@@ -39,6 +39,8 @@ void Circle::changeSize(const float area) {
 	float nowArea = r * r * Pi;
 	float rate = area / nowArea;
 	r = sqrtf(rate) * r;
+	mass = r * r * Pi;
+	inertiaTensor = 0.5f * mass * r * r;
 }
 
 bool Circle::isValid(const int x , const int y)const {
@@ -80,4 +82,7 @@ void Circle::updatePos(const float step) {
 void Circle::move(const Vec2 vec) {
 	center = center + vec;
 	setBbox();
+}
+
+void Circle::rotation(const float ang) {
 }

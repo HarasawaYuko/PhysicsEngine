@@ -287,11 +287,7 @@ void Solver::solve(World* world) {
 		}
 	}
 	//速度を更新
-	//printfDx("角速度%f\n", solverBodies[1].deltaRotaV);
-	printfDx("-----------\n");
 	for (int i = 0; i < objects.size(); i++) {
-		printfDx("%s\n" , solverBodies[i].deltaLinearV.toString().c_str());
-		printfDx("角速度%f\n", solverBodies[i].deltaRotaV);
 		objects[i]->addV(solverBodies[i].deltaLinearV);
 		objects[i]->addVang(solverBodies[i].deltaRotaV);
 	}

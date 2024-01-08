@@ -39,13 +39,7 @@ void WholeTest::Initialize() {
 	con->move(Vec2(400.f , 470.f));
 	//printfDx("%s\n" , con->getC().toString().c_str());
 	world.add(con);
-	printfDx("うまくいかないほう\n");
-	for (int i = 0; i < con->getPointNum();i++) {
-		printfDx("W %s\n" , con->getPointW(i).toString().c_str());
-		printfDx("L %s\n" , con->getPointL(i).toString().c_str());
-	}
-	printfDx("C %s\n" , con->getC().toString().c_str());
-	printfDx("M %f\n" , con->getM());
+
 	//三角形を設置
 	con = getCon(7);
 	con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
@@ -54,14 +48,6 @@ void WholeTest::Initialize() {
 	//con->move(Vec2(300, 50));
 	//printfDx("%s\n" , con->getC().toString().c_str());
 	world.add(con);
-
-	printfDx("できてるほう\n");
-	for (int i = 0; i < con->getPointNum(); i++) {
-		printfDx("W %s\n", con->getPointW(i).toString().c_str());
-		printfDx("L %s\n", con->getPointL(i).toString().c_str());
-	}
-	printfDx("C %s\n", con->getC().toString().c_str());
-	printfDx("M %f\n", con->getM());
 
 	////三角形を設置
 	//con = getCon(1);
