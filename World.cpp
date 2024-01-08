@@ -3,8 +3,10 @@
 #include "World.h"
 #include "Solver.h"
 
-World::World(float timeStep)
+World::World(float timeStep , const int x , const int y)
 {
+	SIZE_X = x;
+	SIZE_Y = y;
 	TIME_STEP = timeStep;
 	objNum = 0;
 }
@@ -18,8 +20,6 @@ void World::initialize() {
 }
 
 void World::physicsSimulate() {
-	static int count = 0;
-	count++;
 	//ŠO—Í‚ð‰Á‚¦‚é
 	applyForce();
 
@@ -184,7 +184,7 @@ void World::integrate() {
 	while (itr != objects.end())
 	{
 		(*itr)->updatePos(TIME_STEP);
- 		if (!(*itr)->isValid())
+ 		if (!(*itr)->isValid(SIZE_X , SIZE_Y))
 		{
 			itr = objects.erase(itr);
 			isErase = true;
@@ -201,5 +201,12 @@ void World::integrate() {
 		for (int i = 0; i < objects.size(); i++) {
 			objects[i]->setIndex(i);
 		}
+	}
+}
+
+//•`‰æ@scroll •ª‚¸‚ç‚µ‚Ä•`‰æ
+void World::Draw(const int x_scroll, const int y_scroll)const {
+	for (auto& obj : objects) {
+		obj->Draw(x_scroll , y_scroll);
 	}
 }

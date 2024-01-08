@@ -31,58 +31,81 @@ void WholeTest::Initialize() {
 	world.add(con);
 
 	//三角形を設置
-	con = getCon(1);
+	con = getCon(5);
+	con->changeSize(4000.f);
 	con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
 	//con->setAngV(Pi/1.f);
-	con->setV(Vec2(20.f , 0));
-	con->setAngle(Pi/12.f);
-	con->move(Vec2(200.f , 300.f));
+	con->setV(Vec2(0 , 0));
+	con->move(Vec2(400.f , 470.f));
 	//printfDx("%s\n" , con->getC().toString().c_str());
 	world.add(con);
-
+	printfDx("うまくいかないほう\n");
+	for (int i = 0; i < con->getPointNum();i++) {
+		printfDx("W %s\n" , con->getPointW(i).toString().c_str());
+		printfDx("L %s\n" , con->getPointL(i).toString().c_str());
+	}
+	printfDx("C %s\n" , con->getC().toString().c_str());
+	printfDx("M %f\n" , con->getM());
 	//三角形を設置
-	con = getCon(1);
+	con = getCon(7);
 	con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
 	//con->setAngV(Pi/1.f);
-	con->setV(Vec2(0 , -50));
-	//con->setAngV(Pi/12.f);
-	con->move(Vec2(350.f , 500.f));
+	con->setV(Vec2(0, 0));
+	//con->move(Vec2(300, 50));
 	//printfDx("%s\n" , con->getC().toString().c_str());
 	world.add(con);
 
-	//四角形を設置
-	con = getCon(0);
-	con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
-	con->setV(Vec2(20.f , 0.f));
-	con->setAngV(Pi / 6.f);
-	con->move(Vec2(550.f , 500.f));
-	world.add(con);
+	printfDx("できてるほう\n");
+	for (int i = 0; i < con->getPointNum(); i++) {
+		printfDx("W %s\n", con->getPointW(i).toString().c_str());
+		printfDx("L %s\n", con->getPointL(i).toString().c_str());
+	}
+	printfDx("C %s\n", con->getC().toString().c_str());
+	printfDx("M %f\n", con->getM());
 
-	//四角形を設置
-	con = getCon(0);
-	con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
-	con->setV(Vec2(0.f, -20.f));
-	con->setAngV(Pi / 2.1f);
-	con->move(Vec2(450.f, 500.f));
-	world.add(con);
+	////三角形を設置
+	//con = getCon(1);
+	//con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
+	////con->setAngV(Pi/1.f);
+	//con->setV(Vec2(0 , -50));
+	////con->setAngV(Pi/12.f);
+	//con->move(Vec2(350.f , 500.f));
+	////printfDx("%s\n" , con->getC().toString().c_str());
+	//world.add(con);
 
-	//四角形を設置
-	con = getCon(0);
-	con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
-	//con->setV(Vec2(0.f, 20.f));
+	////四角形を設置
+	//con = getCon(0);
+	//con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
+	//con->setV(Vec2(20.f , 0.f));
 	//con->setAngV(Pi / 6.f);
-	con->setAngle(Pi/3.3f);
-	con->move(Vec2(330.f, 500.f));
-	world.add(con);
+	//con->move(Vec2(550.f , 500.f));
+	//world.add(con);
 
-	//三角形を設置
-	con = getCon(1);
-	con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
-	con->setAngV(Pi / 1.f);
-	con->setV(Vec2(30 , 0));
-	con->setAngV(Pi/12.f);
-	con->move(Vec2(200.f, 500.f));
-	world.add(con);
+	////四角形を設置
+	//con = getCon(0);
+	//con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
+	//con->setV(Vec2(0.f, -20.f));
+	//con->setAngV(Pi / 2.1f);
+	//con->move(Vec2(450.f, 500.f));
+	//world.add(con);
+
+	////四角形を設置
+	//con = getCon(0);
+	//con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
+	////con->setV(Vec2(0.f, 20.f));
+	////con->setAngV(Pi / 6.f);
+	//con->setAngle(Pi/3.3f);
+	//con->move(Vec2(330.f, 500.f));
+	//world.add(con);
+
+	////三角形を設置
+	//con = getCon(1);
+	//con->setColor(GetColor(rand_->get(0, 155), rand_->get(0, 155), rand_->get(0, 155)));
+	//con->setAngV(Pi / 1.f);
+	//con->setV(Vec2(30 , 0));
+	//con->setAngV(Pi/12.f);
+	//con->move(Vec2(200.f, 500.f));
+	//world.add(con);
 
 	//三角形を設置
 	//con = getCon(4);
@@ -101,7 +124,7 @@ void WholeTest::Update() {
 	Mouse::instance()->update();
 	//シーン切り替え
 	if (KeyBoard::instance()->hitNow(KEY_INPUT_RIGHT)) {
-		m_sceneChanger->ChangeScene(Scene_Menu);
+		m_sceneChanger->ChangeScene(Scene_Game);
 	}
 	if (KeyBoard::instance()->hitNow(KEY_INPUT_LEFT)) {
 		m_sceneChanger->ChangeScene(Scene_TEST_Constraint);
@@ -159,7 +182,11 @@ void WholeTest::Draw() {
 	for (auto& obj : world.objects) {
 		obj->DrawEdge();
 		//obj->getBbox().Draw();
+		DrawPoint(obj->getC() ,COLOR_GREEN);
 	}
+	/*for (int i = 0; i < world.pairs.size();i++) {
+		printfDx("ペア\n");
+	}*/
 	if (makeCon) {
 		//pointの描画
 		for (int i = 0; i < points.size(); i++) {
@@ -224,8 +251,8 @@ Convex* getCon(const int p) {
 		//床
 		points.emplace_back(0.f, 0.f);
 		points.emplace_back((float)WIN_SIZE_X, 0.f);
-		points.emplace_back(0.f, 200.f);
-		points.emplace_back((float)WIN_SIZE_X, 200.f);
+		points.emplace_back(0.f, 30.f);
+		points.emplace_back((float)WIN_SIZE_X, 30.f);
 		con = new Convex(points, 0.f, 0.f, 0.f, 0.f, false);
 		break;
 	case 3:
@@ -240,6 +267,20 @@ Convex* getCon(const int p) {
 		points.emplace_back(-80.f, 180.f);
 		points.emplace_back(-80.f, -180.f);
 		points.emplace_back(80.f, -180.f);
+		con = new Convex(points, 0.f, 0.f, 0.f, 0.f, true);
+		break;
+	case 5:
+		//正三角形
+		points.emplace_back(0.f, 15.f);
+		points.emplace_back(17.32f, -15.f);
+		points.emplace_back(-17.32f, -15.f);
+		con = new Convex(points, 0.f, 0.f, 0.f, 0.f, true);
+		break;
+	case 7:
+		//正三角形
+		points.emplace_back(200.f, 520.f);
+		points.emplace_back(152.f, 437.f);
+		points.emplace_back(248.f, 437.f);
 		con = new Convex(points, 0.f, 0.f, 0.f, 0.f, true);
 		break;
 	default:

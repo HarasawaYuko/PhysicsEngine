@@ -5,6 +5,11 @@
 
 //メニュー画面
 
+//UIデザイン用定数
+static const int ButtonWidth = 250;
+static const int StartButtonY = 180;
+static const int SetButtonY = 280;
+
 Menu::Menu(SceneChanger* changer)
 	:BaseScene(changer)
 {}
@@ -27,8 +32,8 @@ void Menu::Initialize() {
 	PlaySoundMem(bgm , DX_PLAYTYPE_BACK, true);
 
 	//ボタンの作成
-	startButton = Button(startPic , startPicOn ,startSnd , 120 , 250 );
-	setButton = Button(setPic , setPicOn , setSnd ,200 , 250);
+	startButton = Button(startPic , startPicOn ,startSnd , StartButtonY , ButtonWidth );
+	setButton = Button(setPic , setPicOn , setSnd ,SetButtonY , ButtonWidth);
 
 }
 

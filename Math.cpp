@@ -303,7 +303,7 @@ float getTheta(const Vec2& cen , const Vec2& p0 , const Vec2&p1) {
 	}
 	else {//0 < x < 180‚ÌŽž
 		//­”Œë·—p‚ÉƒNƒ‰ƒ“ƒv‚·‚é
-		float dot = clamp(v1.dot(v2) , 0.f , 1.0f);
+		float dot = clamp(v1.dot(v2) , -1.f , 1.0f);
 		return acos(dot);
 	}
 }

@@ -11,9 +11,12 @@ public:
 	Circle(const Vec2 cen , const float r , const Vec2 v , const bool act = false);
 	float getR()const;
 	void Draw()const override;
+	void Draw(const int x_scroll, const int y_scroll)const;
 	void DrawEdge()const override;
-	bool isValid()const override;
+	void changeSize(const float area)override;
+	bool isValid(const int , const int)const override;
 	std::string toString()const override;
 	void setBbox()override;
 	void updatePos(const float step)override;
+	void move(const Vec2)override;
 };
