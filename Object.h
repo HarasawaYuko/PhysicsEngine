@@ -33,6 +33,7 @@ public:
 	virtual void Draw(const int scroll_x, const int scroll_y)const = 0;
 	virtual void changeSize(const float area) = 0;
 	virtual void move(const Vec2) = 0;
+	virtual void rotation(const float) =  0;
 	float getM();
 	Vec2 getC()const;
 	Vec2 getV()const;

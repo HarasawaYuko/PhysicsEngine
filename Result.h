@@ -6,15 +6,16 @@
 #include "SceneChanger.h"
 #include "World.h"
 #include "UIMaterial.h"
-#include "Circle.h"
-
-#include "Pair.h"
 
 //ƒQ[ƒ€‰æ–Ê
 
 class Result :public BaseScene {
 private:
 	World world;
+	int backPic;
+	int bgm;
+	Button nextButton;
+	Button retryButton;
 public:
 	//ŠÖ”
 	void deleteMem();

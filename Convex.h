@@ -24,7 +24,8 @@ public:
 	Vec2 getPointW(const int)const;
 	Vec2 getPointL(const int)const;
 	int getPointNum()const;
-	void move(const Vec2);
+	void move(const Vec2)override;
+	void rotation(const float)override;
 	Segment getEdgeW(const int&)const;
 	void setBbox()override;
 	void setC(const Vec2)override;

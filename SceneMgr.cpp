@@ -10,7 +10,7 @@
 #include "WholeTest.h"
 
 SceneMgr::SceneMgr() {
-	m_scene = (BaseScene*)new WholeTest(this);
+	m_scene = (BaseScene*)new Menu(this);
 }
 
 void SceneMgr::Initialize() {

@@ -107,7 +107,7 @@ const BBox& Object::getBbox()const{
 Object::Object(Vec2 v ,Type type ,float mass, Color color , bool act , float ang , float ang_v ) 
 	:velocity(v) ,  type(type),color(color) ,mass(mass),active(act) , angle(ang), angle_v(ang_v)
 {
-	e = 0.2f;
+	e = 0.1f;
 }
 
 void Object::setColor(Color c) {

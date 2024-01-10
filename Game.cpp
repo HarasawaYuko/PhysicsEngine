@@ -2,6 +2,7 @@
 #include "KeyBoard.h"
 #include "Mouse.h"
 #include "Rand.h"
+#include "Share.h"
 
 #include "Convex.h"
 #include "Circle.h"
@@ -39,6 +40,13 @@ static bool selectMode = true;
 //選択された図形
 static Object* obj;
 static const float MoveDis = 3.f;//1フレームで移動する距離
+static const float RotaAng = Pi / 36.f;
+static int ScrollY = 0;
+static const int InitY = 200;
+static int CorreY = 0;
+static int DisMinY = 200;
+
+static const int BasicKind = 5;//基礎図形の種類
 
 //プロトタイプ宣言
 Object* getObj(const int);
@@ -65,6 +73,13 @@ void Game::Initialize() {
 	for (int i = 0; i < SelectNum; i++) {
 		selectButton[i] = Button(selectPic , selectPicOn , selectSnd , SelectX +(i * (SelectWidth + SelectInterval)), SelectY, SelectWidth, SelectWidth);
 	}
+
+	objNum = 0;
+	ScrollY = 0;
+	CorreY = 0;
+
+	rand = Rand::instance();
+
 	//ワールドを作成
 	initWorld();
 
@@ -83,17 +98,32 @@ void Game::Update() {
 	for (int i = 0; i < SelectNum; i++) {
 		selectButton[i].update();
 	}
+	int scrollKeep = ScrollY;
+	//スクロール量を計算
+	ScrollY += Mouse::instance()->getWheel() * 2;
+	//スクロール量をクランプ
+	ScrollY = max(ScrollY, 0);
+
 	//図形選択モード
 	if (selectMode) {
+		int maxY = -INT_MIN;
+		for (int i = 0; i < world.objects.size(); i++) {
+			int y = (int)(world.objects[i]->getBbox().point.y + world.objects[i]->getBbox().height);
+			maxY = max(maxY, y);
+		}
+		CorreY = 0;
+		int diff = InitY - maxY;
+		if (diff < DisMinY) {
+			CorreY = DisMinY - diff;
+		}
 		//ボタンが押された時の処理
 		for (int i = 0; i < SelectNum; i++) {
 			if (selectButton[i].isPush()) {
 				obj = Objects[i];
-				obj->move(Vec2(200 , 470));
+				obj->move(Vec2(200 , InitY + CorreY));
 				//座標の設定
 				selectMode = false;
-				Objects[i] = getObj(1);
-				Objects[i]->changeSize(4000.f);
+				Objects[i] = getBasicObj();
 			}
 		}
 	}
@@ -102,7 +132,16 @@ void Game::Update() {
 		if (KeyBoard::instance()->hitNow(KEY_INPUT_RETURN)) {
 			world.add(obj);
 			selectMode = true;
+			//点数計算
+			score = 0;
+			for (int i = 0; i < world.objects.size(); i++) {
+				if (!world.objects[i]->isActive()) {
+					continue;
+				}
+				score += (int)(world.objects[i]->getM() / 100.f);
+			}
 		}
+		//横移動
 		if (KeyBoard::instance()->getState(KEY_INPUT_A)) {
 			//BBoxを利用して移動できるか確認
 			if (0.f < obj->getBbox().point.x - MoveDis ) {
@@ -115,23 +154,33 @@ void Game::Update() {
 				obj->move(Vec2(MoveDis, 0));
 			}
 		}
+		//回転
+		if (KeyBoard::instance()->getState(KEY_INPUT_W)) {
+			//端に余裕がある場合のみ回転できる
+			if (0.f < obj->getBbox().point.x - 5.f && obj->getBbox().point.x+ obj->getBbox().width + 5.f < window_width) {
+				obj->rotation(RotaAng);
+			}
+		}
+		if (KeyBoard::instance()->getState(KEY_INPUT_S)) {
+			//端に余裕がある場合のみ回転できる
+			if (0.f < obj->getBbox().point.x - 5.f && obj->getBbox().point.x + obj->getBbox().width + 5.f < window_width) {
+				obj->rotation(-RotaAng);
+			}
+		}
+		obj->move(Vec2(0 ,scrollKeep - ScrollY ));
 	}
-	if (KeyBoard::instance()->hitNow(KEY_INPUT_LEFT)) {
-		m_sceneChanger->ChangeScene(Scene_TEST_Whole);
-	}
-	if (KeyBoard::instance()->hitNow(KEY_INPUT_RIGHT)) {
-		m_sceneChanger->ChangeScene(Scene_Result);
-	}
+
+
+
 	world.physicsSimulate();
 
-	//点数計算
-	score = 0;
-	for (int i = 0; i < world.objects.size(); i++) {
-		if (!world.objects[i]->isActive()) {
-			continue;
-		}
-		score += (int)(world.objects[i]->getM() / 100.f);
+	//ゲーム終了を確認
+	if (objNum > world.objects.size()) {
+		//オブジェクト数が減ったら
+		m_sceneChanger->ChangeScene(Scene_Result);
+		return;
 	}
+	objNum = world.objects.size();
 }
 
 void Game::Draw() {
@@ -142,15 +191,19 @@ void Game::Draw() {
 	//ゲームウィンドウの描画
 	DrawExtendGraph(window_x1, window_y1, window_x2, window_y2, windowPic, true);
 	//ボタンの描画
-	for (int i = 0; i < 1; i++) {
+	for (int i = 0; i < 3; i++) {
 		selectButton[i].draw();
-		Objects[i]->Draw(/*SelectCenX[i] , SelectCenY*/);
+		BBox bbox = Objects[i]->getBbox();
+		float x = bbox.width / 2.f + bbox.point.x;
+		float y = bbox.height / 2.f + bbox.point.y;
+		Vec2 cen = Objects[i]->getC();
+		Objects[i]->Draw(SelectCenX[i] -(x - cen.x), SelectCenY -(y - cen.y));
 	}
 	//スコア枠の表示
 	DrawExtendGraph(score_x1, WIN_SIZE_Y - score_y1, score_x2, WIN_SIZE_Y - score_y2, scorePic, true);
 	//スコアの表示
 	SetFontSize(50);
-	std::string scoreStr = std::to_string(score) + "pt";
+	std::string scoreStr = std::to_string(score);
 	int width = GetDrawStringWidth(scoreStr.c_str(), scoreStr.length());
 	DrawFormatString(score_x1 + (score_x2 - score_x1)/2 - width/2 , WIN_SIZE_Y -(score_y1+ ((score_y2 - score_y1)/2 + 50/2)) , COLOR_BLACK ,"%s", scoreStr.c_str() );
 
@@ -159,26 +212,24 @@ void Game::Draw() {
 
 	}
 	else {
-		obj->Draw(/*window_x1, window_y1*/);
+		obj->Draw(window_x1, window_y1);
 	}
 	//ゲーム本体の描画
-	//SetDrawArea(window_x1 , WIN_SIZE_Y - window_y1 ,window_x2 , WIN_SIZE_Y - window_y2);
-	//world->Draw(window_x1 , window_y1);
-	for (auto& obj : world.objects) {
-		obj->DrawEdge();
-		//obj->getBbox().Draw();
-	}
+	SetDrawArea(window_x1 , WIN_SIZE_Y - window_y1 ,window_x2 , WIN_SIZE_Y - window_y2);
+	world.Draw(window_x1 , window_y1 - ScrollY);
 	SetDrawArea(0,0, WIN_SIZE_X, WIN_SIZE_Y);
 	//ゲームウィンドウ枠の描画
 	DrawExtendGraph(window_x1, window_y1, window_x2, window_y2, windowFramePic, true);
 }
 
 void Game::Finalize() {
-	//delete world;
+	//ロード画面の表示
+	DrawExtendGraph(0, 0, WIN_SIZE_X, WIN_SIZE_Y, Share::loadPic, true);
 	//BGMの停止
 	StopSoundMem(bgm);
 	//画像削除
 	deleteMem();
+	Share::score = score;
 }
 
 //画像、音声のメモリ解放
@@ -192,26 +243,43 @@ void Game::initWorld() {
 	world.initialize();
 	//床の作成
 	std::vector<Vec2> points;
-	/*points.push_back(Vec2(FloorSideMargin ,FloorHeight));
+	points.push_back(Vec2(FloorSideMargin ,FloorHeight));
 	points.push_back(Vec2(FloorSideMargin + FloorWidth , -50.f));
 	points.push_back(Vec2(FloorSideMargin , -50.f));
-	points.push_back(Vec2(FloorSideMargin + FloorWidth, FloorHeight));*/
-	points.emplace_back(0.f, 0.f);
-	points.emplace_back((float)WIN_SIZE_X, 0.f);
-	points.emplace_back(0.f, 30.f);
-	points.emplace_back((float)WIN_SIZE_X, 30.f);
-	Convex* con = new Convex(points, 0.f, 0.f, 0.f, 0.f, false);
-	//Convex* con = new Convex(points);
+	points.push_back(Vec2(FloorSideMargin + FloorWidth, FloorHeight));
+
+	Convex* con = new Convex(points);
+	con->setColor(COLOR_GRAY);
 	world.add(con);
 }
 
 //初期図形の作成
 void Game::initSelect() {
-	for (int i = 0; i < 1; i++) {
-		Object* obj = getObj(1);
+	for (int i = 0; i < 3; i++) {
+		Object* obj = getObj(i);
 		obj->changeSize(4000.f);
 		Objects[i] = obj;
 	}
+}
+
+//基本図形を指定された範囲内で生成して返す
+//図形の大きさを乱数で決定する
+//BBoxで、ボタンに収まるか確認して、修正する
+Object* Game::getBasicObj() const{
+	Object* result;
+	int kind = rand->get(0 , 6);
+	result = getObj(kind);
+	int size = rand->get(2000, 5000);
+	result->changeSize(size);
+	//大きさを調べる
+	BBox bbox = result->getBbox();
+	while (bbox.width > SelectWidth - 10 && bbox.height > SelectWidth - 10) {
+		size = (int)((float)size * 0.95f);
+		result->changeSize(size);
+		bbox = result->getBbox();
+	}
+	result->setColor(getColorRand());
+	return result;
 }
 
 /*図形作成*/
@@ -229,12 +297,9 @@ Object* getObj(const int p) {
 		break;
 	case 1:
 		//正三角形
-		/*points.emplace_back(0.f, 55.f);
-		points.emplace_back(-48.f, -27.f);
-		points.emplace_back(48.f, -27.f);*/
-		points.emplace_back(0.f, 15.f);
-		points.emplace_back(-17.f, -15.f);
-		points.emplace_back(17.f, -15.f);
+		points.emplace_back(0.f, 20.f);
+		points.emplace_back(-17.32f, -10.f);
+		points.emplace_back(17.32f, -10.f);
 		obj = new Convex(points, 0.f, 0.f, 0.f, 0.f, true);
 		break;
 	case 2:
@@ -251,10 +316,12 @@ Object* getObj(const int p) {
 		points.emplace_back(-40.f, -30.f);
 		points.emplace_back(40.f, -30.f);
 		obj = new Convex(points, 0.f, 0.f, 0.f, 0.f, true);
+		obj->move(obj->getC() * -1);
 		break;
 	case 4:
 		//円
 		obj = new Circle();
+		break;
 	default:
 		//正三角形
 		points.emplace_back(0.f, 60.f);

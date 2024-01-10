@@ -17,6 +17,7 @@ private:
 	int bgm;//BGM
 	Button startButton;
 	Button setButton;
+	Button finButton;
 public:
 	//ä÷êî
 	void deleteMem();
