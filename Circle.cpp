@@ -28,6 +28,7 @@ void Circle::Draw() const{
 
 void Circle::Draw(const int x_scroll, const int y_scroll) const{
 	DrawCircleP(center.x + x_scroll , center.y + y_scroll, r, color, true);
+	DrawCircleP(center.x + x_scroll, center.y + y_scroll, r, COLOR_BLACK, false ,2.f);
 }
 
 void Circle::DrawEdge()const {

@@ -149,6 +149,7 @@
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Result.cpp" />
     <ClCompile Include="Setting.cpp" />
+    <ClCompile Include="Share.cpp" />
     <ClCompile Include="Solver.cpp" />
     <ClCompile Include="ContactPoint.cpp" />
     <ClCompile Include="Convex.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Result.h" />
     <ClInclude Include="Setting.h" />
+    <ClInclude Include="Share.h" />
     <ClInclude Include="Solver.h" />
     <ClInclude Include="ContactPoint.h" />
     <ClInclude Include="Convex.h" />

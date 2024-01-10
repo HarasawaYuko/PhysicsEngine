@@ -1,6 +1,7 @@
 #include "DxLib.h"
 #include "SceneMgr.h"
 #include "FpsControl.h"
+#include "Share.h"
 
 //定数
 //ウィンドウの初期位置
@@ -37,19 +38,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     //初期化
     sceneMgr.Initialize();
+    Share::initialize();
 
     // while(裏画面を表画面に反映, メッセージ処理, 画面クリア)
     while ( ProcessMessage() == 0 && ClearDrawScreen() == 0) {
-        //終了用　時期削除
-        if (CheckHitKey(KEY_INPUT_ESCAPE) != 0) {
-            break;
-        }
         fpsControl.Update();
         sceneMgr.Update();
-        fpsControl.Draw();
+        //fpsControl.Draw();
         sceneMgr.Draw();
         ScreenFlip();
         fpsControl.Wait();
+        if (sceneMgr.fin) break;
     }
     sceneMgr.Finalize();
     DxLib_End();    // DXライブラリ終了処理

@@ -11,6 +11,7 @@ void Mouse::update() {
 	//マウス位置の取得
 	GetMousePoint(&posX , &posY);
 	posY = WIN_SIZE_Y - posY;
+	wheel = GetMouseWheelRotVol();
 	int nowInput = GetMouseInput();
 	for (int i = 0; i < INPUT_NUM; i++) {
 		if ((nowInput >> i) & 1) {
@@ -38,4 +39,8 @@ int Mouse::getX() {
 
 int Mouse::getY() {
 	return posY;
+}
+
+int Mouse::getWheel() {
+	return wheel;
 }

@@ -4,6 +4,7 @@
 #include "SceneChanger.h"
 #include "World.h"
 #include "UIMaterial.h"
+#include "Rand.h"
 
 //ÉQÅ[ÉÄâÊñ 
 
@@ -15,9 +16,11 @@ private:
 	int windowFramePic;
 	int scorePic;
 	int score = 0;
+	int objNum = 0;
 	Button selectButton[3];
 	World world;
 	Object* Objects[3];
+	Rand* rand;
 
 	void initWorld();
 	void initSelect();

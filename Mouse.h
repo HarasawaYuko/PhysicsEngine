@@ -16,6 +16,7 @@ private:
 	//位置
 	int posX = 0;
 	int posY = 0;
+	int wheel = 0;
 	//クリック状態
 	int mouseInput[INPUT_NUM] = {};
 	//コンストラクタ、代入演算子をprivateに
@@ -30,4 +31,5 @@ public:
 	bool getClickNow(clickCode);
 	int getX();
 	int getY();
+	int getWheel();
 };

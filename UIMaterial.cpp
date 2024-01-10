@@ -47,7 +47,6 @@ void Button::update() {
 }
 
 void Button::draw() {
-	//printfDx("x:%d\n" ,x);
 	if (!active) {
 		DrawExtendGraph(x, WIN_SIZE_Y - y , x + width, WIN_SIZE_Y - (y - height), offPic, true);
 		return;
@@ -74,12 +73,12 @@ bool Button::isPush() {
 
 void Button::finalize() {
 	//画像の削除
-	DeleteGraph(pic);
-	DeleteGraph(onPic);
-	DeleteGraph(offPic);
+	if(pic != -1)DeleteGraph(pic);
+	if(onPic != -1)DeleteGraph(onPic);
+	if(offPic != -1)DeleteGraph(offPic);
 	//音声が再生中か確認する
 	while (CheckSoundMem(sound) == 1);
-	DeleteSoundMem(sound);
+	if(sound != -1)DeleteSoundMem(sound);
 }
 
 /**********ラジオボタン***********/
@@ -185,5 +184,7 @@ std::string FtoStr(const float val) {
 
 unsigned int getColorRand() {
 	Rand* rand = Rand::instance();
-	return GetColor(rand->get(0 , 255) , rand->get(0, 255) , rand->get(0, 255));
+	int a = rand->get(0, 7);
+	printfDx("%d\n" ,a);
+	return colors[a];
 }

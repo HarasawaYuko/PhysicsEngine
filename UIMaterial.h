@@ -7,15 +7,27 @@ bool isIn(const int, const int, const int, const int);
 
 //êF
 typedef unsigned int Color;
-const Color COLOR_GREEN = GetColor(0x10, 0xB5, 0x67);
-const Color COLOR_BLUE = GetColor(0, 30, 150);
+const Color COLOR_GREEN = GetColor(10, 230, 20);
+const Color COLOR_BLUE = GetColor(1, 20, 150);
 const Color COLOR_LBLUE = GetColor(101, 187, 233);
 const Color COLOR_ORANGE = GetColor(0xFF, 0x99, 0x33);
 const Color COLOR_WHITE = GetColor(230 , 230 ,230);
 const Color COLOR_BLACK = GetColor(20, 20, 20);
-const Color COLOR_RED = GetColor(220, 45, 35);
+const Color COLOR_RED = GetColor(230, 10, 10);
 const Color COLOR_GRAY = GetColor(120, 120, 120);
 const Color COLOR_YELLOW = GetColor(255 , 217 ,0);
+const Color COLOR_SBLUE = GetColor(20 ,200 , 200);
+const Color COLOR_PURPLE = GetColor(230 , 10 , 255);
+const Color COLOR_LRED = GetColor(255, 80, 80);
+
+const Color colors[] = {COLOR_GREEN ,
+						COLOR_BLUE,
+						COLOR_SBLUE,
+						COLOR_ORANGE,
+						COLOR_RED,
+						COLOR_YELLOW,
+						COLOR_PURPLE,
+						COLOR_LRED};
 
 class Button {
 private:
@@ -37,8 +49,8 @@ private:
 
 public:
 	Button() {};
-	Button(const int pic, const int onPic, const int sound ,const int x, const int y, const int width , const int height , const int offPic = 0);
-	Button(const int pic, const int onPic, const int sound, const int y, const int width ,const int offPic = 0);
+	Button(const int pic, const int onPic, const int sound ,const int x, const int y, const int width , const int height , const int offPic = -1);
+	Button(const int pic, const int onPic, const int sound, const int y, const int width ,const int offPic = -1);
 	void update();
 	void draw();
 	void act(const bool);
