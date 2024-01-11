@@ -47,7 +47,7 @@ static int CorreY = 0;
 static int DisMinY = 200;
 static uint16_t recentId;
 
-static const int BasicKind = 5;//äÓëbê}å`ÇÃéÌóﬁ
+static const int BasicKind = 8;//äÓëbê}å`ÇÃéÌóﬁ
 
 //ÉvÉçÉgÉ^ÉCÉvêÈåæ
 Object* getObj(const int);
@@ -329,6 +329,31 @@ Object* getObj(const int p) {
 	case 4:
 		//â~
 		obj = new Circle();
+		break;
+	case 5:
+		//5äpå`
+		points.emplace_back(10.f, 0.f);
+		points.emplace_back(3.0901f, 9.51056f);
+		points.emplace_back(-8.0901f, 5.877f);
+		points.emplace_back(-8.0901f, -5.877f);
+		points.emplace_back(3.0901f, -9.51056f);
+		obj = new Convex(points, 0.f, 0.f, 0.f, 0.f, true);
+		obj->move(obj->getC() * -1);
+		break;
+	case 6:
+		//í∑ï˚å`
+		points.emplace_back(40.f, 10.f);
+		points.emplace_back(40.f, -10.f);
+		points.emplace_back(-40.f, 10.f);
+		points.emplace_back(-40.f, -10.f);
+		obj = new Convex(points, 0.f, 0.f, 0.f, 0.f, true);
+		break;
+	case 7:
+		//ê≥éOäpå`
+		points.emplace_back(0.f, 40.f);
+		points.emplace_back(-17.32f, -10.f);
+		points.emplace_back(17.32f, -10.f);
+		obj = new Convex(points, 0.f, 0.f, 0.f, 0.f, true);
 		break;
 	default:
 		//ê≥éOäpå`
