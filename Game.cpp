@@ -42,9 +42,10 @@ static Object* obj;
 static const float MoveDis = 3.f;//1フレームで移動する距離
 static const float RotaAng = Pi / 36.f;
 static int ScrollY = 0;
-static const int InitY = 200;
+static const int InitY = 300;
 static int CorreY = 0;
 static int DisMinY = 200;
+static uint16_t recentId;
 
 static const int BasicKind = 5;//基礎図形の種類
 
@@ -77,6 +78,7 @@ void Game::Initialize() {
 	objNum = 0;
 	ScrollY = 0;
 	CorreY = 0;
+	recentId = 1;
 
 	rand = Rand::instance();
 
@@ -106,6 +108,7 @@ void Game::Update() {
 
 	//図形選択モード
 	if (selectMode) {
+
 		int maxY = -INT_MIN;
 		for (int i = 0; i < world.objects.size(); i++) {
 			int y = (int)(world.objects[i]->getBbox().point.y + world.objects[i]->getBbox().height);
@@ -116,9 +119,15 @@ void Game::Update() {
 		if (diff < DisMinY) {
 			CorreY = DisMinY - diff;
 		}
+
 		//ボタンが押された時の処理
 		for (int i = 0; i < SelectNum; i++) {
 			if (selectButton[i].isPush()) {
+				//直前で落とした図形が落下したか確認する
+				Object* obj_ = world.getObj(recentId);
+				if (obj_->isActive() && !obj_->isTouch()) {
+					break;
+				}
 				obj = Objects[i];
 				obj->move(Vec2(200 , InitY + CorreY));
 				//座標の設定
@@ -130,7 +139,7 @@ void Game::Update() {
 	//図形落下モード
 	else {
 		if (KeyBoard::instance()->hitNow(KEY_INPUT_RETURN)) {
-			world.add(obj);
+			recentId = world.add(obj);
 			selectMode = true;
 			//点数計算
 			score = 0;
@@ -239,7 +248,6 @@ void Game::deleteMem() {
 }
 
 void Game::initWorld() {
-	//world = new World(1.f/(float)FPS /*, window_x2 - window_x1 , window_y2 - window_y1*/);
 	world.initialize();
 	//床の作成
 	std::vector<Vec2> points;

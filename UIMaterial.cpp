@@ -185,6 +185,5 @@ std::string FtoStr(const float val) {
 unsigned int getColorRand() {
 	Rand* rand = Rand::instance();
 	int a = rand->get(0, 7);
-	printfDx("%d\n" ,a);
 	return colors[a];
 }
