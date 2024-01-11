@@ -18,6 +18,7 @@ protected:
 	Type type;
 	Color color;
 	uint16_t id;
+	bool touch;//ÚG‚µ‚Ä‚¢‚é‚©‚Ìƒtƒ‰ƒO
 	int index;
 	float friction;//–€CŒW”
 	float e;//”½”­ŒW”
@@ -67,5 +68,7 @@ public:
 	float getI()const;
 	Vec2 getCirV(const Vec2& , const Vec2&)const;
 	Vec2 getCirV(const Vec2&)const;
+	bool isTouch()const;
+	void setTouch(const bool);
 	void operator=(const Object&);
 };

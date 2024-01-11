@@ -33,7 +33,7 @@ void World::physicsSimulate() {
 	integrate();
 }
 
-void World::add(Object* obj) {
+uint16_t World::add(Object* obj) {
 	objects.push_back(obj);
 	objNum++;
 	//ユニークなidの割り当て
@@ -47,6 +47,7 @@ void World::add(Object* obj) {
 	for (int i = 0; i < objects.size(); i++) {
 		objects[i]->setIndex(i);
 	}
+	return obj->getId();
 }
 
 /***private***/
@@ -115,6 +116,8 @@ void World::detectCollision() {
 				cp.pointB_ = coord_[1];
 				cp.constraint->accumImpulse = 0.f;
 				pair.getCol()->addCp(cp);
+				pair.getObj0()->setTouch(true);
+				pair.getObj1()->setTouch(true);
 			}
 			else {
 				//衝突していなければ
@@ -133,6 +136,8 @@ void World::detectCollision() {
 				cp.pointB_ = coord_[1];
 				cp.constraint->accumImpulse = 0.f;
 				pair.getCol()->addCp(cp);
+				pair.getObj0()->setTouch(true);
+				pair.getObj1()->setTouch(true);
 			}
 			else {
 				//衝突していなければ
@@ -151,6 +156,8 @@ void World::detectCollision() {
 				cp.pointB_ = coord_[1];
 				cp.constraint->accumImpulse = 0.f;
 				pair.getCol()->addCp(cp);
+				pair.getObj0()->setTouch(true);
+				pair.getObj1()->setTouch(true);
 			}
 			else {
 				//衝突していなければ
@@ -167,7 +174,6 @@ void World::detectCollision() {
 			}
 		}
 	}
-	//printfDx("world ペア数%d\n", pairs.size());
 }
 
 
@@ -209,4 +215,13 @@ void World::Draw(const int x_scroll, const int y_scroll)const {
 	for (auto& obj : objects) {
 		obj->Draw(x_scroll , y_scroll);
 	}
+}
+
+Object* World::getObj(uint16_t id)const {
+	for (auto& obj : objects) {
+		if (obj->getId() == id) {
+			return obj;
+		}
+	}
+	return NULL;
 }

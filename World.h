@@ -26,6 +26,7 @@ public:
 	std::vector<Pair> pairs;
 	void initialize();
 	void physicsSimulate();
-	void add(Object*);
+	uint16_t add(Object*);
 	void Draw(const int , const int) const;
+	Object* getObj(uint16_t id)const;
 };

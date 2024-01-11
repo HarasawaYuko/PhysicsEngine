@@ -105,7 +105,7 @@ const BBox& Object::getBbox()const{
 
 //コンストラクタ
 Object::Object(Vec2 v ,Type type ,float mass, Color color , bool act , float ang , float ang_v ) 
-	:velocity(v) ,  type(type),color(color) ,mass(mass),active(act) , angle(ang), angle_v(ang_v)
+	:velocity(v) ,  type(type),color(color) ,mass(mass),active(act) , angle(ang), angle_v(ang_v),touch(false)
 {
 	e = 0.1f;
 }
@@ -130,4 +130,12 @@ Vec2 Object::getCirV(const Vec2& point)const {
 	float length = point.norm() * angle_v;
 	Vec2 result = point.normal().normalize() * length;
 	return result.rotation(angle);
+}
+
+bool Object::isTouch()const {
+	return touch;
+}
+
+void Object::setTouch(const bool t) {
+	touch = t;
 }
