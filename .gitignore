@@ -408,3 +408,6 @@ Log.txt
 #powerPoint
 *.pptx
 /画像作成用.pptx
+
+pic/
+snd/

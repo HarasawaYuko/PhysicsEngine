@@ -21,7 +21,7 @@ private:
 	void integrate();
 public:
 	World(float timeStep = 1.f/(float)FPS , const int x = WIN_SIZE_X, const int y = WIN_SIZE_Y);
-	std::vector<Collision> collisions;
+	//std::vector<Collision> collisions;
 	std::vector<Object*> objects;
 	std::vector<Pair> pairs;
 	void initialize();

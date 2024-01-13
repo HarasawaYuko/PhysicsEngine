@@ -64,8 +64,6 @@ void World::applyForce() {
 void World::detectCollision() {
 //ブロードフェーズ
 	std::vector<Pair> nowPairs;//検出されたペア
-	static int count = 0;
-	count++;
 	for (int i = 0; i < objNum; i++) {
 		for (int j = i + 1; j < objNum; j++) {
 			//バウンディングボックスによる判定
