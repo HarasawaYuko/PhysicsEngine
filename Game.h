@@ -18,6 +18,7 @@ private:
 	int score = 0;
 	int objNum = 0;
 	Button selectButton[3];
+	Button finButton;
 	World world;
 	Object* Objects[3];
 	Rand* rand;

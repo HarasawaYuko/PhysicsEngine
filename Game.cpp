@@ -20,10 +20,14 @@ static const int window_width = 400;
 static const int SelectNum = 3;
 static const int SelectWidth = 120;
 static const int SelectInterval = 5;
-static const int SelectY = 550;
+static const int SelectY = 530;
 static const int SelectX = 425;
 static const int SelectCenX[3] = {485 , 610 , 735};
-static const int SelectCenY = 490;
+static const int SelectCenY = 470;
+//終了ボタン
+static const int FinButtonWidth = 50;
+static const int FinButtonY = 590;
+static const int FinButtonX = 740;
 //スコア表示
 static const int score_x1 = 500;
 static const int score_y1 = 100;
@@ -47,7 +51,7 @@ static int CorreY = 0;
 static int DisMinY = 200;
 static uint16_t recentId;
 
-static const int BasicKind = 5;//基礎図形の種類
+static const int BasicKind = 8;//基礎図形の種類
 
 //プロトタイプ宣言
 Object* getObj(const int);
@@ -69,11 +73,14 @@ void Game::Initialize() {
 	int selectPic = LoadGraph("pic/Game/Select.png");
 	int selectPicOn = LoadGraph("pic/Game/SelectOn.png");
 	int selectSnd = LoadSoundMem("snd/Game/Select.mp3");
+	int finPic = LoadGraph("pic/Game/FinButton.png");
+	int finPicOn = LoadGraph("pic/Game/FinButtonOn.png");
 
 	//ボタンの作成
 	for (int i = 0; i < SelectNum; i++) {
 		selectButton[i] = Button(selectPic , selectPicOn , selectSnd , SelectX +(i * (SelectWidth + SelectInterval)), SelectY, SelectWidth, SelectWidth);
 	}
+	finButton = Button(finPic, finPicOn, -1, FinButtonX, FinButtonY, FinButtonWidth, FinButtonWidth);
 
 	objNum = 0;
 	ScrollY = 0;
@@ -100,6 +107,12 @@ void Game::Update() {
 	for (int i = 0; i < SelectNum; i++) {
 		selectButton[i].update();
 	}
+	finButton.update();
+
+	if (finButton.isPush()) {
+		m_sceneChanger->ChangeScene(Scene_Menu);
+	}
+
 	int scrollKeep = ScrollY;
 	//スクロール量を計算
 	ScrollY += Mouse::instance()->getWheel() * 2;
@@ -208,6 +221,8 @@ void Game::Draw() {
 		Vec2 cen = Objects[i]->getC();
 		Objects[i]->Draw(SelectCenX[i] -(x - cen.x), SelectCenY -(y - cen.y));
 	}
+	finButton.draw();
+
 	//スコア枠の表示
 	DrawExtendGraph(score_x1, WIN_SIZE_Y - score_y1, score_x2, WIN_SIZE_Y - score_y2, scorePic, true);
 	//スコアの表示
@@ -329,6 +344,31 @@ Object* getObj(const int p) {
 	case 4:
 		//円
 		obj = new Circle();
+		break;
+	case 5:
+		//5角形
+		points.emplace_back(10.f, 0.f);
+		points.emplace_back(3.0901f, 9.51056f);
+		points.emplace_back(-8.0901f, 5.877f);
+		points.emplace_back(-8.0901f, -5.877f);
+		points.emplace_back(3.0901f, -9.51056f);
+		obj = new Convex(points, 0.f, 0.f, 0.f, 0.f, true);
+		obj->move(obj->getC() * -1);
+		break;
+	case 6:
+		//長方形
+		points.emplace_back(40.f, 10.f);
+		points.emplace_back(40.f, -10.f);
+		points.emplace_back(-40.f, 10.f);
+		points.emplace_back(-40.f, -10.f);
+		obj = new Convex(points, 0.f, 0.f, 0.f, 0.f, true);
+		break;
+	case 7:
+		//正三角形
+		points.emplace_back(0.f, 40.f);
+		points.emplace_back(-17.32f, -10.f);
+		points.emplace_back(17.32f, -10.f);
+		obj = new Convex(points, 0.f, 0.f, 0.f, 0.f, true);
 		break;
 	default:
 		//正三角形

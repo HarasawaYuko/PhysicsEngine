@@ -162,8 +162,9 @@ void WholeTest::Update() {
 }
 
 void WholeTest::Draw() {
+	SetFontSize(40);
+	DrawString(0, 0, "WholeTest", COLOR_BLACK);
 	SetFontSize(20);
-	DrawString(640, 0, "Scene WholeTest", COLOR_BLACK);
 	DrawString(640 , 23 , "LeftClick->point’Ç‰Á\nC->“Ê•ï’Ç‰Á\nA->pointíœ" , COLOR_BLACK);
 	for (auto& obj : world.objects) {
 		obj->DrawEdge();
