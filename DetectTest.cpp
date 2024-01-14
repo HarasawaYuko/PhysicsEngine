@@ -2,8 +2,13 @@
 #include "KeyBoard.h"
 #include "Mouse.h"
 #include "Rand.h"
+
 #include "detect.h"
+
+#include "Pair.h"
+#include "Collision.h"
 #include "Convex.h"
+#include "Circle.h"
 #include "DEBUG.h"
 
 //衝突検知テスト
@@ -74,7 +79,7 @@ void DetectTest::Update() {
 			if (KeyBoard::instance()->hitNow(KEY_INPUT_RETURN) && points.size() >= 3) {
 				Convex* con = new Convex(points);
 				objects.emplace_back(con);
-				objects.back()->setColor(GetColor(rand->get(0, 150), rand->get(0, 150), rand->get(0, 150)));
+				objects.back()->setColor(GetColor(rand->getI(0, 150), rand->getI(0, 150), rand->getI(0, 150)));
 				points.clear();
 			}
 		}
@@ -90,7 +95,7 @@ void DetectTest::Update() {
 			if (KeyBoard::instance()->hitNow(KEY_INPUT_RETURN)) {
 				Circle* cir = new Circle(cirCenter , r , Vec2() , false);
 				objects.emplace_back(cir);
-				objects.back()->setColor(GetColor(rand->get(0 ,150), rand->get(0, 150), rand->get(0, 150)));
+				objects.back()->setColor(GetColor(rand->getI(0 ,150), rand->getI(0, 150), rand->getI(0, 150)));
 				points.clear();
 			}
 		}

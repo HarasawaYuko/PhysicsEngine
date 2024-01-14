@@ -91,7 +91,7 @@ void ConstraintTest::Update() {
 		if (KeyBoard::instance()->hitNow(KEY_INPUT_RETURN) && points.size() >= 3) {
 			Convex* con = new Convex(points ,0,0,0,0,true);
 			convexes.push_back((Object*)con);
-			convexes.back()->setColor(GetColor(rand->get(0, 255), rand->get(0, 255), rand->get(0, 255)));
+			convexes.back()->setColor(GetColor(rand->getI(0, 255), rand->getI(0, 255), rand->getI(0, 255)));
 			points.clear();
 		}
 		if (KeyBoard::instance()->hitNow(KEY_INPUT_G)) {

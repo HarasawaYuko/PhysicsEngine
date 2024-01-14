@@ -1,15 +1,12 @@
 #include "Solver.h"
-#include "Pair.h"
+#include "SolvetBody.h"
 
-static const float e_CC = 0.8f; //‰~‚Æ‰~‚Ì”½”­ŒW”
-static float k_CC;//ƒoƒlŒW”
 static float bias = 0.25f;//S‘©—Íf‚Ìbias
 
 //ƒvƒƒgƒ^ƒCƒvéŒ¾
 Matrix getRtilda(const Vec2&);
 
 void Solver::initialize(const float timeStep) {
-	k_CC = (float)(1 / (timeStep));
 }
 
 void Solver::solve(const std::vector<Object*>& objects ,std::vector<Collision>& cols) {

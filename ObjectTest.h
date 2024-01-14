@@ -3,17 +3,12 @@
 
 #include "BaseScene.h"
 #include "SceneChanger.h"
-#include "World.h"
 #include "UIMaterial.h"
-#include "Circle.h"
-
-#include "Pair.h"
 
 //ƒQ[ƒ€‰æ–Ê
 
 class ObjectTest :public BaseScene {
 private:
-	World world;
 public:
 	//ŠÖ”
 	void deleteMem();

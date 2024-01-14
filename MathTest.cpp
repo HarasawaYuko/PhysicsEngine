@@ -174,7 +174,7 @@ void MathTest::Draw() {
 			DrawPoint(convex->getC(), COLOR_ORANGE);
 			for (int i = 0; i < convex->getPointNum(); i++) {
 				Vec2 p = convex->getPointW(i);
-				DrawFormatString(p.x, WIN_SIZE_Y - p.y, COLOR_BLUE, "%d", i);
+				DrawFormatString((int)p.x, WIN_SIZE_Y - (int)p.y, COLOR_BLUE, "%d", i);
 			}
 		}
 		break;

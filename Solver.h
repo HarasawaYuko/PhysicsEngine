@@ -1,8 +1,5 @@
 #pragma once
-#include "Circle.h"
-#include "Collision.h"
-#include "SolvetBody.h"
-#include "Convex.h"
+#include "Object.h"
 #include "World.h"
 
 namespace Solver {

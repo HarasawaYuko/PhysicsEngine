@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Object.h"
-#include "UIMaterial.h"
 
 //“Ê•ïƒNƒ‰ƒX
 class Convex :public Object {

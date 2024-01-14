@@ -54,7 +54,6 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 	//分離軸判定
 	float max1, min1;//box1の投影座標の最大最小
 	float max2, min2;//box2の投影座標の最大最小
-	bool result;//判定結果 接触してればtrue
 	float max_depth = -INF;
 	Vec2 axisMax;//分離軸候補
 	//頂点→頂点のベクトルの分離軸判定
@@ -201,7 +200,6 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 		}
 	}
 	else {
-		//printfDx("Bが頂点");
 		minPoint = con2->getPointW(minPointIndex);
 		coord[0] = WtoL(minPoint, con1->getC(), con1->getAngle());
 		coord[1] = WtoL(minPoint, con2->getC(), con2->getAngle());
@@ -209,14 +207,15 @@ bool Detect::convex_convex(Object* c1, Object* c2, float* depth, Vec2* n, Vec2* 
 		minEdge = con1->getEdgeW(minEdgeIndex);
 		switch (minPattern) {
 		case 0:
-			//printfDx("パターン0\n");
+			//始点が最近点だった場合
 			coord_[0] = WtoL(minEdge.start, con1->getC(), con1->getAngle());
 			break;
 		case 1:
-			//printfDx("パターン1\n");
+			//終点が最近点だった場合
 			coord_[0] = WtoL(minEdge.end, con1->getC(), con1->getAngle());
 			break;
 		case 2:
+			//点と直線の距離によって求める場合
 			coord_[0] = WtoL(getContactPoint(minPoint, minEdge), con1->getC(), con1->getAngle());
 			break;
 		default:
@@ -239,7 +238,6 @@ bool Detect::circle_convex(Object* cir_, Object* con_, float* depth, Vec2* n, Ve
 	Convex* con = static_cast<Convex*>(con_);
 
 	//分離軸判定
-	bool result;//判定結果 接触してればtrue
 	bool pointFlag = false;//頂点が衝突点かのフラグ
 	int minIndex = -1;
 	float minDis = FLT_MAX;

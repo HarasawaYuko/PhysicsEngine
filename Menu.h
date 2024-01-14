@@ -3,11 +3,7 @@
 
 #include "BaseScene.h"
 #include "SceneChanger.h"
-#include "World.h"
 #include "UIMaterial.h"
-#include "Circle.h"
-
-#include "Pair.h"
 
 //ƒQ[ƒ€‰æ–Ê
 

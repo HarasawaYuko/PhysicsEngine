@@ -142,7 +142,7 @@ void Game::Update() {
 					break;
 				}
 				obj = Objects[i];
-				obj->move(Vec2(200 , InitY + CorreY));
+				obj->move(Vec2(200 , (float)(InitY + CorreY)));
 				//座標の設定
 				selectMode = false;
 				Objects[i] = getBasicObj();
@@ -189,7 +189,7 @@ void Game::Update() {
 				obj->rotation(-RotaAng);
 			}
 		}
-		obj->move(Vec2(0 ,scrollKeep - ScrollY ));
+		obj->move(Vec2(0.f ,(float)(scrollKeep - ScrollY) ));
 	}
 
 
@@ -202,7 +202,7 @@ void Game::Update() {
 		m_sceneChanger->ChangeScene(Scene_Result);
 		return;
 	}
-	objNum = world.objects.size();
+	objNum = (int)world.objects.size();
 }
 
 void Game::Draw() {
@@ -219,7 +219,7 @@ void Game::Draw() {
 		float x = bbox.width / 2.f + bbox.point.x;
 		float y = bbox.height / 2.f + bbox.point.y;
 		Vec2 cen = Objects[i]->getC();
-		Objects[i]->Draw(SelectCenX[i] -(x - cen.x), SelectCenY -(y - cen.y));
+		Objects[i]->Draw(SelectCenX[i] -(int)(x - cen.x), SelectCenY -(int)(y - cen.y));
 	}
 	finButton.draw();
 
@@ -228,7 +228,7 @@ void Game::Draw() {
 	//スコアの表示
 	SetFontSize(50);
 	std::string scoreStr = std::to_string(score);
-	int width = GetDrawStringWidth(scoreStr.c_str(), scoreStr.length());
+	int width = GetDrawStringWidth(scoreStr.c_str(), (int)scoreStr.length());
 	DrawFormatString(score_x1 + (score_x2 - score_x1)/2 - width/2 , WIN_SIZE_Y -(score_y1+ ((score_y2 - score_y1)/2 + 50/2)) , COLOR_BLACK ,"%s", scoreStr.c_str() );
 
 
@@ -290,15 +290,15 @@ void Game::initSelect() {
 //BBoxで、ボタンに収まるか確認して、修正する
 Object* Game::getBasicObj() const{
 	Object* result;
-	int kind = rand->get(0 , 6);
+	int kind = rand->getI(0 , 6);
 	result = getObj(kind);
-	int size = rand->get(2000, 5000);
-	result->changeSize(size);
+	int size = rand->getI(2000, 5000);
+	result->changeSize((float)size);
 	//大きさを調べる
 	BBox bbox = result->getBbox();
 	while (bbox.width > SelectWidth - 10 && bbox.height > SelectWidth - 10) {
 		size = (int)((float)size * 0.95f);
-		result->changeSize(size);
+		result->changeSize((float)size);
 		bbox = result->getBbox();
 	}
 	result->setColor(getColorRand());

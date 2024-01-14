@@ -1,7 +1,7 @@
 #pragma once
 #include <random>
 
-#include "Circle.h"
+#include "Object.h"
 #include "Pair.h"
 
 //物理シミュレーションクラス

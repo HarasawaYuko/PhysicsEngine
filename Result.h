@@ -4,14 +4,12 @@
 
 #include "BaseScene.h"
 #include "SceneChanger.h"
-#include "World.h"
 #include "UIMaterial.h"
 
 //ƒQ[ƒ€‰æ–Ê
 
 class Result :public BaseScene {
 private:
-	World world;
 	int backPic;
 	int bgm;
 	Button nextButton;

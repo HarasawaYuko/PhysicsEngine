@@ -9,5 +9,6 @@ private:
 	std::mt19937 mt;
 public:
 	static Rand* instance();
-	float get(const float , const float);
+	float getF(const int , const int);
+	int getI(const int, const int);
 };

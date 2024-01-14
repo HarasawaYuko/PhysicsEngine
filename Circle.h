@@ -1,6 +1,5 @@
 #pragma once
 #include "Object.h"
-#include "UIMaterial.h"
 
 //‰~ƒNƒ‰ƒX
 class Circle :public Object{
