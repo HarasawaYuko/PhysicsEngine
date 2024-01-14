@@ -11,7 +11,6 @@ Pair::Pair(Object* obj1 , Object* obj2) {
 		id1 = id1 << 16;
 	}
 	key = id1 | id2;
-	//printfDx("key %x\n" , key);
 	kind = (Kind)(obj1->getType() | obj2->getType());
 	obj[0] = obj1;
 	obj[1] = obj2;
@@ -63,7 +62,7 @@ void Pair::refreshCp() {
 		}
 	}
 	//index‚ª•Ï‚í‚é‚½‚ßŒã‚ë‚©‚çíœ‚·‚é
-	for (int i = deleteIndex.size() - 1; i >= 0; i--) {
+	for (int i = (int)deleteIndex.size() - 1; i >= 0; i--) {
 		collision->deleteCp(i);
 	}
 }

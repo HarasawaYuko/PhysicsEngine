@@ -47,7 +47,7 @@ Convex::Convex(const std::vector<Vec2> &points ,const float v_x, const float v_y
 	mass = area;
 	setBbox();
 
-	friction = 0.1f;
+	friction = Constant::FRICTION;
 }
 
 void Convex::loadGraph() {
@@ -61,10 +61,10 @@ void Convex::updatePos(const float step) {
 	}
 	Vec2 deltaLinearV = (velocity * step);
 	float deltaRotaV = (angle_v * step);
-	if (deltaLinearV.norm() > 0.001f) {
+	if (deltaLinearV.norm() > Constant::STOP_SPEED) {
 		center = center + deltaLinearV;
 	}
-	if (abs(deltaRotaV) > 0.001f) {
+	if (abs(deltaRotaV) > Constant::STOP_SPEED) {
 		angle = angle + deltaRotaV;
 	}
 	for (int i = 0; i < pointNum; i++) {

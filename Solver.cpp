@@ -1,7 +1,8 @@
 #include "Solver.h"
 #include "SolvetBody.h"
+#include "Constant.h"
 
-static float bias = 0.25f;//拘束力fのbias
+static float bias = Constant::BIAS;//拘束力fのbias
 
 //プロトタイプ宣言
 Matrix getRtilda(const Vec2&);
