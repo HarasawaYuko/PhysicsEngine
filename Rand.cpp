@@ -6,6 +6,10 @@ Rand* Rand::instance() {
 	return &instance;
 }
 
-float Rand::get(const float min, const float max) {
+float Rand::getF(const int min, const int max) {
 	return (float)(min + mt() % ((int)max + 1 - (int)min));
+}
+
+int Rand::getI(const int min, const int max) {
+	return (int)(min + mt() % ((int)max + 1 - (int)min));
 }

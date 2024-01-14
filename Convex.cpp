@@ -14,7 +14,7 @@ Convex::Convex(const std::vector<Vec2> &points ,const float v_x, const float v_y
 	}
 	cen = cen / (float)points.size();
 	center = cen;
-	pointNum = points.size();
+	pointNum = (int)points.size();
 	//printfDx("重心%s\n" ,center.toString().c_str());
 	
 	//点を重心からソート
@@ -24,7 +24,7 @@ Convex::Convex(const std::vector<Vec2> &points ,const float v_x, const float v_y
 	for (int i = 1; i < points.size(); i++) {
 		pointAng.push_back(std::make_pair(points[i] , getTheta(cen , points[0] , points[i])));
 	}
-	quick_sort(pointAng , 0 , pointAng.size());
+	quick_sort(pointAng , 0 , (int)pointAng.size());
 
 	//ソート順にローカル座標とワールド座標を設定
 	for (int i = 0; i < pointNum; i++) {
@@ -47,7 +47,7 @@ Convex::Convex(const std::vector<Vec2> &points ,const float v_x, const float v_y
 	mass = area;
 	setBbox();
 
-	friction = 0.1f;
+	friction = Constant::FRICTION;
 }
 
 void Convex::loadGraph() {
@@ -61,10 +61,10 @@ void Convex::updatePos(const float step) {
 	}
 	Vec2 deltaLinearV = (velocity * step);
 	float deltaRotaV = (angle_v * step);
-	if (deltaLinearV.norm() > 0.001f) {
+	if (deltaLinearV.norm() > Constant::STOP_SPEED) {
 		center = center + deltaLinearV;
 	}
-	if (abs(deltaRotaV) > 0.001f) {
+	if (abs(deltaRotaV) > Constant::STOP_SPEED) {
 		angle = angle + deltaRotaV;
 	}
 	for (int i = 0; i < pointNum; i++) {
@@ -83,7 +83,7 @@ void Convex::Draw() const {
 }
 
 void Convex::Draw(const int x_scroll , const int y_scroll) const {
-	Vec2 scroll = Vec2(x_scroll , y_scroll);
+	Vec2 scroll = Vec2((float)x_scroll , (float)y_scroll);
 	for (int i = 0; i < pointNum; i++) {
 		Segment edge = getEdgeW(i);
 		DrawSegment(edge.start + scroll , edge.end + scroll , COLOR_BLACK ,4.f);

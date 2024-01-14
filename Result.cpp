@@ -66,7 +66,7 @@ void Result::Draw() {
 	
 	SetFontSize(90);
 	std::string scoreStr = std::to_string(Share::score);
-	int length = GetDrawStringWidth(scoreStr.c_str(), scoreStr.length());
+	int length = GetDrawStringWidth(scoreStr.c_str(), (int)scoreStr.length());
 	DrawFormatString((WIN_SIZE_X - length)/2 , WIN_SIZE_Y - ScoreY , COLOR_BLACK , "%d" , Share::score);
 	SetFontSize(40);
 	DrawString(WIN_SIZE_X/2 + length/2 , WIN_SIZE_Y- ( ScoreY - (90-40)), "pt", COLOR_BLACK);

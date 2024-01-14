@@ -29,7 +29,7 @@ public:
 	void update();
 	bool getClick(clickCode);
 	bool getClickNow(clickCode);
-	int getX();
-	int getY();
+	float getX();
+	float getY();
 	int getWheel();
 };

@@ -117,7 +117,7 @@ void SlideBar::update(bool*click) {
 		on = true;
 		if (Mouse::instance()->getClick(LEFT_CLICK)) {
 			*click = true;
-			selectX = Mouse::instance()->getX();
+			selectX = (int)Mouse::instance()->getX();
 		}
 	}
 }
@@ -169,11 +169,11 @@ int DrawSegment(const Vec2& s, const Vec2& e, const unsigned int color , const f
 }
 
 int DrawPoint(const Vec2& v, const unsigned int color) {
-	return DrawCircle(v.x , WIN_SIZE_Y - v.y , 5 , color);
+	return DrawCircle((int)v.x , WIN_SIZE_Y - (int)v.y , 5 , color);
 }
 
 int DrawStrP(const Vec2& p , const std::string str , const unsigned int color) {
-	return DrawString(p.x ,WIN_SIZE_Y - p.y , str.c_str(), color);
+	return DrawString((int)p.x ,WIN_SIZE_Y - (int)p.y , str.c_str(), color);
 }
 
 std::string FtoStr(const float val) {
@@ -184,6 +184,6 @@ std::string FtoStr(const float val) {
 
 unsigned int getColorRand() {
 	Rand* rand = Rand::instance();
-	int a = rand->get(0, 7);
+	int a = rand->getI(0, 7);
 	return colors[a];
 }

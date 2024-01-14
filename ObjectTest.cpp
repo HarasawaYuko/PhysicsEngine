@@ -66,7 +66,7 @@ void ObjectTest::Update() {
 		if (KeyBoard::instance()->hitNow(KEY_INPUT_RETURN) && points.size() >= 3) {
 			delete convex;
 			convex = new Convex(points);
-			convex->setColor(GetColor(rand->get(0, 255), rand->get(0, 255), rand->get(0, 255)));
+			convex->setColor(GetColor(rand->getI(0, 255), rand->getI(0, 255), rand->getI(0, 255)));
 			points.clear();
 			make = true;
 		}
@@ -87,7 +87,7 @@ void ObjectTest::Update() {
 		if (KeyBoard::instance()->hitNow(KEY_INPUT_RETURN) && points.size() >= 3) {
 			delete convex;
 			convex = new Convex(points,0,0,0,0,true);
-			convex->setColor(GetColor(rand->get(0, 255), rand->get(0, 255), rand->get(0, 255)));
+			convex->setColor(GetColor(rand->getI(0, 255), rand->getI(0, 255), rand->getI(0, 255)));
 			points.clear();
 			((Object*)convex)->setAngV(angV);
 			make = true;

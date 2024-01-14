@@ -4,6 +4,7 @@
 #include "Rand.h"
 #include "Share.h"
 
+
 //メニュー画面
 
 //UIデザイン用定数
@@ -56,9 +57,9 @@ void Menu::Update() {
 	if (startButton.isPush()) {
 		m_sceneChanger->ChangeScene(Scene_Game);
 	}
-	if (setButton.isPush()) {
+	/*if (setButton.isPush()) {
 		m_sceneChanger->ChangeScene(Scene_Setting);
-	}
+	}*/
 	if (finButton.isPush()) {
 		m_sceneChanger->ChangeScene(Scene_Fin);
 	}

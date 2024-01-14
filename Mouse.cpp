@@ -33,12 +33,12 @@ bool Mouse::getClickNow(clickCode code) {
 	return mouseInput[code] == 1;
 }
 
-int Mouse::getX() {
-	return posX;
+float Mouse::getX() {
+	return (float)posX;
 }
 
-int Mouse::getY() {
-	return posY;
+float Mouse::getY() {
+	return (float)posY;
 }
 
 int Mouse::getWheel() {

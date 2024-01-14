@@ -1,4 +1,5 @@
 #include "Circle.h"
+#include "Constant.h"
 
 Circle::Circle(const float cen_x, const float cen_y, const float r, const float v_x, const float v_y , const bool act) 
 	:r(r) , Object( Vec2(v_x , v_y), CIRCLE, ( r * r * Pi), COLOR_RED, act)
@@ -15,7 +16,7 @@ Circle::Circle(const Vec2 cen, const float r, const Vec2 v, const bool act)
 	center = cen;
 	setBbox();
 	inertiaTensor = 0.5f * mass * r * r;
-	friction = 0.3f;
+	friction = Constant::FRICTION;
 }
 
 float Circle::getR() const{
@@ -70,10 +71,10 @@ void Circle::updatePos(const float step) {
 	}
 	Vec2 deltaLinearV = (velocity * step);
 	float deltaRotaV = (angle_v * step);
-	if (deltaLinearV.norm() > 0.001f) {
+	if (deltaLinearV.norm() > Constant::STOP_SPEED) {
 		center = center + deltaLinearV;
 	}
-	if (abs(deltaRotaV) > 0.001f) {
+	if (abs(deltaRotaV) > Constant::STOP_SPEED) {
 		angle = angle + deltaRotaV;
 	}
 	//バウンディングボックスを設定
